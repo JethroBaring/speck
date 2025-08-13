@@ -1,0 +1,306 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+
+  // Relations
+  createdProjects     Project[]           @relation("ProjectCreator")
+  projectMemberships  ProjectMember[]
+  createdPages        Page[]              @relation("PageCreator")
+  createdPageElements PageElement[]       @relation("PageElementCreator")
+  createdTestCases    TestCase[]          @relation("TestCaseCreator")
+  sentInvitations     ProjectInvitation[] @relation("InvitationSender")
+  receivedInvitations ProjectInvitation[] @relation("InvitationReceiver")
+  // groups             Group[]             @relation("GroupCreator")
+  projectVariables    ProjectVariable[]   @relation("ProjectVariableCreator")
+  testSuiteVariables  TestSuiteVariable[] @relation("TestSuiteVariableCreator")
+  projectFunctions    ProjectFunction[]   @relation("ProjectFunctionCreator")
+  testSuiteFunctions  TestSuiteFunction[] @relation("TestSuiteFunctionCreator")
+  testSuites          TestSuites[]        @relation("TestSuitesCreator")
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  baseUrl     String?  @map("base_url") // For CI/CD integration
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  creator         User                @relation("ProjectCreator", fields: [createdBy], references: [id])
+  members         ProjectMember[]
+  pages           Page[]
+  invitations     ProjectInvitation[]
+  testSuites      TestSuites[] // NEW: Test groups
+  globalVariables ProjectVariable[] // NEW: Global variables
+  globalFunctions ProjectFunction[] // NEW: Global functions
+
+  @@map("projects")
+}
+
+model ProjectMember {
+  id        Int      @id @default(autoincrement())
+  projectId Int      @map("project_id")
+  userId    String   @map("user_id")
+  role      String // 'QA', 'Developer', 'Admin', 'Viewer'
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([projectId, userId])
+  @@map("project_members")
+}
+
+// NEW: Groups for organizing tests, variables, functions
+model TestSuites {
+  id          Int      @id @default(autoincrement())
+  projectId   Int      @map("project_id")
+  name        String
+  description String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  project   Project             @relation(fields: [projectId], references: [id])
+  creator   User                @relation("TestSuitesCreator", fields: [createdBy], references: [id])
+  testCases TestCase[]
+  variables TestSuiteVariable[] // Group-specific variables
+  functions TestSuiteFunction[] // Group-specific functions
+
+  @@map("test_suites")
+}
+
+// NEW: Project-level (global) variables
+model ProjectVariable {
+  id          Int      @id @default(autoincrement())
+  projectId   Int      @map("project_id")
+  name        String // Variable name (without @ symbol)
+  value       String // Selector or value
+  description String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id])
+  creator User    @relation("ProjectVariableCreator", fields: [createdBy], references: [id])
+
+  @@unique([projectId, name])
+  @@map("project_variables")
+}
+
+// NEW: Group-level variables
+model TestSuiteVariable {
+  id          Int      @id @default(autoincrement())
+  testSuiteId Int      @map("test_suite_id")
+  name        String // Variable name (without @ symbol)
+  value       String // Selector or value
+  description String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  testSuite TestSuites @relation(fields: [testSuiteId], references: [id])
+  creator   User       @relation("TestSuiteVariableCreator", fields: [createdBy], references: [id])
+
+  @@unique([testSuiteId, name])
+  @@map("test_suite_variables")
+}
+
+// NEW: Project-level (global) functions
+model ProjectFunction {
+  id          Int      @id @default(autoincrement())
+  projectId   Int      @map("project_id")
+  name        String // Function name
+  code        String   @db.Text // DSL code for the function
+  description String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id])
+  creator User    @relation("ProjectFunctionCreator", fields: [createdBy], references: [id])
+
+  @@unique([projectId, name])
+  @@map("project_functions")
+}
+
+// NEW: Group-level functions
+model TestSuiteFunction {
+  id          Int      @id @default(autoincrement())
+  testSuiteId Int      @map("test_suite_id")
+  name        String // Function name
+  code        String   @db.Text // DSL code for the function
+  description String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  testSuite TestSuites @relation(fields: [testSuiteId], references: [id])
+  creator   User       @relation("TestSuiteFunctionCreator", fields: [createdBy], references: [id])
+
+  @@unique([testSuiteId, name])
+  @@map("test_suite_functions")
+}
+
+model Page {
+  id           Int      @id @default(autoincrement())
+  projectId    Int      @map("project_id")
+  name         String
+  url          String
+  description  String?
+  isProtected  Boolean  @default(false) @map("is_protected") // NEW: Auth required
+  authFunction String?  @map("auth_function") // NEW: Function name for auth
+  createdBy    String   @map("created_by")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  project  Project       @relation(fields: [projectId], references: [id])
+  creator  User          @relation("PageCreator", fields: [createdBy], references: [id])
+  elements PageElement[]
+
+  @@map("pages")
+}
+
+model PageElement {
+  id          Int      @id @default(autoincrement())
+  pageId      Int      @map("page_id")
+  elementName String   @map("element_name")
+  selector    String
+  description String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  page    Page @relation(fields: [pageId], references: [id])
+  creator User @relation("PageElementCreator", fields: [createdBy], references: [id])
+
+  @@map("page_elements")
+}
+
+model TestCase {
+  id          Int      @id @default(autoincrement())
+  projectId   Int      @map("project_id")
+  testSuiteId Int?     @map("test_suite_id") // NEW: Optional group assignment
+  name        String
+  description String?
+  code        String   @db.Text // NEW: Store DSL code directly
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  testSuite TestSuites? @relation(fields: [testSuiteId], references: [id]) // NEW
+  creator   User        @relation("TestCaseCreator", fields: [createdBy], references: [id])
+
+  @@map("test_cases")
+}
+
+model ProjectInvitation {
+  id        Int                     @id @default(autoincrement())
+  projectId Int                     @map("project_id")
+  userId    String                  @map("user_id")
+  invitedBy String                  @map("invited_by")
+  status    ProjectInvitationStatus @default(PENDING)
+  expiresAt DateTime                @map("expires_at")
+  createdAt DateTime                @default(now()) @map("created_at")
+  updatedAt DateTime                @updatedAt @map("updated_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id])
+  inviter User    @relation("InvitationSender", fields: [invitedBy], references: [id])
+  user    User    @relation("InvitationReceiver", fields: [userId], references: [id])
+
+  @@map("project_invitations")
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+}
+
+enum ProjectInvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
