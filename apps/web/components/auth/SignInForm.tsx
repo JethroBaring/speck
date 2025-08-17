@@ -6,12 +6,33 @@ import Button from "../ui/button/Button";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Link from "next/link";
 import React, { useState } from "react";
+import { authClient } from "@/lib/auth/auth-client";
+import { LoaderCircle } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const handleSignin   = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+        await authClient.signIn.email({
+            email,
+            password,
+        });
+        router.push("/projects");
+    } catch (error) {
+        console.error("Login failed:", error);
+    } finally {
+        setIsLoading(false);
+    }
+};
+
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">
       <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
@@ -86,7 +107,7 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-            <form>
+            <form onSubmit={handleSignin}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -135,8 +156,15 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
+                  <Button type="submit" className="w-full" size="sm" disabled={isLoading}>
+                    {isLoading ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <LoaderCircle className="w-4 h-4 mr-2 animate-spin" />
+                        <span> Signing in...</span>
+                      </div>
+                    ) : (
+                      "Sign in"
+                    )}
                   </Button>
                 </div>
               </div>

@@ -5,5 +5,6 @@ import { PageElementsController } from './page-elements.controller';
 @Module({
   controllers: [PageElementsController],
   providers: [PageElementsService],
+  exports: [PageElementsService],
 })
 export class PageElementsModule {}

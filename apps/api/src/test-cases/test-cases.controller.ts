@@ -5,13 +5,10 @@ import {
   Patch,
   Param,
   Delete,
-  UsePipes,
 } from '@nestjs/common';
 import { TestCasesService } from './test-cases.service';
-import { Prisma } from '@repo/types/generated/prisma/client';
 import { ZodValidationPipe } from 'src/common/pipes/zod-validation-pipe';
-import { TestCaseUpdateInputSchema } from '../../../../packages/types/prisma/generated/zod';
-
+import { TestCaseUpdateSchema } from '@repo/types/schemas';
 @Controller('test-cases')
 export class TestCasesController {
   constructor(private readonly testCasesService: TestCasesService) {}
@@ -22,10 +19,9 @@ export class TestCasesController {
   }
 
   @Patch(':id')
-  @UsePipes(new ZodValidationPipe(TestCaseUpdateInputSchema))
   update(
     @Param('id') id: string,
-    @Body() updateTestCaseDto: Prisma.TestCaseUpdateInput,
+    @Body(new ZodValidationPipe(TestCaseUpdateSchema)) updateTestCaseDto: any,
   ) {
     return this.testCasesService.update(+id, updateTestCaseDto);
   }

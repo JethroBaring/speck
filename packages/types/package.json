@@ -2,8 +2,11 @@
   "name": "@repo/types",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "prisma generate"
   },
@@ -15,5 +18,32 @@
     "prisma": "^6.13.0",
     "zod": "^4.0.17",
     "zod-prisma-types": "^3.2.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./prisma": {
+      "import": "./generated/prisma/index.js", 
+      "require": "./generated/prisma/index.js",
+      "types": "./generated/prisma/index.d.ts"
+    },
+    "./zod": {
+      "import": "./generated/zod/index.ts",
+      "require": "./generated/zod/index.ts",
+      "types": "./generated/zod/index.ts"
+    },
+    "./zod/*": {
+      "import": "./generated/zod/*.ts",
+      "require": "./generated/zod/*.ts",
+      "types": "./generated/zod/*.ts"
+    },
+    "./schemas": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   }
 }

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/a11y/useButtonType: false positive */
 import type React from "react";
 import { useRef, useState } from "react";
 import { CustomDropdownItem } from "../ui/dropdown/CustomDropdownItem";
@@ -11,7 +10,7 @@ import {
 	EditorVariableIcon,
 } from "../../icons";
 
-const TestCaseEditor: React.FC = () => {
+const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 	const editorRef = useRef<HTMLDivElement>(null);
 	const [caretPosition, setCaretPosition] = useState<number>(0);
 
@@ -727,23 +726,19 @@ const TestCaseEditor: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<div className="mb-2 text-sm text-gray-600 dark:text-gray-400">
-				Caret position: {caretPosition}
-			</div>
-			<div className="relative">
-				{/** biome-ignore lint/a11y/noStaticElementInteractions: false positive */}
+			<div className={`relative h-full ${className}`}>
 				<div
 					ref={editorRef}
 					contentEditable={true}
 					spellCheck={false}
-					className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] overflow-hidden p-4 focus:outline-none focus:ring-0 focus:border-gray-200 dark:focus:border-gray-800 text resize-none"
+					className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] overflow-hidden p-4 focus:outline-none focus:ring-0 focus:border-gray-200 dark:focus:border-gray-800 text resize-none h-full"
 					style={{
 						wordWrap: "break-word",
 						whiteSpace: "pre-wrap",
 						overflowWrap: "break-word",
 						maxWidth: "100%",
 						width: "100%",
+						height: "100%",
 					}}
 					onInput={handleInput}
 					onKeyDown={handleKeydown}
@@ -785,7 +780,6 @@ const TestCaseEditor: React.FC = () => {
 					))}
 				</Dropdown>
 			</div>
-		</div>
 	);
 };
 

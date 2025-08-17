@@ -94,18 +94,18 @@ model Project {
   name        String
   description String?
   baseUrl     String?  @map("base_url") // For CI/CD integration
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  creator         User                @relation("ProjectCreator", fields: [createdBy], references: [id])
-  members         ProjectMember[]
-  pages           Page[]
-  invitations     ProjectInvitation[]
-  testSuites      TestSuites[] // NEW: Test groups
-  globalVariables ProjectVariable[] // NEW: Global variables
-  globalFunctions ProjectFunction[] // NEW: Global functions
+  creator         User?               @relation("ProjectCreator", fields: [createdBy], references: [id])
+  members         ProjectMember[]      @relation("ProjectMembers")
+  pages           Page[]              @relation("ProjectPages")
+  invitations     ProjectInvitation[] @relation("ProjectInvitations")
+  testSuites      TestSuites[]        @relation("ProjectTestSuites")
+  globalVariables ProjectVariable[]   @relation("ProjectVariables")
+  globalFunctions ProjectFunction[]   @relation("ProjectFunctions")
   
   @@map("projects")
 }
@@ -118,8 +118,8 @@ model ProjectMember {
   joinedAt  DateTime @default(now()) @map("joined_at")
 
   // Relations
-  project Project @relation(fields: [projectId], references: [id])
-  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation("ProjectMembers", fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([projectId, userId])
   @@map("project_members")
@@ -131,16 +131,16 @@ model TestSuites {
   projectId   Int      @map("project_id")
   name        String
   description String?
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  project   Project         @relation(fields: [projectId], references: [id])
-  creator   User            @relation("TestSuitesCreator", fields: [createdBy], references: [id])
-  testCases TestCase[]
-  variables TestSuiteVariable[] // Group-specific variables
-  functions TestSuiteFunction[] // Group-specific functions
+  project   Project         @relation("ProjectTestSuites", fields: [projectId], references: [id], onDelete: Cascade)
+  creator   User?            @relation("TestSuitesCreator", fields: [createdBy], references: [id])
+  testCases TestCase[]       @relation("TestSuiteTestCases")
+  variables TestSuiteVariable[] @relation("TestSuiteVariables")
+  functions TestSuiteFunction[] @relation("TestSuiteFunctions")
 
   @@map("test_suites")
 }
@@ -152,13 +152,13 @@ model ProjectVariable {
   name        String // Variable name (without @ symbol)
   value       String // Selector or value
   description String?
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  project Project @relation(fields: [projectId], references: [id])
-  creator User    @relation("ProjectVariableCreator", fields: [createdBy], references: [id])
+  project Project @relation("ProjectVariables", fields: [projectId], references: [id], onDelete: Cascade)
+  creator User?    @relation("ProjectVariableCreator", fields: [createdBy], references: [id])
 
   @@unique([projectId, name])
   @@map("project_variables")
@@ -171,13 +171,13 @@ model TestSuiteVariable {
   name        String // Variable name (without @ symbol)
   value       String // Selector or value
   description String?
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  testSuite   TestSuites @relation(fields: [testSuiteId], references: [id])
-  creator User  @relation("TestSuiteVariableCreator", fields: [createdBy], references: [id])
+  testSuite   TestSuites @relation("TestSuiteVariables", fields: [testSuiteId], references: [id], onDelete: Cascade)
+  creator User?  @relation("TestSuiteVariableCreator", fields: [createdBy], references: [id])
 
   @@unique([testSuiteId, name])
   @@map("test_suite_variables")
@@ -190,13 +190,13 @@ model ProjectFunction {
   name        String // Function name
   code        String   @db.Text // DSL code for the function
   description String?
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  project Project @relation(fields: [projectId], references: [id])
-  creator User    @relation("ProjectFunctionCreator", fields: [createdBy], references: [id])
+  project Project @relation("ProjectFunctions", fields: [projectId], references: [id], onDelete: Cascade)
+  creator User?    @relation("ProjectFunctionCreator", fields: [createdBy], references: [id])
 
   @@unique([projectId, name])
   @@map("project_functions")
@@ -209,13 +209,13 @@ model TestSuiteFunction {
   name        String // Function name
   code        String   @db.Text // DSL code for the function
   description String?
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  testSuite   TestSuites @relation(fields: [testSuiteId], references: [id])
-  creator User  @relation("TestSuiteFunctionCreator", fields: [createdBy], references: [id])
+  testSuite   TestSuites @relation("TestSuiteFunctions", fields: [testSuiteId], references: [id], onDelete: Cascade)
+  creator User?  @relation("TestSuiteFunctionCreator", fields: [createdBy], references: [id])
 
   @@unique([testSuiteId, name])
   @@map("test_suite_functions")
@@ -229,14 +229,14 @@ model Page {
   description  String?
   isProtected  Boolean  @default(false) @map("is_protected") // NEW: Auth required
   authFunction String?  @map("auth_function") // NEW: Function name for auth
-  createdBy    String   @map("created_by")
+  createdBy    String?   @map("created_by")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Relations
-  project  Project       @relation(fields: [projectId], references: [id])
-  creator  User          @relation("PageCreator", fields: [createdBy], references: [id])
-  elements PageElement[]
+  project  Project       @relation("ProjectPages", fields: [projectId], references: [id], onDelete: Cascade)
+  creator  User?          @relation("PageCreator", fields: [createdBy], references: [id])
+  elements PageElement[]  @relation("PageElements")
 
   @@map("pages")
 }
@@ -247,13 +247,13 @@ model PageElement {
   elementName String   @map("element_name")
   selector    String
   description String?
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  page    Page @relation(fields: [pageId], references: [id])
-  creator User @relation("PageElementCreator", fields: [createdBy], references: [id])
+  page    Page @relation("PageElements", fields: [pageId], references: [id], onDelete: Cascade)
+  creator User? @relation("PageElementCreator", fields: [createdBy], references: [id])
 
   @@map("page_elements")
 }
@@ -265,13 +265,13 @@ model TestCase {
   name        String
   description String?
   code        String   @db.Text // NEW: Store DSL code directly
-  createdBy   String   @map("created_by")
+  createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  testSuite      TestSuites?     @relation(fields: [testSuiteId], references: [id]) // NEW
-  creator        User            @relation("TestCaseCreator", fields: [createdBy], references: [id])
+  testSuite      TestSuites?     @relation("TestSuiteTestCases", fields: [testSuiteId], references: [id])
+  creator        User?            @relation("TestCaseCreator", fields: [createdBy], references: [id])
 
   @@map("test_cases")
 }
@@ -287,14 +287,16 @@ model ProjectInvitation {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Relations
-  project Project @relation(fields: [projectId], references: [id])
+  project Project @relation("ProjectInvitations", fields: [projectId], references: [id], onDelete: Cascade)
   inviter User    @relation("InvitationSender", fields: [invitedBy], references: [id])
   user    User    @relation("InvitationReceiver", fields: [userId], references: [id])
   @@map("project_invitations")
 }
 
+
 generator zod {
   provider = "zod-prisma-types"
+  output   = "../generated/zod"
 }
 
 enum ProjectInvitationStatus {

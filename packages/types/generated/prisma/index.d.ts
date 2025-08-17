@@ -7387,7 +7387,7 @@ export namespace Prisma {
     name: string
     description: string | null
     baseUrl: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: ProjectCountAggregateOutputType | null
@@ -7419,7 +7419,7 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Project$creatorArgs<ExtArgs>
     members?: boolean | Project$membersArgs<ExtArgs>
     pages?: boolean | Project$pagesArgs<ExtArgs>
     invitations?: boolean | Project$invitationsArgs<ExtArgs>
@@ -7437,7 +7437,7 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Project$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7448,7 +7448,7 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Project$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectScalar = {
@@ -7463,7 +7463,7 @@ export namespace Prisma {
 
   export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "baseUrl" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Project$creatorArgs<ExtArgs>
     members?: boolean | Project$membersArgs<ExtArgs>
     pages?: boolean | Project$pagesArgs<ExtArgs>
     invitations?: boolean | Project$invitationsArgs<ExtArgs>
@@ -7473,16 +7473,16 @@ export namespace Prisma {
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Project$creatorArgs<ExtArgs>
   }
   export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Project$creatorArgs<ExtArgs>
   }
 
   export type $ProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Project"
     objects: {
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
       members: Prisma.$ProjectMemberPayload<ExtArgs>[]
       pages: Prisma.$PagePayload<ExtArgs>[]
       invitations: Prisma.$ProjectInvitationPayload<ExtArgs>[]
@@ -7495,7 +7495,7 @@ export namespace Prisma {
       name: string
       description: string | null
       baseUrl: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["project"]>
@@ -7892,7 +7892,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends Project$creatorArgs<ExtArgs> = {}>(args?: Subset<T, Project$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     members<T extends Project$membersArgs<ExtArgs> = {}>(args?: Subset<T, Project$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pages<T extends Project$pagesArgs<ExtArgs> = {}>(args?: Subset<T, Project$pagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     invitations<T extends Project$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, Project$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8328,6 +8328,25 @@ export namespace Prisma {
      * Limit how many Projects to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Project.creator
+   */
+  export type Project$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -9783,7 +9802,7 @@ export namespace Prisma {
     projectId: number
     name: string
     description: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: TestSuitesCountAggregateOutputType | null
@@ -9816,7 +9835,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuites$creatorArgs<ExtArgs>
     testCases?: boolean | TestSuites$testCasesArgs<ExtArgs>
     variables?: boolean | TestSuites$variablesArgs<ExtArgs>
     functions?: boolean | TestSuites$functionsArgs<ExtArgs>
@@ -9832,7 +9851,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuites$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuites"]>
 
   export type TestSuitesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9844,7 +9863,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuites$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuites"]>
 
   export type TestSuitesSelectScalar = {
@@ -9860,7 +9879,7 @@ export namespace Prisma {
   export type TestSuitesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuites"]>
   export type TestSuitesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuites$creatorArgs<ExtArgs>
     testCases?: boolean | TestSuites$testCasesArgs<ExtArgs>
     variables?: boolean | TestSuites$variablesArgs<ExtArgs>
     functions?: boolean | TestSuites$functionsArgs<ExtArgs>
@@ -9868,18 +9887,18 @@ export namespace Prisma {
   }
   export type TestSuitesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuites$creatorArgs<ExtArgs>
   }
   export type TestSuitesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuites$creatorArgs<ExtArgs>
   }
 
   export type $TestSuitesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TestSuites"
     objects: {
       project: Prisma.$ProjectPayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
       testCases: Prisma.$TestCasePayload<ExtArgs>[]
       variables: Prisma.$TestSuiteVariablePayload<ExtArgs>[]
       functions: Prisma.$TestSuiteFunctionPayload<ExtArgs>[]
@@ -9889,7 +9908,7 @@ export namespace Prisma {
       projectId: number
       name: string
       description: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["testSuites"]>
@@ -10287,7 +10306,7 @@ export namespace Prisma {
   export interface Prisma__TestSuitesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends TestSuites$creatorArgs<ExtArgs> = {}>(args?: Subset<T, TestSuites$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     testCases<T extends TestSuites$testCasesArgs<ExtArgs> = {}>(args?: Subset<T, TestSuites$testCasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestCasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     variables<T extends TestSuites$variablesArgs<ExtArgs> = {}>(args?: Subset<T, TestSuites$variablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestSuiteVariablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     functions<T extends TestSuites$functionsArgs<ExtArgs> = {}>(args?: Subset<T, TestSuites$functionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestSuiteFunctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -10723,6 +10742,25 @@ export namespace Prisma {
   }
 
   /**
+   * TestSuites.creator
+   */
+  export type TestSuites$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * TestSuites.testCases
    */
   export type TestSuites$testCasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11006,7 +11044,7 @@ export namespace Prisma {
     name: string
     value: string
     description: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: ProjectVariableCountAggregateOutputType | null
@@ -11040,7 +11078,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["projectVariable"]>
 
   export type ProjectVariableSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11053,7 +11091,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["projectVariable"]>
 
   export type ProjectVariableSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11066,7 +11104,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["projectVariable"]>
 
   export type ProjectVariableSelectScalar = {
@@ -11083,22 +11121,22 @@ export namespace Prisma {
   export type ProjectVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "value" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["projectVariable"]>
   export type ProjectVariableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
   }
   export type ProjectVariableIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
   }
   export type ProjectVariableIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
   }
 
   export type $ProjectVariablePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProjectVariable"
     objects: {
       project: Prisma.$ProjectPayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -11106,7 +11144,7 @@ export namespace Prisma {
       name: string
       value: string
       description: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["projectVariable"]>
@@ -11504,7 +11542,7 @@ export namespace Prisma {
   export interface Prisma__ProjectVariableClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends ProjectVariable$creatorArgs<ExtArgs> = {}>(args?: Subset<T, ProjectVariable$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11938,6 +11976,25 @@ export namespace Prisma {
   }
 
   /**
+   * ProjectVariable.creator
+   */
+  export type ProjectVariable$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * ProjectVariable without action
    */
   export type ProjectVariableDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12149,7 +12206,7 @@ export namespace Prisma {
     name: string
     value: string
     description: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: TestSuiteVariableCountAggregateOutputType | null
@@ -12183,7 +12240,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuiteVariable"]>
 
   export type TestSuiteVariableSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12196,7 +12253,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuiteVariable"]>
 
   export type TestSuiteVariableSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12209,7 +12266,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuiteVariable"]>
 
   export type TestSuiteVariableSelectScalar = {
@@ -12226,22 +12283,22 @@ export namespace Prisma {
   export type TestSuiteVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "value" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuiteVariable"]>
   export type TestSuiteVariableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
   }
   export type TestSuiteVariableIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
   }
   export type TestSuiteVariableIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
   }
 
   export type $TestSuiteVariablePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TestSuiteVariable"
     objects: {
       testSuite: Prisma.$TestSuitesPayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -12249,7 +12306,7 @@ export namespace Prisma {
       name: string
       value: string
       description: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["testSuiteVariable"]>
@@ -12647,7 +12704,7 @@ export namespace Prisma {
   export interface Prisma__TestSuiteVariableClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     testSuite<T extends TestSuitesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TestSuitesDefaultArgs<ExtArgs>>): Prisma__TestSuitesClient<$Result.GetResult<Prisma.$TestSuitesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends TestSuiteVariable$creatorArgs<ExtArgs> = {}>(args?: Subset<T, TestSuiteVariable$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13081,6 +13138,25 @@ export namespace Prisma {
   }
 
   /**
+   * TestSuiteVariable.creator
+   */
+  export type TestSuiteVariable$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * TestSuiteVariable without action
    */
   export type TestSuiteVariableDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13292,7 +13368,7 @@ export namespace Prisma {
     name: string
     code: string
     description: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: ProjectFunctionCountAggregateOutputType | null
@@ -13326,7 +13402,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["projectFunction"]>
 
   export type ProjectFunctionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13339,7 +13415,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["projectFunction"]>
 
   export type ProjectFunctionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13352,7 +13428,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["projectFunction"]>
 
   export type ProjectFunctionSelectScalar = {
@@ -13369,22 +13445,22 @@ export namespace Prisma {
   export type ProjectFunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "code" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["projectFunction"]>
   export type ProjectFunctionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
   }
   export type ProjectFunctionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
   }
   export type ProjectFunctionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
   }
 
   export type $ProjectFunctionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProjectFunction"
     objects: {
       project: Prisma.$ProjectPayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -13392,7 +13468,7 @@ export namespace Prisma {
       name: string
       code: string
       description: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["projectFunction"]>
@@ -13790,7 +13866,7 @@ export namespace Prisma {
   export interface Prisma__ProjectFunctionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends ProjectFunction$creatorArgs<ExtArgs> = {}>(args?: Subset<T, ProjectFunction$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14224,6 +14300,25 @@ export namespace Prisma {
   }
 
   /**
+   * ProjectFunction.creator
+   */
+  export type ProjectFunction$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * ProjectFunction without action
    */
   export type ProjectFunctionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14435,7 +14530,7 @@ export namespace Prisma {
     name: string
     code: string
     description: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: TestSuiteFunctionCountAggregateOutputType | null
@@ -14469,7 +14564,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuiteFunction"]>
 
   export type TestSuiteFunctionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14482,7 +14577,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuiteFunction"]>
 
   export type TestSuiteFunctionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14495,7 +14590,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testSuiteFunction"]>
 
   export type TestSuiteFunctionSelectScalar = {
@@ -14512,22 +14607,22 @@ export namespace Prisma {
   export type TestSuiteFunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "code" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuiteFunction"]>
   export type TestSuiteFunctionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
   }
   export type TestSuiteFunctionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
   }
   export type TestSuiteFunctionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
   }
 
   export type $TestSuiteFunctionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TestSuiteFunction"
     objects: {
       testSuite: Prisma.$TestSuitesPayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -14535,7 +14630,7 @@ export namespace Prisma {
       name: string
       code: string
       description: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["testSuiteFunction"]>
@@ -14933,7 +15028,7 @@ export namespace Prisma {
   export interface Prisma__TestSuiteFunctionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     testSuite<T extends TestSuitesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TestSuitesDefaultArgs<ExtArgs>>): Prisma__TestSuitesClient<$Result.GetResult<Prisma.$TestSuitesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends TestSuiteFunction$creatorArgs<ExtArgs> = {}>(args?: Subset<T, TestSuiteFunction$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15367,6 +15462,25 @@ export namespace Prisma {
   }
 
   /**
+   * TestSuiteFunction.creator
+   */
+  export type TestSuiteFunction$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * TestSuiteFunction without action
    */
   export type TestSuiteFunctionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15592,7 +15706,7 @@ export namespace Prisma {
     description: string | null
     isProtected: boolean
     authFunction: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: PageCountAggregateOutputType | null
@@ -15628,7 +15742,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Page$creatorArgs<ExtArgs>
     elements?: boolean | Page$elementsArgs<ExtArgs>
     _count?: boolean | PageCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["page"]>
@@ -15645,7 +15759,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Page$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["page"]>
 
   export type PageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15660,7 +15774,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Page$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["page"]>
 
   export type PageSelectScalar = {
@@ -15679,24 +15793,24 @@ export namespace Prisma {
   export type PageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "url" | "description" | "isProtected" | "authFunction" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["page"]>
   export type PageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Page$creatorArgs<ExtArgs>
     elements?: boolean | Page$elementsArgs<ExtArgs>
     _count?: boolean | PageCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Page$creatorArgs<ExtArgs>
   }
   export type PageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | Page$creatorArgs<ExtArgs>
   }
 
   export type $PagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Page"
     objects: {
       project: Prisma.$ProjectPayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
       elements: Prisma.$PageElementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -15707,7 +15821,7 @@ export namespace Prisma {
       description: string | null
       isProtected: boolean
       authFunction: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["page"]>
@@ -16105,7 +16219,7 @@ export namespace Prisma {
   export interface Prisma__PageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends Page$creatorArgs<ExtArgs> = {}>(args?: Subset<T, Page$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     elements<T extends Page$elementsArgs<ExtArgs> = {}>(args?: Subset<T, Page$elementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PageElementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -16542,6 +16656,25 @@ export namespace Prisma {
   }
 
   /**
+   * Page.creator
+   */
+  export type Page$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * Page.elements
    */
   export type Page$elementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16777,7 +16910,7 @@ export namespace Prisma {
     elementName: string
     selector: string
     description: string | null
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: PageElementCountAggregateOutputType | null
@@ -16811,7 +16944,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     page?: boolean | PageDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | PageElement$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["pageElement"]>
 
   export type PageElementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16824,7 +16957,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     page?: boolean | PageDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | PageElement$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["pageElement"]>
 
   export type PageElementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16837,7 +16970,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     page?: boolean | PageDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | PageElement$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["pageElement"]>
 
   export type PageElementSelectScalar = {
@@ -16854,22 +16987,22 @@ export namespace Prisma {
   export type PageElementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pageId" | "elementName" | "selector" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["pageElement"]>
   export type PageElementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     page?: boolean | PageDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | PageElement$creatorArgs<ExtArgs>
   }
   export type PageElementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     page?: boolean | PageDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | PageElement$creatorArgs<ExtArgs>
   }
   export type PageElementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     page?: boolean | PageDefaultArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | PageElement$creatorArgs<ExtArgs>
   }
 
   export type $PageElementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PageElement"
     objects: {
       page: Prisma.$PagePayload<ExtArgs>
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -16877,7 +17010,7 @@ export namespace Prisma {
       elementName: string
       selector: string
       description: string | null
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["pageElement"]>
@@ -17275,7 +17408,7 @@ export namespace Prisma {
   export interface Prisma__PageElementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     page<T extends PageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PageDefaultArgs<ExtArgs>>): Prisma__PageClient<$Result.GetResult<Prisma.$PagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends PageElement$creatorArgs<ExtArgs> = {}>(args?: Subset<T, PageElement$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17709,6 +17842,25 @@ export namespace Prisma {
   }
 
   /**
+   * PageElement.creator
+   */
+  export type PageElement$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * PageElement without action
    */
   export type PageElementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17931,7 +18083,7 @@ export namespace Prisma {
     name: string
     description: string | null
     code: string
-    createdBy: string
+    createdBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: TestCaseCountAggregateOutputType | null
@@ -17966,7 +18118,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestCase$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testCase"]>
 
   export type TestCaseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17980,7 +18132,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestCase$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testCase"]>
 
   export type TestCaseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17994,7 +18146,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestCase$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["testCase"]>
 
   export type TestCaseSelectScalar = {
@@ -18012,22 +18164,22 @@ export namespace Prisma {
   export type TestCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "testSuiteId" | "name" | "description" | "code" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testCase"]>
   export type TestCaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestCase$creatorArgs<ExtArgs>
   }
   export type TestCaseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestCase$creatorArgs<ExtArgs>
   }
   export type TestCaseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
-    creator?: boolean | UserDefaultArgs<ExtArgs>
+    creator?: boolean | TestCase$creatorArgs<ExtArgs>
   }
 
   export type $TestCasePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TestCase"
     objects: {
       testSuite: Prisma.$TestSuitesPayload<ExtArgs> | null
-      creator: Prisma.$UserPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -18036,7 +18188,7 @@ export namespace Prisma {
       name: string
       description: string | null
       code: string
-      createdBy: string
+      createdBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["testCase"]>
@@ -18434,7 +18586,7 @@ export namespace Prisma {
   export interface Prisma__TestCaseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     testSuite<T extends TestCase$testSuiteArgs<ExtArgs> = {}>(args?: Subset<T, TestCase$testSuiteArgs<ExtArgs>>): Prisma__TestSuitesClient<$Result.GetResult<Prisma.$TestSuitesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends TestCase$creatorArgs<ExtArgs> = {}>(args?: Subset<T, TestCase$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18885,6 +19037,25 @@ export namespace Prisma {
      */
     include?: TestSuitesInclude<ExtArgs> | null
     where?: TestSuitesWhereInput
+  }
+
+  /**
+   * TestCase.creator
+   */
+  export type TestCase$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -20724,10 +20895,10 @@ export namespace Prisma {
     name?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     baseUrl?: StringNullableFilter<"Project"> | string | null
-    createdBy?: StringFilter<"Project"> | string
+    createdBy?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     members?: ProjectMemberListRelationFilter
     pages?: PageListRelationFilter
     invitations?: ProjectInvitationListRelationFilter
@@ -20741,7 +20912,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     baseUrl?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     creator?: UserOrderByWithRelationInput
@@ -20761,10 +20932,10 @@ export namespace Prisma {
     name?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     baseUrl?: StringNullableFilter<"Project"> | string | null
-    createdBy?: StringFilter<"Project"> | string
+    createdBy?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     members?: ProjectMemberListRelationFilter
     pages?: PageListRelationFilter
     invitations?: ProjectInvitationListRelationFilter
@@ -20778,7 +20949,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     baseUrl?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
@@ -20796,7 +20967,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Project"> | string
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     baseUrl?: StringNullableWithAggregatesFilter<"Project"> | string | null
-    createdBy?: StringWithAggregatesFilter<"Project"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"Project"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
   }
@@ -20870,11 +21041,11 @@ export namespace Prisma {
     projectId?: IntFilter<"TestSuites"> | number
     name?: StringFilter<"TestSuites"> | string
     description?: StringNullableFilter<"TestSuites"> | string | null
-    createdBy?: StringFilter<"TestSuites"> | string
+    createdBy?: StringNullableFilter<"TestSuites"> | string | null
     createdAt?: DateTimeFilter<"TestSuites"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuites"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     testCases?: TestCaseListRelationFilter
     variables?: TestSuiteVariableListRelationFilter
     functions?: TestSuiteFunctionListRelationFilter
@@ -20885,7 +21056,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
@@ -20903,11 +21074,11 @@ export namespace Prisma {
     projectId?: IntFilter<"TestSuites"> | number
     name?: StringFilter<"TestSuites"> | string
     description?: StringNullableFilter<"TestSuites"> | string | null
-    createdBy?: StringFilter<"TestSuites"> | string
+    createdBy?: StringNullableFilter<"TestSuites"> | string | null
     createdAt?: DateTimeFilter<"TestSuites"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuites"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     testCases?: TestCaseListRelationFilter
     variables?: TestSuiteVariableListRelationFilter
     functions?: TestSuiteFunctionListRelationFilter
@@ -20918,7 +21089,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TestSuitesCountOrderByAggregateInput
@@ -20936,7 +21107,7 @@ export namespace Prisma {
     projectId?: IntWithAggregatesFilter<"TestSuites"> | number
     name?: StringWithAggregatesFilter<"TestSuites"> | string
     description?: StringNullableWithAggregatesFilter<"TestSuites"> | string | null
-    createdBy?: StringWithAggregatesFilter<"TestSuites"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"TestSuites"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TestSuites"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TestSuites"> | Date | string
   }
@@ -20950,11 +21121,11 @@ export namespace Prisma {
     name?: StringFilter<"ProjectVariable"> | string
     value?: StringFilter<"ProjectVariable"> | string
     description?: StringNullableFilter<"ProjectVariable"> | string | null
-    createdBy?: StringFilter<"ProjectVariable"> | string
+    createdBy?: StringNullableFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeFilter<"ProjectVariable"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectVariable"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type ProjectVariableOrderByWithRelationInput = {
@@ -20963,7 +21134,7 @@ export namespace Prisma {
     name?: SortOrder
     value?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
@@ -20980,11 +21151,11 @@ export namespace Prisma {
     name?: StringFilter<"ProjectVariable"> | string
     value?: StringFilter<"ProjectVariable"> | string
     description?: StringNullableFilter<"ProjectVariable"> | string | null
-    createdBy?: StringFilter<"ProjectVariable"> | string
+    createdBy?: StringNullableFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeFilter<"ProjectVariable"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectVariable"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "projectId_name">
 
   export type ProjectVariableOrderByWithAggregationInput = {
@@ -20993,7 +21164,7 @@ export namespace Prisma {
     name?: SortOrder
     value?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProjectVariableCountOrderByAggregateInput
@@ -21012,7 +21183,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"ProjectVariable"> | string
     value?: StringWithAggregatesFilter<"ProjectVariable"> | string
     description?: StringNullableWithAggregatesFilter<"ProjectVariable"> | string | null
-    createdBy?: StringWithAggregatesFilter<"ProjectVariable"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProjectVariable"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProjectVariable"> | Date | string
   }
@@ -21026,11 +21197,11 @@ export namespace Prisma {
     name?: StringFilter<"TestSuiteVariable"> | string
     value?: StringFilter<"TestSuiteVariable"> | string
     description?: StringNullableFilter<"TestSuiteVariable"> | string | null
-    createdBy?: StringFilter<"TestSuiteVariable"> | string
+    createdBy?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
     testSuite?: XOR<TestSuitesScalarRelationFilter, TestSuitesWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type TestSuiteVariableOrderByWithRelationInput = {
@@ -21039,7 +21210,7 @@ export namespace Prisma {
     name?: SortOrder
     value?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     testSuite?: TestSuitesOrderByWithRelationInput
@@ -21056,11 +21227,11 @@ export namespace Prisma {
     name?: StringFilter<"TestSuiteVariable"> | string
     value?: StringFilter<"TestSuiteVariable"> | string
     description?: StringNullableFilter<"TestSuiteVariable"> | string | null
-    createdBy?: StringFilter<"TestSuiteVariable"> | string
+    createdBy?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
     testSuite?: XOR<TestSuitesScalarRelationFilter, TestSuitesWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "testSuiteId_name">
 
   export type TestSuiteVariableOrderByWithAggregationInput = {
@@ -21069,7 +21240,7 @@ export namespace Prisma {
     name?: SortOrder
     value?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TestSuiteVariableCountOrderByAggregateInput
@@ -21088,7 +21259,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"TestSuiteVariable"> | string
     value?: StringWithAggregatesFilter<"TestSuiteVariable"> | string
     description?: StringNullableWithAggregatesFilter<"TestSuiteVariable"> | string | null
-    createdBy?: StringWithAggregatesFilter<"TestSuiteVariable"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TestSuiteVariable"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TestSuiteVariable"> | Date | string
   }
@@ -21102,11 +21273,11 @@ export namespace Prisma {
     name?: StringFilter<"ProjectFunction"> | string
     code?: StringFilter<"ProjectFunction"> | string
     description?: StringNullableFilter<"ProjectFunction"> | string | null
-    createdBy?: StringFilter<"ProjectFunction"> | string
+    createdBy?: StringNullableFilter<"ProjectFunction"> | string | null
     createdAt?: DateTimeFilter<"ProjectFunction"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectFunction"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type ProjectFunctionOrderByWithRelationInput = {
@@ -21115,7 +21286,7 @@ export namespace Prisma {
     name?: SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
@@ -21132,11 +21303,11 @@ export namespace Prisma {
     name?: StringFilter<"ProjectFunction"> | string
     code?: StringFilter<"ProjectFunction"> | string
     description?: StringNullableFilter<"ProjectFunction"> | string | null
-    createdBy?: StringFilter<"ProjectFunction"> | string
+    createdBy?: StringNullableFilter<"ProjectFunction"> | string | null
     createdAt?: DateTimeFilter<"ProjectFunction"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectFunction"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "projectId_name">
 
   export type ProjectFunctionOrderByWithAggregationInput = {
@@ -21145,7 +21316,7 @@ export namespace Prisma {
     name?: SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProjectFunctionCountOrderByAggregateInput
@@ -21164,7 +21335,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"ProjectFunction"> | string
     code?: StringWithAggregatesFilter<"ProjectFunction"> | string
     description?: StringNullableWithAggregatesFilter<"ProjectFunction"> | string | null
-    createdBy?: StringWithAggregatesFilter<"ProjectFunction"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"ProjectFunction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProjectFunction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProjectFunction"> | Date | string
   }
@@ -21178,11 +21349,11 @@ export namespace Prisma {
     name?: StringFilter<"TestSuiteFunction"> | string
     code?: StringFilter<"TestSuiteFunction"> | string
     description?: StringNullableFilter<"TestSuiteFunction"> | string | null
-    createdBy?: StringFilter<"TestSuiteFunction"> | string
+    createdBy?: StringNullableFilter<"TestSuiteFunction"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteFunction"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuiteFunction"> | Date | string
     testSuite?: XOR<TestSuitesScalarRelationFilter, TestSuitesWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type TestSuiteFunctionOrderByWithRelationInput = {
@@ -21191,7 +21362,7 @@ export namespace Prisma {
     name?: SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     testSuite?: TestSuitesOrderByWithRelationInput
@@ -21208,11 +21379,11 @@ export namespace Prisma {
     name?: StringFilter<"TestSuiteFunction"> | string
     code?: StringFilter<"TestSuiteFunction"> | string
     description?: StringNullableFilter<"TestSuiteFunction"> | string | null
-    createdBy?: StringFilter<"TestSuiteFunction"> | string
+    createdBy?: StringNullableFilter<"TestSuiteFunction"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteFunction"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuiteFunction"> | Date | string
     testSuite?: XOR<TestSuitesScalarRelationFilter, TestSuitesWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "testSuiteId_name">
 
   export type TestSuiteFunctionOrderByWithAggregationInput = {
@@ -21221,7 +21392,7 @@ export namespace Prisma {
     name?: SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TestSuiteFunctionCountOrderByAggregateInput
@@ -21240,7 +21411,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"TestSuiteFunction"> | string
     code?: StringWithAggregatesFilter<"TestSuiteFunction"> | string
     description?: StringNullableWithAggregatesFilter<"TestSuiteFunction"> | string | null
-    createdBy?: StringWithAggregatesFilter<"TestSuiteFunction"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"TestSuiteFunction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TestSuiteFunction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TestSuiteFunction"> | Date | string
   }
@@ -21256,11 +21427,11 @@ export namespace Prisma {
     description?: StringNullableFilter<"Page"> | string | null
     isProtected?: BoolFilter<"Page"> | boolean
     authFunction?: StringNullableFilter<"Page"> | string | null
-    createdBy?: StringFilter<"Page"> | string
+    createdBy?: StringNullableFilter<"Page"> | string | null
     createdAt?: DateTimeFilter<"Page"> | Date | string
     updatedAt?: DateTimeFilter<"Page"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     elements?: PageElementListRelationFilter
   }
 
@@ -21272,7 +21443,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     isProtected?: SortOrder
     authFunction?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
@@ -21291,11 +21462,11 @@ export namespace Prisma {
     description?: StringNullableFilter<"Page"> | string | null
     isProtected?: BoolFilter<"Page"> | boolean
     authFunction?: StringNullableFilter<"Page"> | string | null
-    createdBy?: StringFilter<"Page"> | string
+    createdBy?: StringNullableFilter<"Page"> | string | null
     createdAt?: DateTimeFilter<"Page"> | Date | string
     updatedAt?: DateTimeFilter<"Page"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     elements?: PageElementListRelationFilter
   }, "id">
 
@@ -21307,7 +21478,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     isProtected?: SortOrder
     authFunction?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PageCountOrderByAggregateInput
@@ -21328,7 +21499,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Page"> | string | null
     isProtected?: BoolWithAggregatesFilter<"Page"> | boolean
     authFunction?: StringNullableWithAggregatesFilter<"Page"> | string | null
-    createdBy?: StringWithAggregatesFilter<"Page"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"Page"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Page"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Page"> | Date | string
   }
@@ -21342,11 +21513,11 @@ export namespace Prisma {
     elementName?: StringFilter<"PageElement"> | string
     selector?: StringFilter<"PageElement"> | string
     description?: StringNullableFilter<"PageElement"> | string | null
-    createdBy?: StringFilter<"PageElement"> | string
+    createdBy?: StringNullableFilter<"PageElement"> | string | null
     createdAt?: DateTimeFilter<"PageElement"> | Date | string
     updatedAt?: DateTimeFilter<"PageElement"> | Date | string
     page?: XOR<PageScalarRelationFilter, PageWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type PageElementOrderByWithRelationInput = {
@@ -21355,7 +21526,7 @@ export namespace Prisma {
     elementName?: SortOrder
     selector?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     page?: PageOrderByWithRelationInput
@@ -21371,11 +21542,11 @@ export namespace Prisma {
     elementName?: StringFilter<"PageElement"> | string
     selector?: StringFilter<"PageElement"> | string
     description?: StringNullableFilter<"PageElement"> | string | null
-    createdBy?: StringFilter<"PageElement"> | string
+    createdBy?: StringNullableFilter<"PageElement"> | string | null
     createdAt?: DateTimeFilter<"PageElement"> | Date | string
     updatedAt?: DateTimeFilter<"PageElement"> | Date | string
     page?: XOR<PageScalarRelationFilter, PageWhereInput>
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type PageElementOrderByWithAggregationInput = {
@@ -21384,7 +21555,7 @@ export namespace Prisma {
     elementName?: SortOrder
     selector?: SortOrder
     description?: SortOrderInput | SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PageElementCountOrderByAggregateInput
@@ -21403,7 +21574,7 @@ export namespace Prisma {
     elementName?: StringWithAggregatesFilter<"PageElement"> | string
     selector?: StringWithAggregatesFilter<"PageElement"> | string
     description?: StringNullableWithAggregatesFilter<"PageElement"> | string | null
-    createdBy?: StringWithAggregatesFilter<"PageElement"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"PageElement"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PageElement"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PageElement"> | Date | string
   }
@@ -21418,11 +21589,11 @@ export namespace Prisma {
     name?: StringFilter<"TestCase"> | string
     description?: StringNullableFilter<"TestCase"> | string | null
     code?: StringFilter<"TestCase"> | string
-    createdBy?: StringFilter<"TestCase"> | string
+    createdBy?: StringNullableFilter<"TestCase"> | string | null
     createdAt?: DateTimeFilter<"TestCase"> | Date | string
     updatedAt?: DateTimeFilter<"TestCase"> | Date | string
     testSuite?: XOR<TestSuitesNullableScalarRelationFilter, TestSuitesWhereInput> | null
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type TestCaseOrderByWithRelationInput = {
@@ -21432,7 +21603,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     code?: SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     testSuite?: TestSuitesOrderByWithRelationInput
@@ -21449,11 +21620,11 @@ export namespace Prisma {
     name?: StringFilter<"TestCase"> | string
     description?: StringNullableFilter<"TestCase"> | string | null
     code?: StringFilter<"TestCase"> | string
-    createdBy?: StringFilter<"TestCase"> | string
+    createdBy?: StringNullableFilter<"TestCase"> | string | null
     createdAt?: DateTimeFilter<"TestCase"> | Date | string
     updatedAt?: DateTimeFilter<"TestCase"> | Date | string
     testSuite?: XOR<TestSuitesNullableScalarRelationFilter, TestSuitesWhereInput> | null
-    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type TestCaseOrderByWithAggregationInput = {
@@ -21463,7 +21634,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     code?: SortOrder
-    createdBy?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TestCaseCountOrderByAggregateInput
@@ -21483,7 +21654,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"TestCase"> | string
     description?: StringNullableWithAggregatesFilter<"TestCase"> | string | null
     code?: StringWithAggregatesFilter<"TestCase"> | string
-    createdBy?: StringWithAggregatesFilter<"TestCase"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"TestCase"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TestCase"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TestCase"> | Date | string
   }
@@ -21948,7 +22119,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
     pages?: PageCreateNestedManyWithoutProjectInput
     invitations?: ProjectInvitationCreateNestedManyWithoutProjectInput
@@ -21962,7 +22133,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -21979,7 +22150,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
     pages?: PageUpdateManyWithoutProjectNestedInput
     invitations?: ProjectInvitationUpdateManyWithoutProjectNestedInput
@@ -21993,7 +22164,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -22009,7 +22180,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22027,7 +22198,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22089,7 +22260,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutTestSuitesInput
-    creator: UserCreateNestedOneWithoutTestSuitesInput
+    creator?: UserCreateNestedOneWithoutTestSuitesInput
     testCases?: TestCaseCreateNestedManyWithoutTestSuiteInput
     variables?: TestSuiteVariableCreateNestedManyWithoutTestSuiteInput
     functions?: TestSuiteFunctionCreateNestedManyWithoutTestSuiteInput
@@ -22100,7 +22271,7 @@ export namespace Prisma {
     projectId: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseUncheckedCreateNestedManyWithoutTestSuiteInput
@@ -22114,7 +22285,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutTestSuitesNestedInput
-    creator?: UserUpdateOneRequiredWithoutTestSuitesNestedInput
+    creator?: UserUpdateOneWithoutTestSuitesNestedInput
     testCases?: TestCaseUpdateManyWithoutTestSuiteNestedInput
     variables?: TestSuiteVariableUpdateManyWithoutTestSuiteNestedInput
     functions?: TestSuiteFunctionUpdateManyWithoutTestSuiteNestedInput
@@ -22125,7 +22296,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseUncheckedUpdateManyWithoutTestSuiteNestedInput
@@ -22138,7 +22309,7 @@ export namespace Prisma {
     projectId: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22155,7 +22326,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22167,7 +22338,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutGlobalVariablesInput
-    creator: UserCreateNestedOneWithoutProjectVariablesInput
+    creator?: UserCreateNestedOneWithoutProjectVariablesInput
   }
 
   export type ProjectVariableUncheckedCreateInput = {
@@ -22176,7 +22347,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22188,7 +22359,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutGlobalVariablesNestedInput
-    creator?: UserUpdateOneRequiredWithoutProjectVariablesNestedInput
+    creator?: UserUpdateOneWithoutProjectVariablesNestedInput
   }
 
   export type ProjectVariableUncheckedUpdateInput = {
@@ -22197,7 +22368,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22208,7 +22379,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22227,7 +22398,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22239,7 +22410,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     testSuite: TestSuitesCreateNestedOneWithoutVariablesInput
-    creator: UserCreateNestedOneWithoutTestSuiteVariablesInput
+    creator?: UserCreateNestedOneWithoutTestSuiteVariablesInput
   }
 
   export type TestSuiteVariableUncheckedCreateInput = {
@@ -22248,7 +22419,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22260,7 +22431,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testSuite?: TestSuitesUpdateOneRequiredWithoutVariablesNestedInput
-    creator?: UserUpdateOneRequiredWithoutTestSuiteVariablesNestedInput
+    creator?: UserUpdateOneWithoutTestSuiteVariablesNestedInput
   }
 
   export type TestSuiteVariableUncheckedUpdateInput = {
@@ -22269,7 +22440,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22280,7 +22451,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22299,7 +22470,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22311,7 +22482,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutGlobalFunctionsInput
-    creator: UserCreateNestedOneWithoutProjectFunctionsInput
+    creator?: UserCreateNestedOneWithoutProjectFunctionsInput
   }
 
   export type ProjectFunctionUncheckedCreateInput = {
@@ -22320,7 +22491,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22332,7 +22503,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutGlobalFunctionsNestedInput
-    creator?: UserUpdateOneRequiredWithoutProjectFunctionsNestedInput
+    creator?: UserUpdateOneWithoutProjectFunctionsNestedInput
   }
 
   export type ProjectFunctionUncheckedUpdateInput = {
@@ -22341,7 +22512,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22352,7 +22523,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22371,7 +22542,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22383,7 +22554,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     testSuite: TestSuitesCreateNestedOneWithoutFunctionsInput
-    creator: UserCreateNestedOneWithoutTestSuiteFunctionsInput
+    creator?: UserCreateNestedOneWithoutTestSuiteFunctionsInput
   }
 
   export type TestSuiteFunctionUncheckedCreateInput = {
@@ -22392,7 +22563,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22404,7 +22575,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testSuite?: TestSuitesUpdateOneRequiredWithoutFunctionsNestedInput
-    creator?: UserUpdateOneRequiredWithoutTestSuiteFunctionsNestedInput
+    creator?: UserUpdateOneWithoutTestSuiteFunctionsNestedInput
   }
 
   export type TestSuiteFunctionUncheckedUpdateInput = {
@@ -22413,7 +22584,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22424,7 +22595,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22443,7 +22614,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22457,7 +22628,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutPagesInput
-    creator: UserCreateNestedOneWithoutCreatedPagesInput
+    creator?: UserCreateNestedOneWithoutCreatedPagesInput
     elements?: PageElementCreateNestedManyWithoutPageInput
   }
 
@@ -22469,7 +22640,7 @@ export namespace Prisma {
     description?: string | null
     isProtected?: boolean
     authFunction?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     elements?: PageElementUncheckedCreateNestedManyWithoutPageInput
@@ -22484,7 +22655,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutPagesNestedInput
-    creator?: UserUpdateOneRequiredWithoutCreatedPagesNestedInput
+    creator?: UserUpdateOneWithoutCreatedPagesNestedInput
     elements?: PageElementUpdateManyWithoutPageNestedInput
   }
 
@@ -22496,7 +22667,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isProtected?: BoolFieldUpdateOperationsInput | boolean
     authFunction?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     elements?: PageElementUncheckedUpdateManyWithoutPageNestedInput
@@ -22510,7 +22681,7 @@ export namespace Prisma {
     description?: string | null
     isProtected?: boolean
     authFunction?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22533,7 +22704,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isProtected?: BoolFieldUpdateOperationsInput | boolean
     authFunction?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22545,7 +22716,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     page: PageCreateNestedOneWithoutElementsInput
-    creator: UserCreateNestedOneWithoutCreatedPageElementsInput
+    creator?: UserCreateNestedOneWithoutCreatedPageElementsInput
   }
 
   export type PageElementUncheckedCreateInput = {
@@ -22554,7 +22725,7 @@ export namespace Prisma {
     elementName: string
     selector: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22566,7 +22737,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     page?: PageUpdateOneRequiredWithoutElementsNestedInput
-    creator?: UserUpdateOneRequiredWithoutCreatedPageElementsNestedInput
+    creator?: UserUpdateOneWithoutCreatedPageElementsNestedInput
   }
 
   export type PageElementUncheckedUpdateInput = {
@@ -22575,7 +22746,7 @@ export namespace Prisma {
     elementName?: StringFieldUpdateOperationsInput | string
     selector?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22586,7 +22757,7 @@ export namespace Prisma {
     elementName: string
     selector: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22605,7 +22776,7 @@ export namespace Prisma {
     elementName?: StringFieldUpdateOperationsInput | string
     selector?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22618,7 +22789,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     testSuite?: TestSuitesCreateNestedOneWithoutTestCasesInput
-    creator: UserCreateNestedOneWithoutCreatedTestCasesInput
+    creator?: UserCreateNestedOneWithoutCreatedTestCasesInput
   }
 
   export type TestCaseUncheckedCreateInput = {
@@ -22628,7 +22799,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     code: string
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22641,7 +22812,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testSuite?: TestSuitesUpdateOneWithoutTestCasesNestedInput
-    creator?: UserUpdateOneRequiredWithoutCreatedTestCasesNestedInput
+    creator?: UserUpdateOneWithoutCreatedTestCasesNestedInput
   }
 
   export type TestCaseUncheckedUpdateInput = {
@@ -22651,7 +22822,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22663,7 +22834,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     code: string
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22684,7 +22855,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23176,6 +23347,11 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type ProjectCountOrderByAggregateInput = {
@@ -24476,10 +24652,12 @@ export namespace Prisma {
     connect?: ProjectFunctionWhereUniqueInput | ProjectFunctionWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutCreatedProjectsNestedInput = {
+  export type UserUpdateOneWithoutCreatedProjectsNestedInput = {
     create?: XOR<UserCreateWithoutCreatedProjectsInput, UserUncheckedCreateWithoutCreatedProjectsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedProjectsInput
     upsert?: UserUpsertWithoutCreatedProjectsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedProjectsInput, UserUpdateWithoutCreatedProjectsInput>, UserUncheckedUpdateWithoutCreatedProjectsInput>
   }
@@ -24750,10 +24928,12 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutTestSuitesInput, ProjectUpdateWithoutTestSuitesInput>, ProjectUncheckedUpdateWithoutTestSuitesInput>
   }
 
-  export type UserUpdateOneRequiredWithoutTestSuitesNestedInput = {
+  export type UserUpdateOneWithoutTestSuitesNestedInput = {
     create?: XOR<UserCreateWithoutTestSuitesInput, UserUncheckedCreateWithoutTestSuitesInput>
     connectOrCreate?: UserCreateOrConnectWithoutTestSuitesInput
     upsert?: UserUpsertWithoutTestSuitesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTestSuitesInput, UserUpdateWithoutTestSuitesInput>, UserUncheckedUpdateWithoutTestSuitesInput>
   }
@@ -24862,10 +25042,12 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutGlobalVariablesInput, ProjectUpdateWithoutGlobalVariablesInput>, ProjectUncheckedUpdateWithoutGlobalVariablesInput>
   }
 
-  export type UserUpdateOneRequiredWithoutProjectVariablesNestedInput = {
+  export type UserUpdateOneWithoutProjectVariablesNestedInput = {
     create?: XOR<UserCreateWithoutProjectVariablesInput, UserUncheckedCreateWithoutProjectVariablesInput>
     connectOrCreate?: UserCreateOrConnectWithoutProjectVariablesInput
     upsert?: UserUpsertWithoutProjectVariablesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectVariablesInput, UserUpdateWithoutProjectVariablesInput>, UserUncheckedUpdateWithoutProjectVariablesInput>
   }
@@ -24890,10 +25072,12 @@ export namespace Prisma {
     update?: XOR<XOR<TestSuitesUpdateToOneWithWhereWithoutVariablesInput, TestSuitesUpdateWithoutVariablesInput>, TestSuitesUncheckedUpdateWithoutVariablesInput>
   }
 
-  export type UserUpdateOneRequiredWithoutTestSuiteVariablesNestedInput = {
+  export type UserUpdateOneWithoutTestSuiteVariablesNestedInput = {
     create?: XOR<UserCreateWithoutTestSuiteVariablesInput, UserUncheckedCreateWithoutTestSuiteVariablesInput>
     connectOrCreate?: UserCreateOrConnectWithoutTestSuiteVariablesInput
     upsert?: UserUpsertWithoutTestSuiteVariablesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTestSuiteVariablesInput, UserUpdateWithoutTestSuiteVariablesInput>, UserUncheckedUpdateWithoutTestSuiteVariablesInput>
   }
@@ -24918,10 +25102,12 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutGlobalFunctionsInput, ProjectUpdateWithoutGlobalFunctionsInput>, ProjectUncheckedUpdateWithoutGlobalFunctionsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutProjectFunctionsNestedInput = {
+  export type UserUpdateOneWithoutProjectFunctionsNestedInput = {
     create?: XOR<UserCreateWithoutProjectFunctionsInput, UserUncheckedCreateWithoutProjectFunctionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutProjectFunctionsInput
     upsert?: UserUpsertWithoutProjectFunctionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectFunctionsInput, UserUpdateWithoutProjectFunctionsInput>, UserUncheckedUpdateWithoutProjectFunctionsInput>
   }
@@ -24946,10 +25132,12 @@ export namespace Prisma {
     update?: XOR<XOR<TestSuitesUpdateToOneWithWhereWithoutFunctionsInput, TestSuitesUpdateWithoutFunctionsInput>, TestSuitesUncheckedUpdateWithoutFunctionsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutTestSuiteFunctionsNestedInput = {
+  export type UserUpdateOneWithoutTestSuiteFunctionsNestedInput = {
     create?: XOR<UserCreateWithoutTestSuiteFunctionsInput, UserUncheckedCreateWithoutTestSuiteFunctionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTestSuiteFunctionsInput
     upsert?: UserUpsertWithoutTestSuiteFunctionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTestSuiteFunctionsInput, UserUpdateWithoutTestSuiteFunctionsInput>, UserUncheckedUpdateWithoutTestSuiteFunctionsInput>
   }
@@ -24988,10 +25176,12 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutPagesInput, ProjectUpdateWithoutPagesInput>, ProjectUncheckedUpdateWithoutPagesInput>
   }
 
-  export type UserUpdateOneRequiredWithoutCreatedPagesNestedInput = {
+  export type UserUpdateOneWithoutCreatedPagesNestedInput = {
     create?: XOR<UserCreateWithoutCreatedPagesInput, UserUncheckedCreateWithoutCreatedPagesInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedPagesInput
     upsert?: UserUpsertWithoutCreatedPagesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedPagesInput, UserUpdateWithoutCreatedPagesInput>, UserUncheckedUpdateWithoutCreatedPagesInput>
   }
@@ -25044,10 +25234,12 @@ export namespace Prisma {
     update?: XOR<XOR<PageUpdateToOneWithWhereWithoutElementsInput, PageUpdateWithoutElementsInput>, PageUncheckedUpdateWithoutElementsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutCreatedPageElementsNestedInput = {
+  export type UserUpdateOneWithoutCreatedPageElementsNestedInput = {
     create?: XOR<UserCreateWithoutCreatedPageElementsInput, UserUncheckedCreateWithoutCreatedPageElementsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedPageElementsInput
     upsert?: UserUpsertWithoutCreatedPageElementsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedPageElementsInput, UserUpdateWithoutCreatedPageElementsInput>, UserUncheckedUpdateWithoutCreatedPageElementsInput>
   }
@@ -25074,10 +25266,12 @@ export namespace Prisma {
     update?: XOR<XOR<TestSuitesUpdateToOneWithWhereWithoutTestCasesInput, TestSuitesUpdateWithoutTestCasesInput>, TestSuitesUncheckedUpdateWithoutTestCasesInput>
   }
 
-  export type UserUpdateOneRequiredWithoutCreatedTestCasesNestedInput = {
+  export type UserUpdateOneWithoutCreatedTestCasesNestedInput = {
     create?: XOR<UserCreateWithoutCreatedTestCasesInput, UserUncheckedCreateWithoutCreatedTestCasesInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedTestCasesInput
     upsert?: UserUpsertWithoutCreatedTestCasesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedTestCasesInput, UserUpdateWithoutCreatedTestCasesInput>, UserUncheckedUpdateWithoutCreatedTestCasesInput>
   }
@@ -25877,7 +26071,7 @@ export namespace Prisma {
     name?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     baseUrl?: StringNullableFilter<"Project"> | string | null
-    createdBy?: StringFilter<"Project"> | string
+    createdBy?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
   }
@@ -25936,7 +26130,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Page"> | string | null
     isProtected?: BoolFilter<"Page"> | boolean
     authFunction?: StringNullableFilter<"Page"> | string | null
-    createdBy?: StringFilter<"Page"> | string
+    createdBy?: StringNullableFilter<"Page"> | string | null
     createdAt?: DateTimeFilter<"Page"> | Date | string
     updatedAt?: DateTimeFilter<"Page"> | Date | string
   }
@@ -25966,7 +26160,7 @@ export namespace Prisma {
     elementName?: StringFilter<"PageElement"> | string
     selector?: StringFilter<"PageElement"> | string
     description?: StringNullableFilter<"PageElement"> | string | null
-    createdBy?: StringFilter<"PageElement"> | string
+    createdBy?: StringNullableFilter<"PageElement"> | string | null
     createdAt?: DateTimeFilter<"PageElement"> | Date | string
     updatedAt?: DateTimeFilter<"PageElement"> | Date | string
   }
@@ -25997,7 +26191,7 @@ export namespace Prisma {
     name?: StringFilter<"TestCase"> | string
     description?: StringNullableFilter<"TestCase"> | string | null
     code?: StringFilter<"TestCase"> | string
-    createdBy?: StringFilter<"TestCase"> | string
+    createdBy?: StringNullableFilter<"TestCase"> | string | null
     createdAt?: DateTimeFilter<"TestCase"> | Date | string
     updatedAt?: DateTimeFilter<"TestCase"> | Date | string
   }
@@ -26073,7 +26267,7 @@ export namespace Prisma {
     name?: StringFilter<"ProjectVariable"> | string
     value?: StringFilter<"ProjectVariable"> | string
     description?: StringNullableFilter<"ProjectVariable"> | string | null
-    createdBy?: StringFilter<"ProjectVariable"> | string
+    createdBy?: StringNullableFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeFilter<"ProjectVariable"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectVariable"> | Date | string
   }
@@ -26103,7 +26297,7 @@ export namespace Prisma {
     name?: StringFilter<"TestSuiteVariable"> | string
     value?: StringFilter<"TestSuiteVariable"> | string
     description?: StringNullableFilter<"TestSuiteVariable"> | string | null
-    createdBy?: StringFilter<"TestSuiteVariable"> | string
+    createdBy?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
   }
@@ -26133,7 +26327,7 @@ export namespace Prisma {
     name?: StringFilter<"ProjectFunction"> | string
     code?: StringFilter<"ProjectFunction"> | string
     description?: StringNullableFilter<"ProjectFunction"> | string | null
-    createdBy?: StringFilter<"ProjectFunction"> | string
+    createdBy?: StringNullableFilter<"ProjectFunction"> | string | null
     createdAt?: DateTimeFilter<"ProjectFunction"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectFunction"> | Date | string
   }
@@ -26163,7 +26357,7 @@ export namespace Prisma {
     name?: StringFilter<"TestSuiteFunction"> | string
     code?: StringFilter<"TestSuiteFunction"> | string
     description?: StringNullableFilter<"TestSuiteFunction"> | string | null
-    createdBy?: StringFilter<"TestSuiteFunction"> | string
+    createdBy?: StringNullableFilter<"TestSuiteFunction"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteFunction"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuiteFunction"> | Date | string
   }
@@ -26192,7 +26386,7 @@ export namespace Prisma {
     projectId?: IntFilter<"TestSuites"> | number
     name?: StringFilter<"TestSuites"> | string
     description?: StringNullableFilter<"TestSuites"> | string | null
-    createdBy?: StringFilter<"TestSuites"> | string
+    createdBy?: StringNullableFilter<"TestSuites"> | string | null
     createdAt?: DateTimeFilter<"TestSuites"> | Date | string
     updatedAt?: DateTimeFilter<"TestSuites"> | Date | string
   }
@@ -26495,7 +26689,7 @@ export namespace Prisma {
     authFunction?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedPagesInput
+    creator?: UserCreateNestedOneWithoutCreatedPagesInput
     elements?: PageElementCreateNestedManyWithoutPageInput
   }
 
@@ -26506,7 +26700,7 @@ export namespace Prisma {
     description?: string | null
     isProtected?: boolean
     authFunction?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     elements?: PageElementUncheckedCreateNestedManyWithoutPageInput
@@ -26556,7 +26750,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutTestSuitesInput
+    creator?: UserCreateNestedOneWithoutTestSuitesInput
     testCases?: TestCaseCreateNestedManyWithoutTestSuiteInput
     variables?: TestSuiteVariableCreateNestedManyWithoutTestSuiteInput
     functions?: TestSuiteFunctionCreateNestedManyWithoutTestSuiteInput
@@ -26566,7 +26760,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseUncheckedCreateNestedManyWithoutTestSuiteInput
@@ -26590,7 +26784,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutProjectVariablesInput
+    creator?: UserCreateNestedOneWithoutProjectVariablesInput
   }
 
   export type ProjectVariableUncheckedCreateWithoutProjectInput = {
@@ -26598,7 +26792,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -26619,7 +26813,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutProjectFunctionsInput
+    creator?: UserCreateNestedOneWithoutProjectFunctionsInput
   }
 
   export type ProjectFunctionUncheckedCreateWithoutProjectInput = {
@@ -26627,7 +26821,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -26801,7 +26995,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     pages?: PageCreateNestedManyWithoutProjectInput
     invitations?: ProjectInvitationCreateNestedManyWithoutProjectInput
     testSuites?: TestSuitesCreateNestedManyWithoutProjectInput
@@ -26814,7 +27008,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pages?: PageUncheckedCreateNestedManyWithoutProjectInput
@@ -26897,7 +27091,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     pages?: PageUpdateManyWithoutProjectNestedInput
     invitations?: ProjectInvitationUpdateManyWithoutProjectNestedInput
     testSuites?: TestSuitesUpdateManyWithoutProjectNestedInput
@@ -26910,7 +27104,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pages?: PageUncheckedUpdateManyWithoutProjectNestedInput
@@ -26983,7 +27177,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
     pages?: PageCreateNestedManyWithoutProjectInput
     invitations?: ProjectInvitationCreateNestedManyWithoutProjectInput
@@ -26996,7 +27190,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -27069,7 +27263,7 @@ export namespace Prisma {
     code: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedTestCasesInput
+    creator?: UserCreateNestedOneWithoutCreatedTestCasesInput
   }
 
   export type TestCaseUncheckedCreateWithoutTestSuiteInput = {
@@ -27078,7 +27272,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     code: string
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27099,7 +27293,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutTestSuiteVariablesInput
+    creator?: UserCreateNestedOneWithoutTestSuiteVariablesInput
   }
 
   export type TestSuiteVariableUncheckedCreateWithoutTestSuiteInput = {
@@ -27107,7 +27301,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27128,7 +27322,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutTestSuiteFunctionsInput
+    creator?: UserCreateNestedOneWithoutTestSuiteFunctionsInput
   }
 
   export type TestSuiteFunctionUncheckedCreateWithoutTestSuiteInput = {
@@ -27136,7 +27330,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27168,7 +27362,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
     pages?: PageUpdateManyWithoutProjectNestedInput
     invitations?: ProjectInvitationUpdateManyWithoutProjectNestedInput
@@ -27181,7 +27375,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -27302,7 +27496,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
     pages?: PageCreateNestedManyWithoutProjectInput
     invitations?: ProjectInvitationCreateNestedManyWithoutProjectInput
@@ -27315,7 +27509,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -27398,7 +27592,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
     pages?: PageUpdateManyWithoutProjectNestedInput
     invitations?: ProjectInvitationUpdateManyWithoutProjectNestedInput
@@ -27411,7 +27605,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -27484,7 +27678,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutTestSuitesInput
-    creator: UserCreateNestedOneWithoutTestSuitesInput
+    creator?: UserCreateNestedOneWithoutTestSuitesInput
     testCases?: TestCaseCreateNestedManyWithoutTestSuiteInput
     functions?: TestSuiteFunctionCreateNestedManyWithoutTestSuiteInput
   }
@@ -27494,7 +27688,7 @@ export namespace Prisma {
     projectId: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseUncheckedCreateNestedManyWithoutTestSuiteInput
@@ -27574,7 +27768,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutTestSuitesNestedInput
-    creator?: UserUpdateOneRequiredWithoutTestSuitesNestedInput
+    creator?: UserUpdateOneWithoutTestSuitesNestedInput
     testCases?: TestCaseUpdateManyWithoutTestSuiteNestedInput
     functions?: TestSuiteFunctionUpdateManyWithoutTestSuiteNestedInput
   }
@@ -27584,7 +27778,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseUncheckedUpdateManyWithoutTestSuiteNestedInput
@@ -27654,7 +27848,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
     pages?: PageCreateNestedManyWithoutProjectInput
     invitations?: ProjectInvitationCreateNestedManyWithoutProjectInput
@@ -27667,7 +27861,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -27750,7 +27944,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
     pages?: PageUpdateManyWithoutProjectNestedInput
     invitations?: ProjectInvitationUpdateManyWithoutProjectNestedInput
@@ -27763,7 +27957,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -27836,7 +28030,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutTestSuitesInput
-    creator: UserCreateNestedOneWithoutTestSuitesInput
+    creator?: UserCreateNestedOneWithoutTestSuitesInput
     testCases?: TestCaseCreateNestedManyWithoutTestSuiteInput
     variables?: TestSuiteVariableCreateNestedManyWithoutTestSuiteInput
   }
@@ -27846,7 +28040,7 @@ export namespace Prisma {
     projectId: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseUncheckedCreateNestedManyWithoutTestSuiteInput
@@ -27926,7 +28120,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutTestSuitesNestedInput
-    creator?: UserUpdateOneRequiredWithoutTestSuitesNestedInput
+    creator?: UserUpdateOneWithoutTestSuitesNestedInput
     testCases?: TestCaseUpdateManyWithoutTestSuiteNestedInput
     variables?: TestSuiteVariableUpdateManyWithoutTestSuiteNestedInput
   }
@@ -27936,7 +28130,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseUncheckedUpdateManyWithoutTestSuiteNestedInput
@@ -28006,7 +28200,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
     invitations?: ProjectInvitationCreateNestedManyWithoutProjectInput
     testSuites?: TestSuitesCreateNestedManyWithoutProjectInput
@@ -28019,7 +28213,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -28091,7 +28285,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedPageElementsInput
+    creator?: UserCreateNestedOneWithoutCreatedPageElementsInput
   }
 
   export type PageElementUncheckedCreateWithoutPageInput = {
@@ -28099,7 +28293,7 @@ export namespace Prisma {
     elementName: string
     selector: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28131,7 +28325,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
     invitations?: ProjectInvitationUpdateManyWithoutProjectNestedInput
     testSuites?: TestSuitesUpdateManyWithoutProjectNestedInput
@@ -28144,7 +28338,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -28236,7 +28430,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutPagesInput
-    creator: UserCreateNestedOneWithoutCreatedPagesInput
+    creator?: UserCreateNestedOneWithoutCreatedPagesInput
   }
 
   export type PageUncheckedCreateWithoutElementsInput = {
@@ -28247,7 +28441,7 @@ export namespace Prisma {
     description?: string | null
     isProtected?: boolean
     authFunction?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28328,7 +28522,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutPagesNestedInput
-    creator?: UserUpdateOneRequiredWithoutCreatedPagesNestedInput
+    creator?: UserUpdateOneWithoutCreatedPagesNestedInput
   }
 
   export type PageUncheckedUpdateWithoutElementsInput = {
@@ -28339,7 +28533,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isProtected?: BoolFieldUpdateOperationsInput | boolean
     authFunction?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28407,7 +28601,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutTestSuitesInput
-    creator: UserCreateNestedOneWithoutTestSuitesInput
+    creator?: UserCreateNestedOneWithoutTestSuitesInput
     variables?: TestSuiteVariableCreateNestedManyWithoutTestSuiteInput
     functions?: TestSuiteFunctionCreateNestedManyWithoutTestSuiteInput
   }
@@ -28417,7 +28611,7 @@ export namespace Prisma {
     projectId: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     variables?: TestSuiteVariableUncheckedCreateNestedManyWithoutTestSuiteInput
@@ -28497,7 +28691,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutTestSuitesNestedInput
-    creator?: UserUpdateOneRequiredWithoutTestSuitesNestedInput
+    creator?: UserUpdateOneWithoutTestSuitesNestedInput
     variables?: TestSuiteVariableUpdateManyWithoutTestSuiteNestedInput
     functions?: TestSuiteFunctionUpdateManyWithoutTestSuiteNestedInput
   }
@@ -28507,7 +28701,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     variables?: TestSuiteVariableUncheckedUpdateManyWithoutTestSuiteNestedInput
@@ -28577,7 +28771,7 @@ export namespace Prisma {
     baseUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: UserCreateNestedOneWithoutCreatedProjectsInput
+    creator?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
     pages?: PageCreateNestedManyWithoutProjectInput
     testSuites?: TestSuitesCreateNestedManyWithoutProjectInput
@@ -28590,7 +28784,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     baseUrl?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -28724,7 +28918,7 @@ export namespace Prisma {
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    creator?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
     pages?: PageUpdateManyWithoutProjectNestedInput
     testSuites?: TestSuitesUpdateManyWithoutProjectNestedInput
@@ -28737,7 +28931,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     baseUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -29455,7 +29649,7 @@ export namespace Prisma {
     description?: string | null
     isProtected?: boolean
     authFunction?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29474,7 +29668,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29484,7 +29678,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29494,7 +29688,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29527,7 +29721,7 @@ export namespace Prisma {
     authFunction?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedPagesNestedInput
+    creator?: UserUpdateOneWithoutCreatedPagesNestedInput
     elements?: PageElementUpdateManyWithoutPageNestedInput
   }
 
@@ -29538,7 +29732,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isProtected?: BoolFieldUpdateOperationsInput | boolean
     authFunction?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     elements?: PageElementUncheckedUpdateManyWithoutPageNestedInput
@@ -29551,7 +29745,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isProtected?: BoolFieldUpdateOperationsInput | boolean
     authFunction?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29590,7 +29784,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutTestSuitesNestedInput
+    creator?: UserUpdateOneWithoutTestSuitesNestedInput
     testCases?: TestCaseUpdateManyWithoutTestSuiteNestedInput
     variables?: TestSuiteVariableUpdateManyWithoutTestSuiteNestedInput
     functions?: TestSuiteFunctionUpdateManyWithoutTestSuiteNestedInput
@@ -29600,7 +29794,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseUncheckedUpdateManyWithoutTestSuiteNestedInput
@@ -29612,7 +29806,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29623,7 +29817,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutProjectVariablesNestedInput
+    creator?: UserUpdateOneWithoutProjectVariablesNestedInput
   }
 
   export type ProjectVariableUncheckedUpdateWithoutProjectInput = {
@@ -29631,7 +29825,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29641,7 +29835,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29652,7 +29846,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutProjectFunctionsNestedInput
+    creator?: UserUpdateOneWithoutProjectFunctionsNestedInput
   }
 
   export type ProjectFunctionUncheckedUpdateWithoutProjectInput = {
@@ -29660,7 +29854,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29670,7 +29864,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29681,7 +29875,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     code: string
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29691,7 +29885,7 @@ export namespace Prisma {
     name: string
     value: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29701,7 +29895,7 @@ export namespace Prisma {
     name: string
     code: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29713,7 +29907,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedTestCasesNestedInput
+    creator?: UserUpdateOneWithoutCreatedTestCasesNestedInput
   }
 
   export type TestCaseUncheckedUpdateWithoutTestSuiteInput = {
@@ -29722,7 +29916,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29733,7 +29927,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29744,7 +29938,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutTestSuiteVariablesNestedInput
+    creator?: UserUpdateOneWithoutTestSuiteVariablesNestedInput
   }
 
   export type TestSuiteVariableUncheckedUpdateWithoutTestSuiteInput = {
@@ -29752,7 +29946,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29762,7 +29956,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29773,7 +29967,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutTestSuiteFunctionsNestedInput
+    creator?: UserUpdateOneWithoutTestSuiteFunctionsNestedInput
   }
 
   export type TestSuiteFunctionUncheckedUpdateWithoutTestSuiteInput = {
@@ -29781,7 +29975,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29791,7 +29985,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29801,7 +29995,7 @@ export namespace Prisma {
     elementName: string
     selector: string
     description?: string | null
-    createdBy: string
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29812,7 +30006,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutCreatedPageElementsNestedInput
+    creator?: UserUpdateOneWithoutCreatedPageElementsNestedInput
   }
 
   export type PageElementUncheckedUpdateWithoutPageInput = {
@@ -29820,7 +30014,7 @@ export namespace Prisma {
     elementName?: StringFieldUpdateOperationsInput | string
     selector?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29830,7 +30024,7 @@ export namespace Prisma {
     elementName?: StringFieldUpdateOperationsInput | string
     selector?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

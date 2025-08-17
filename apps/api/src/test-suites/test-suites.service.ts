@@ -1,20 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma } from '@repo/types/generated/prisma/client';
+import { Injectable, Logger } from '@nestjs/common';
+import { Prisma } from "@repo/types/prisma";
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TestSuitesService {
+  private readonly logger = new Logger(TestSuitesService.name)
+
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(projectId: number, createTestSuiteDto: Prisma.TestSuitesCreateInput) {
+  async create(userId: string, projectId: number, createTestSuiteDto: Prisma.TestSuitesUncheckedCreateInput) {
     return await this.prisma.testSuites.create({
       data: {
         ...createTestSuiteDto,
-        project: {
-          connect: {
-            id: projectId,
-          },
-        },
+        createdBy: userId,
+        projectId,
       },
     });
   }
@@ -35,7 +34,7 @@ export class TestSuitesService {
     });
   }
 
-  async update(testSuiteId: number, updateTestSuiteDto: Prisma.TestSuitesUpdateInput) {
+  async update(testSuiteId: number, updateTestSuiteDto: any) {
     return await this.prisma.testSuites.update({
       where: {
         id: testSuiteId,

@@ -12,5 +12,5 @@ export const auth = betterAuth({
     enabled: true,
   },
   basePath: '/auth',
-  trustedOrigins: ['http://localhost:5173'],
+  trustedOrigins: ['http://localhost:3001'],
 });

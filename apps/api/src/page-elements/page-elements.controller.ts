@@ -9,7 +9,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'src/common/pipes/zod-validation-pipe';
-import { PageElementUpdateInputSchema } from '@repo/types/prisma/generated/zod';
+import { PageElementUpdateInputSchema } from '@repo/types/zod/index';
 import { PageElementsService } from './page-elements.service';
 
 @Controller('page-elements')
@@ -22,8 +22,7 @@ export class PageElementsController {
   }
 
   @Patch(':id')
-  @UsePipes(new ZodValidationPipe(PageElementUpdateInputSchema))
-  update(@Param('id') id: string, @Body() updatePageElementDto: any) {
+  update(@Param('id') id: string, @Body(new ZodValidationPipe(PageElementUpdateInputSchema)) updatePageElementDto: any) {
     return this.pageElementsService.update(+id, updatePageElementDto);
   }
 

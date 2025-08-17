@@ -6,23 +6,10 @@ import {
   Patch,
   Param,
   Delete,
-  UsePipes,
+  Query,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { ZodValidationPipe } from 'src/common/pipes/zod-validation-pipe';
-import {
-  ProjectCreateInputSchema,
-  ProjectUpdateInputSchema,
-  ProjectMemberUpdateInputSchema,
-  ProjectInvitationCreateInputSchema,
-  ProjectInvitationUpdateInputSchema,
-  TestSuitesCreateInputSchema,
-  ProjectVariableCreateInputSchema,
-  ProjectVariableUpdateInputSchema,
-  ProjectFunctionCreateInputSchema,
-  ProjectFunctionUpdateInputSchema,
-  PageCreateInputSchema,
-} from '@repo/types/prisma/generated/zod'; // Import the Zod schema
 import { ProjectMembersService } from 'src/project-members/project-members.service';
 import { ProjectInvitationsService } from 'src/project-invitations/project-invitations.service';
 import { TestSuitesService } from 'src/test-suites/test-suites.service';
@@ -30,6 +17,21 @@ import { TestCasesService } from 'src/test-cases/test-cases.service';
 import { ProjectVariablesService } from 'src/project-variables/project-variables.service';
 import { ProjectFunctionsService } from 'src/project-functions/project-functions.service';
 import { PagesService } from 'src/pages/pages.service';
+import { Session } from '@mguay/nestjs-better-auth';
+import type { UserSession } from '@mguay/nestjs-better-auth';
+import {
+  PageCreateSchema,
+  ProjectCreateSchema,
+  ProjectFunctionCreateSchema,
+  ProjectFunctionUpdateSchema,
+  ProjectInvitationCreateSchema,
+  ProjectInvitationUpdateSchema,
+  ProjectMemberUpdateSchema,
+  ProjectUpdateSchema,
+  ProjectVariableCreateSchema,
+  ProjectVariableUpdateSchema,
+  TestSuiteCreateSchema,
+} from '@repo/types/schemas';
 
 @Controller('projects')
 export class ProjectsController {
@@ -45,14 +47,17 @@ export class ProjectsController {
   ) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(ProjectCreateInputSchema))
-  create(@Body() createProjectDto: any) {
-    return this.projectsService.create(createProjectDto);
+  create(
+    @Body(new ZodValidationPipe(ProjectCreateSchema))
+    createProjectDto: any,
+    @Session() session: UserSession,
+  ) {
+    return this.projectsService.create(session.user.id, createProjectDto);
   }
 
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  findAll(@Session() session: UserSession) {
+    return this.projectsService.findAll(session.user.id);
   }
 
   @Get(':id')
@@ -61,8 +66,11 @@ export class ProjectsController {
   }
 
   @Patch(':id')
-  @UsePipes(new ZodValidationPipe(ProjectUpdateInputSchema))
-  update(@Param('id') id: string, @Body() updateProjectDto: any) {
+  update(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(ProjectUpdateSchema))
+    updateProjectDto: any,
+  ) {
     return this.projectsService.update(+id, updateProjectDto);
   }
 
@@ -78,11 +86,11 @@ export class ProjectsController {
   }
 
   @Patch(':id/members/:memberId')
-  @UsePipes(new ZodValidationPipe(ProjectMemberUpdateInputSchema))
   updateMember(
     @Param('id') id: string,
     @Param('memberId') memberId: string,
-    @Body() updateProjectMemberDto: any,
+    @Body(new ZodValidationPipe(ProjectMemberUpdateSchema))
+    updateProjectMemberDto: any,
   ) {
     return this.projectMembersService.update(
       +id,
@@ -98,10 +106,10 @@ export class ProjectsController {
 
   // Project Invitations
   @Post(':id/invitations')
-  @UsePipes(new ZodValidationPipe(ProjectInvitationCreateInputSchema))
   createInvitation(
     @Param('id') id: string,
-    @Body() createProjectInvitationDto: any,
+    @Body(new ZodValidationPipe(ProjectInvitationCreateSchema))
+    createProjectInvitationDto: any,
   ) {
     return this.projectInvitationsService.create(
       +id,
@@ -115,11 +123,11 @@ export class ProjectsController {
   }
 
   @Patch(':id/invitations/:invitationId')
-  @UsePipes(new ZodValidationPipe(ProjectInvitationUpdateInputSchema))
   updateInvitation(
     @Param('id') id: string,
     @Param('invitationId') invitationId: string,
-    @Body() updateProjectInvitationDto: any,
+    @Body(new ZodValidationPipe(ProjectInvitationUpdateSchema))
+    updateProjectInvitationDto: any,
   ) {
     return this.projectInvitationsService.update(
       +id,
@@ -130,9 +138,17 @@ export class ProjectsController {
 
   // Test Suites
   @Post(':id/test-suites')
-  @UsePipes(new ZodValidationPipe(TestSuitesCreateInputSchema))
-  createTestSuite(@Param('id') id: string, @Body() createTestSuiteDto: any) {
-    return this.testSuitesService.create(+id, createTestSuiteDto);
+  createTestSuite(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(TestSuiteCreateSchema))
+    createTestSuiteDto: any,
+    @Session() session: UserSession,
+  ) {
+    return this.testSuitesService.create(
+      session.user.id,
+      +id,
+      createTestSuiteDto,
+    );
   }
 
   @Get(':id/test-suites')
@@ -148,10 +164,10 @@ export class ProjectsController {
 
   // Project Variables
   @Post(':id/project-variables')
-  @UsePipes(new ZodValidationPipe(ProjectVariableCreateInputSchema))
   createProjectVariable(
     @Param('id') id: string,
-    @Body() createProjectVariableDto: any,
+    @Body(new ZodValidationPipe(ProjectVariableCreateSchema))
+    createProjectVariableDto: any,
   ) {
     return this.projectVariablesService.create(+id, createProjectVariableDto);
   }
@@ -162,11 +178,11 @@ export class ProjectsController {
   }
 
   @Patch(':id/project-variables/:variableId')
-  @UsePipes(new ZodValidationPipe(ProjectVariableUpdateInputSchema))
   updateProjectVariable(
     @Param('id') id: string,
     @Param('variableId') variableId: string,
-    @Body() updateProjectVariableDto: any,
+    @Body(new ZodValidationPipe(ProjectVariableUpdateSchema))
+    updateProjectVariableDto: any,
   ) {
     return this.projectVariablesService.update(
       +id,
@@ -185,10 +201,10 @@ export class ProjectsController {
 
   // Project Functions
   @Post(':id/project-functions')
-  @UsePipes(new ZodValidationPipe(ProjectFunctionCreateInputSchema))
   createProjectFunction(
     @Param('id') id: string,
-    @Body() createProjectFunctionDto: any,
+    @Body(new ZodValidationPipe(ProjectFunctionCreateSchema))
+    createProjectFunctionDto: any,
   ) {
     return this.projectFunctionsService.create(+id, createProjectFunctionDto);
   }
@@ -199,11 +215,11 @@ export class ProjectsController {
   }
 
   @Patch(':id/project-functions/:functionId')
-  @UsePipes(new ZodValidationPipe(ProjectFunctionUpdateInputSchema))
   updateProjectFunction(
     @Param('id') id: string,
     @Param('functionId') functionId: string,
-    @Body() updateProjectFunctionDto: any,
+    @Body(new ZodValidationPipe(ProjectFunctionUpdateSchema))
+    updateProjectFunctionDto: any,
   ) {
     return this.projectFunctionsService.update(
       +id,
@@ -222,8 +238,11 @@ export class ProjectsController {
 
   // Pages
   @Post(':id/pages')
-  @UsePipes(new ZodValidationPipe(PageCreateInputSchema))
-  createPage(@Param('id') id: string, @Body() createPageDto: any) {
+  createPage(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(PageCreateSchema))
+    createPageDto: any,
+  ) {
     return this.pagesService.create(+id, createPageDto);
   }
 

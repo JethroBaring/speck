@@ -5,5 +5,6 @@ import { ProjectInvitationsController } from './project-invitations.controller';
 @Module({
   controllers: [ProjectInvitationsController],
   providers: [ProjectInvitationsService],
+  exports: [ProjectInvitationsService],
 })
 export class ProjectInvitationsModule {}

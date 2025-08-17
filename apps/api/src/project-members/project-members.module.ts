@@ -3,5 +3,6 @@ import { ProjectMembersService } from './project-members.service';
 
 @Module({
   providers: [ProjectMembersService],
+  exports: [ProjectMembersService],
 })
 export class ProjectMembersModule {}

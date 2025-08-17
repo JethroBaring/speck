@@ -20,16 +20,51 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message =
-      exception instanceof HttpException
-        ? (exception.getResponse() as any).message || exception.message
-        : 'Internal server error';
+    let errorResponse: ApiResponse<null>;
 
-    const errorResponse: ApiResponse<null> = {
-      success: false,
-      message: Array.isArray(message) ? message.join(', ') : message,
-      data: null,
-    };
+    if (exception instanceof HttpException) {
+      const exceptionResponse = exception.getResponse();
+      
+      // Check if the response is already a structured object with errors/details
+      if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
+        const responseObj = exceptionResponse as any;
+        
+        // If it already has the structure we want, use it
+        if ('success' in responseObj && 'message' in responseObj) {
+          errorResponse = responseObj;
+        } else {
+          // Extract message and any additional error details
+          const message = responseObj.message || exception.message;
+          errorResponse = {
+            success: false,
+            message: Array.isArray(message) ? message.join(', ') : message,
+            data: null,
+          };
+          
+          // Preserve errors and details if they exist
+          if (responseObj.errors) {
+            errorResponse.errors = responseObj.errors;
+          }
+          if (responseObj.details) {
+            errorResponse.details = responseObj.details;
+          }
+        }
+      } else {
+        // Simple string response
+        errorResponse = {
+          success: false,
+          message: exceptionResponse as string || exception.message,
+          data: null,
+        };
+      }
+    } else {
+      // Non-HTTP exceptions
+      errorResponse = {
+        success: false,
+        message: 'Internal server error',
+        data: null,
+      };
+    }
 
     response.status(status).json(errorResponse);
   }

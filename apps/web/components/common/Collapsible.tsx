@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Card from './Card';
 
 export interface CollapsibleProps {
-  title: string;
+  title: string | React.ReactNode;
   children: React.ReactNode;
   defaultOpen?: boolean;
   className?: string;
@@ -46,7 +46,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
         className={`flex w-full justify-between items-center px-4 py-3 text-left text-gray-800 dark:text-white/90 font-semibold transition-all duration-200 ${headerClassName}`}
       >
         <div className="flex items-center gap-2">
-          <span>{title}</span>
+          {typeof title === 'string' ? <span>{title}</span> : title}
         </div>
         {showChevron && (
           <div className="flex items-center">

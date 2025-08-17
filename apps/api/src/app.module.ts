@@ -14,9 +14,12 @@ import { ProjectFunctionsModule } from './project-functions/project-functions.mo
 import { TestSuitesModule } from './test-suites/test-suites.module';
 import { ProjectInvitationsModule } from './project-invitations/project-invitations.module';
 import { ProjectsModule } from './projects/projects.module';
+import { PagesModule } from './pages/pages.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),
@@ -38,6 +41,7 @@ import { ProjectsModule } from './projects/projects.module';
     ProjectVariablesModule,
     TestSuiteFunctionsModule,
     ProjectFunctionsModule,
+    PagesModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }],

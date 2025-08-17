@@ -31,6 +31,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
           ${className}`}
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
+          onClick={(e) => e.stopPropagation()}
           disabled={disabled}
         />
         {checked && (
