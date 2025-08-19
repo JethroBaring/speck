@@ -146,12 +146,12 @@ export class TestSuitesController {
     return this.testSuiteFunctionsService.remove(+id, +functionId);
   }
 
-  @Post(':id/test-suite-runs')
-  createTestSuiteRun(
-    @Param('id') id: string,
-    @Body(new ZodValidationPipe(TestSuiteRunCreateSchema))
-    createTestSuiteRunDto: any,
-  ) {
-    return this.testSuiteRunsService.create(+id, createTestSuiteRunDto);
-  }
+  // @Post(':id/test-suite-runs')
+  // createTestSuiteRun(
+  //   @Param('id') id: string,
+  //   @Body(new ZodValidationPipe(TestSuiteRunCreateSchema))
+  //   createTestSuiteRunDto: any,
+  // ) {
+  //   return this.testSuiteRunsService.create(+id, createTestSuiteRunDto);
+  // }
 }

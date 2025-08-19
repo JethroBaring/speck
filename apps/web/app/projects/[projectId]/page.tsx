@@ -3,7 +3,7 @@
 import { useModal } from "@/hooks/useModal";
 import { Folder, Play, CheckCircle, Clock, BarChart3, Plus, PlusCircle, Search, Grid, List, MoreVertical, Settings, CheckCircle2, XCircle, RotateCcw, FileText, Edit, Edit2 } from "lucide-react";
 import Button from "@/components/ui/button/Button";
-import TestSuiteRightSidebar from "@/components/projects/RightSidebar";
+import TestSuiteRightSidebar from "@/components/test-suites/TestSuiteRightSidebar";
 import Badge from "@/components/ui/badge/Badge";
 import Card from "@/components/common/Card";
 import Checkbox from "@/components/form/input/Checkbox";
@@ -15,6 +15,10 @@ import { useTestSuites } from "@/hooks/useTestSuites";
 import { Modal } from "@/components/ui/modal";
 import Label from "@/components/form/Label";
 import Link from "next/link";
+import { useCreateTestSuite } from "@/hooks/useTestSuites";
+import { useToastStore } from "@/stores/useToastStore";
+import { useProjects } from "@/hooks/useProjects";
+import { TestSuites } from "@repo/types/zod";
 
 export default function Projects() {
   const { isOpen, openModal, closeModal } = useModal()
@@ -23,8 +27,11 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Status');
   const { projectId } = useParams();
+  const { data: projects } = useProjects()
 	const { data: testSuites } = useTestSuites(projectId as string);
+  const { mutate: createTestSuite } = useCreateTestSuite(projectId as string);
   const [testSuiteName, setTestSuiteName] = useState('');
+  const toast = useToastStore()
   const [testSuiteDescription, setTestSuiteDescription] = useState('');
   const handleSuiteSelection = (suiteId: string) => {
     setSelectedSuites(prev => 
@@ -62,12 +69,27 @@ export default function Projects() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(testSuiteName);
+		createTestSuite({
+			name: testSuiteName,
+			description: testSuiteDescription,
+		}, {
+			onSuccess: () => {
+				closeModal();
+				setTestSuiteName("");
+				setTestSuiteDescription("");
+				
+				toast.addToast({
+					title: "Project created successfully",
+					message: "Project created successfully",
+					type: "success",
+				})
+			},
+		});
   };
 
-  const filteredSuites = testSuites ? testSuites?.data.filter((suite: any) => 
+  const filteredSuites = testSuites?.data ? testSuites?.data.filter((suite: TestSuites) => 
     suite.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    suite.description.toLowerCase().includes(searchQuery.toLowerCase())) : [];
+    suite.description?.toLowerCase().includes(searchQuery.toLowerCase())) : [];
 
   return 	<div className="flex h-full">
   <div className="flex flex-col flex-1">
@@ -76,7 +98,7 @@ export default function Projects() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 text">
             <Folder className="h-6 w-6" />
-            <h1 className="text-lg font-semibold">Payroll Project</h1>
+            <h1 className="text-lg font-semibold">{projects?.data?.find((project: any) => project.id === parseInt(projectId as string))?.name}</h1>
           </div>
           <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-1">
@@ -97,7 +119,7 @@ export default function Projects() {
           <Play className="h-4 w-4" />
           {selectedSuites.length > 0 ? `Run ${selectedSuites.length} Selected` : 'Run All Tests'}
         </Button>
-        <Button size="xs" variant="outline">
+        <Button size="xs" variant="outline" onClick={openModal}>
           <PlusCircle className="h-4 w-4" />
           New Suite
         </Button>
@@ -224,7 +246,7 @@ export default function Projects() {
               </Button>
             </div>
           </Card>
-         </Link>
+        </Link>
         ))}
       </div>
 
@@ -233,7 +255,7 @@ export default function Projects() {
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center max-w-md mx-auto px-4">
             <div className="mx-auto w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
-              {testSuites?.data && testSuites.data.length > 0 ? (
+              {testSuites?.data && testSuites?.data.length > 0 ? (
                 <Search className="h-12 w-12 text-gray-400 dark:text-gray-500" />
               ) : (
                 <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
@@ -241,20 +263,20 @@ export default function Projects() {
             </div>
             
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
-              {testSuites?.data && testSuites.data.length > 0 
+              {testSuites?.data && testSuites?.data.length > 0 
                 ? "No test suites found" 
                 : "No test suites in this project"
               }
             </h2>
             
             <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-              {testSuites?.data && testSuites.data.length > 0 
+              {testSuites?.data && testSuites?.data.length > 0 
                 ? "Try adjusting your search or filter criteria."
                 : "Get started by creating your first test suite to organize and manage your test cases."
               }
             </p>
             
-            {(!testSuites?.data || testSuites.data.length === 0) && (
+            {(!testSuites?.data || testSuites?.data.length === 0) && (
               <div className="space-y-3">
                 <Button 
                   size="md" 

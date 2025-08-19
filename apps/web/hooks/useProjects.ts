@@ -6,6 +6,11 @@ export function useProjects() {
   return useQuery({
     queryKey: ['projects'],
     queryFn: getProjects,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 }
 

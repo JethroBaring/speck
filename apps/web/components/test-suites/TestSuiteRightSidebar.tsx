@@ -1,78 +1,38 @@
 'use client'
 
-import { Activity, Database, FileText, Plus, Clock, CheckCircle, XCircle, Circle } from "lucide-react";
+import { Activity, Database, FileText, Plus, Clock, CheckCircle, XCircle, Circle, Edit, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import Tabs from "../common/Tabs";
 import Collapsible from "../common/Collapsible";
 import Card from "../common/Card";
+import { useTestCases } from "@/hooks/useTestCases";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const TestSuiteRightSidebar: React.FC = () => {
+
+  const router = useRouter();
+  const { projectId, testSuiteId } = useParams();
+  const { data: testCases } = useTestCases(testSuiteId as string);
+
   const [activeTab, setActiveTab] = useState("tests");
+
+  const handleCreateTestCase = () => {
+    console.log("Create test case clicked");
+    // TODO: Implement test case creation
+  };
+
+  const handleCreateResource = () => {
+    console.log("Create resource clicked");
+    // TODO: Implement resource creation
+  };
+
 	const tabs = [
 		{ value: "tests", label: "Tests", icon: <FileText className="h-4 w-4"/> },
 		{ value: "resources", label: "Resources", icon: <Database className="h-4 w-4"/> },
 		{ value: "executions", label: "Executions", icon: <Activity className="h-4 w-4"/> },
 	];
-
-  const tests = [1,2,3]
   
-  // Mock data for tests with status
-  const testData = [
-    { 
-      id: 1, 
-      name: 'Login Test', 
-      status: 'not_run',
-      instructions: [
-        'Go to login page',
-        'Enter username',
-        'Enter password',
-        'Click login button'
-      ]
-    },
-    { 
-      id: 2, 
-      name: 'Dashboard Load Test', 
-      status: 'passed',
-      instructions: [
-        'Navigate to dashboard',
-        'Wait for page load',
-        'Verify user is logged in'
-      ]
-    },
-    { 
-      id: 3, 
-      name: 'User Profile Test', 
-      status: 'failed',
-      instructions: [
-        'Click profile icon',
-        'Edit profile information',
-        'Save changes'
-      ]
-    },
-    { 
-      id: 4, 
-      name: 'Search Functionality', 
-      status: 'not_run',
-      instructions: [
-        'Go to search page',
-        'Enter search term',
-        'Click search button',
-        'Verify results'
-      ]
-    },
-    { 
-      id: 5, 
-      name: 'Checkout Flow', 
-      status: 'passed',
-      instructions: [
-        'Add item to cart',
-        'Proceed to checkout',
-        'Enter shipping details',
-        'Complete payment'
-      ]
-    },
-  ];
-
   // Mock data for variables
   const variables = [
     { name: '$baseUrl', value: 'https://staging.myecommerce.com', type: 'global' },
@@ -118,17 +78,61 @@ const TestSuiteRightSidebar: React.FC = () => {
       <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex flex-col gap-2 p-4">
         {activeTab === 'tests' && (
-          <div className="space-y-3">
-            {testData.map((test) => (
-              <Collapsible key={test.id} title={
+          <div className="space-y-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                <h3 className="font-medium text-gray-900 dark:text-white">Test Cases ({testCases?.data?.length || 0})</h3>
+              </div>
+              <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                <Plus className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              </button>
+            </div>
+            {testCases?.data && testCases.data.length > 0 ? (
+              <div className="space-y-3">
+                {testCases.data.map((test: any) => (
+              <Collapsible key={test.id} 
+                className="group"
+                title={
                 <div className="flex items-center gap-3 p-1">
                   {getTestStatusIcon(test.status)}
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Test Case {test.id}</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">{test.name}</span>
                 </div>
-              }>
+              }
+              headerActions={
+                <>
+                  <button 
+                    className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded opacity-0 group-hover:opacity-100 transition-opacity" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log(`Delete test case: ${test.name}`);
+                      // TODO: Implement delete functionality
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4 text-red-500" />
+                  </button>
+                </>
+              }
+              onHeaderClick={() => {
+                const newUrl = new URL(
+                  `/projects/${projectId}/test-suites/${testSuiteId}`,
+                  window.location.origin
+                );
+                
+                if (newUrl.searchParams.get("testCaseId") !== test.id) {
+                  newUrl.searchParams.set("testCaseId", test.id);
+                }
+                
+                const finalUrl = newUrl.toString();
+                
+                if (finalUrl !== window.location.href) {
+                  router.push(finalUrl);
+                }
+              }}
+              >
                 <div className="space-y-4 p-1 pt-2.5">
                   <div className="space-y-3">
-                    {test.instructions.map((instruction, stepIndex) => (
+                    {test.code.split('\n').map((instruction: any, stepIndex: any) => (
                       <div key={stepIndex} className="space-y-2">
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-2">
@@ -144,7 +148,15 @@ const TestSuiteRightSidebar: React.FC = () => {
                   </div>
                 </div>
               </Collapsible>
-            ))}
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  No test cases yet. Click + to create your first test case.
+                </p>
+              </div>
+            )}
           </div>
         )}
         {activeTab === 'resources' && (

@@ -1,6 +1,7 @@
 // hooks/useUsers.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getTestSuites, getTestSuiteById, createTestSuite, deleteTestSuite } from '@/lib/api/test-suites';
+import { TestSuiteCreateInput } from '@repo/types/schemas';
 
 export function useTestSuites(projectId: string) {
   return useQuery({
@@ -10,11 +11,11 @@ export function useTestSuites(projectId: string) {
   });
 }
 
-export function useTestSuite(projectId: string, testSuiteId: string) {
+export function useTestSuite(testSuiteId: string) {
   return useQuery({
-    queryKey: ['test-suites', projectId, testSuiteId],
-    queryFn: () => getTestSuiteById(projectId, testSuiteId),
-    enabled: !!projectId && !!testSuiteId,
+    queryKey: ['test-suites', testSuiteId],
+    queryFn: () => getTestSuiteById(testSuiteId),
+    enabled: !!testSuiteId,
   });
 }
 
@@ -22,7 +23,7 @@ export function useCreateTestSuite(projectId: string) {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (name: string) => createTestSuite(projectId, name),
+    mutationFn: (createTestSuiteDto: TestSuiteCreateInput) => createTestSuite(projectId, createTestSuiteDto),
     onSuccess: (newTestSuite) => {
       console.log('TestSuite created successfully:', newTestSuite);
       

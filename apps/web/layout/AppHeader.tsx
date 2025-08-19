@@ -109,7 +109,7 @@ const AppHeader: React.FC = () => {
               {isOnProjectPage && !isOnTestSuitePage && currentProject && (
                 <>
                   <span className="text-gray-400 dark:text-gray-500">/</span>
-                  <span className="text-blue-600 dark:text-blue-400 font-medium">
+                  <span className="text-brand-500 font-medium">
                     {currentProject.name}
                   </span>
                 </>

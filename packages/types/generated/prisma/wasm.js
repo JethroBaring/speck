@@ -238,6 +238,51 @@ exports.Prisma.TestSuiteFunctionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TestSuiteRunScalarFieldEnum = {
+  id: 'id',
+  testSuiteId: 'testSuiteId',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  totalTests: 'totalTests',
+  passedTests: 'passedTests',
+  failedTests: 'failedTests',
+  skippedTests: 'skippedTests',
+  errorMessage: 'errorMessage',
+  environment: 'environment',
+  browser: 'browser',
+  version: 'version',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TestCaseRunScalarFieldEnum = {
+  id: 'id',
+  testCaseId: 'testCaseId',
+  testSuiteRunId: 'testSuiteRunId',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  duration: 'duration',
+  errorMessage: 'errorMessage',
+  stackTrace: 'stackTrace',
+  logs: 'logs'
+};
+
+exports.Prisma.TestStepResultScalarFieldEnum = {
+  id: 'id',
+  testCaseRunId: 'testCaseRunId',
+  stepNumber: 'stepNumber',
+  stepName: 'stepName',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  duration: 'duration',
+  errorMessage: 'errorMessage',
+  screenshot: 'screenshot',
+  logs: 'logs'
+};
+
 exports.Prisma.PageScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -285,6 +330,18 @@ exports.Prisma.ProjectInvitationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  isRead: 'isRead',
+  actionUrl: 'actionUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -299,11 +356,45 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.TestRunStatus = exports.$Enums.TestRunStatus = {
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  TIMEOUT: 'TIMEOUT'
+};
+
+exports.TestCaseRunStatus = exports.$Enums.TestCaseRunStatus = {
+  RUNNING: 'RUNNING',
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED',
+  TIMEOUT: 'TIMEOUT',
+  ERROR: 'ERROR'
+};
+
+exports.TestStepStatus = exports.$Enums.TestStepStatus = {
+  RUNNING: 'RUNNING',
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED',
+  TIMEOUT: 'TIMEOUT',
+  ERROR: 'ERROR'
+};
+
 exports.ProjectInvitationStatus = exports.$Enums.ProjectInvitationStatus = {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
   DECLINED: 'DECLINED',
   EXPIRED: 'EXPIRED'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  PROJECT_INVITATION: 'PROJECT_INVITATION',
+  PROJECT_MEMBER_JOINED: 'PROJECT_MEMBER_JOINED',
+  ROLE_CHANGED: 'ROLE_CHANGED',
+  TEST_SUITE_COMPLETED: 'TEST_SUITE_COMPLETED',
+  FEATURE_UPDATE: 'FEATURE_UPDATE'
 };
 
 exports.Prisma.ModelName = {
@@ -318,10 +409,14 @@ exports.Prisma.ModelName = {
   TestSuiteVariable: 'TestSuiteVariable',
   ProjectFunction: 'ProjectFunction',
   TestSuiteFunction: 'TestSuiteFunction',
+  TestSuiteRun: 'TestSuiteRun',
+  TestCaseRun: 'TestCaseRun',
+  TestStepResult: 'TestStepResult',
   Page: 'Page',
   PageElement: 'PageElement',
   TestCase: 'TestCase',
-  ProjectInvitation: 'ProjectInvitation'
+  ProjectInvitation: 'ProjectInvitation',
+  Notification: 'Notification'
 };
 
 /**

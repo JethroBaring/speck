@@ -1,5 +1,5 @@
 import type React from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { CustomDropdownItem } from "../ui/dropdown/CustomDropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import {
@@ -10,12 +10,68 @@ import {
 	EditorVariableIcon,
 } from "../../icons";
 import ComponentCard from "./ComponentCard";
-import { Code, HelpCircle } from "lucide-react";
+import { Code, HelpCircle, Pencil, Check } from "lucide-react";
+import { useTestCase, useUpdateTestCase } from "@/hooks/useTestCases";
+import { useSearchParams } from "next/navigation";
 
-const TestCaseEditorWithHelp: React.FC<{ className?: string }> = ({ className }) => {
+const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onChange?: (text: string) => void; isSaving?: boolean, lastSavedAt?: number | null }> = ({ className, value, onChange, isSaving, lastSavedAt }) => {
+	const searchParams = useSearchParams();
+	const testCaseId = (searchParams.get("testCaseId") ?? searchParams.get("id")) as string | null;
+	const { data: testCase } = useTestCase(testCaseId || "");
+	const { mutate: updateTestCase } = useUpdateTestCase()
+
 	const editorRef = useRef<HTMLDivElement>(null);
+	const titleRef = useRef<HTMLDivElement>(null);
 	const [caretPosition, setCaretPosition] = useState<number>(0);
 	const [showPlaceholder, setShowPlaceholder] = useState(true);
+	const [isEditingTitle, setIsEditingTitle] = useState(false);
+	const [titleDraft, setTitleDraft] = useState("");
+
+	useEffect(() => {
+		if (testCase?.data?.name != null) {
+			setTitleDraft(String(testCase.data.name));
+		}
+	}, [testCase?.data?.id, testCase?.data?.name]);
+
+	useEffect(() => {
+		if (isEditingTitle && titleRef.current) {
+			const el = titleRef.current;
+			el.focus();
+			// place caret at end
+			const selection = window.getSelection();
+			const range = document.createRange();
+			range.selectNodeContents(el);
+			range.collapse(false);
+			selection?.removeAllRanges();
+			selection?.addRange(range);
+		}
+	}, [isEditingTitle]);
+
+	const saveTitle = async () => {
+		console.log("saveTitle called", { testCaseId, titleDraft });
+		if (!testCaseId) {
+			console.log("No testCaseId, returning");
+			return;
+		}
+		const name = titleDraft.trim();
+		if (!name) {
+			console.log("Empty name, returning");
+			return;
+		}
+		try {
+			console.log("Calling updateTestCase with:", { testCaseId, name });
+			updateTestCase({ id: testCaseId, data: { name } as any });
+			setIsEditingTitle(false);
+			console.log("Title saved successfully");
+		} catch (error) {
+			console.error("Error saving title:", error);
+		}
+	};
+
+	const cancelEdit = () => {
+		setTitleDraft(String(testCase?.data?.name || ""));
+		setIsEditingTitle(false);
+	};
 
 	// Maintainable syntax categories
 	const COMMAND_WORDS = [
@@ -84,6 +140,26 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string }> = ({ className })
 	const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number }>(
 		{ top: 0, left: 0 },
 	);
+
+	useEffect(() => {
+		if (!editorRef.current) return;
+		const incoming = (value ?? "");
+		const currentRaw = editorRef.current.innerText || "";
+		const current = currentRaw.replace(/\u200B/g, "");
+		if (current === incoming) return;
+		const prevCaret = getCaretPosition();
+		const prevLen = current.length;
+		rebuildContentWithSyntaxHighlighting(incoming);
+		addCaretAnchorIfNeeded(incoming);
+		setShowPlaceholder(incoming.length === 0);
+		// If this is the first load (or switching to a new case), put caret at end
+		if (prevLen === 0) {
+			restoreCaretPosition(incoming.length);
+		} else {
+			restoreCaretPosition(Math.min(prevCaret, incoming.length));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value]);
 
 	const COMMAND_DESCRIPTIONS: Record<string, string> = {
 		goto: "navigate the browser to a URL",
@@ -331,6 +407,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string }> = ({ className })
 		addCaretAnchorIfNeeded(text);
 		restoreCaretPosition(position);
 		updateAutocomplete();
+		onChange?.(text);
 	};
 
 	const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -737,10 +814,51 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string }> = ({ className })
 	return (
 			<ComponentCard
 			className="h-full"
-			header={<div className="flex items-center justify-between">
+			header={<div className="flex items-center justify-between min-h-[2rem]">
 				<div className="flex items-center gap-2 text">
-								<Code className="h-4 w-4" />
-								<h1>Test Suite 1</h1>
+								<Code className="text-brand-500 h-4 w-4" />
+								<div className="relative group min-h-[1.5rem] flex items-center">
+									{isEditingTitle ? (
+										<div className="flex items-center gap-1 w-full">
+											<input
+												type="text"
+												value={titleDraft}
+												onChange={(e) => setTitleDraft(e.target.value)}
+												onBlur={cancelEdit}
+												onKeyDown={(e) => {
+													if (e.key === "Escape") {
+														e.preventDefault();
+														cancelEdit();
+													}
+												}}
+												className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 shadow-none flex-shrink min-w-0 px-1"
+												style={{ 
+													outline: 'none', 
+													boxShadow: 'none', 
+													border: 'none',
+													width: `${Math.max(titleDraft.length * 0.8 + 2, 6)}ch`,
+													textAlign: 'left'
+												}}
+												autoFocus
+											/>
+											<button 
+												onMouseDown={(e) => e.preventDefault()}
+												onClick={saveTitle}
+												className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded flex-shrink-0"
+											>
+												<Check className="h-4 w-4 text-green-500" />
+											</button>
+										</div>
+									) : (
+										<button className="flex items-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-1 py-0.5 min-h-[1.5rem]" onClick={() => setIsEditingTitle(true)}>
+											{titleDraft}
+											<Pencil className="h-4 w-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+										</button>
+									)}
+								</div>
+														<div className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+							{isSaving ? "Saving…" : lastSavedAt ? "Saved" : ""}
+						</div>
 							</div>
 							<button className="text">
 								<HelpCircle className="h-4 w-4" />

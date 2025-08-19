@@ -1,6 +1,8 @@
 import { API_BASE_URL } from "../constants"
+import { ApiResponse } from "../interface"
+import type { Project } from "@repo/types/zod"
 
-export async function getProjects() {
+export async function getProjects(): Promise<ApiResponse<Project[]>> {
   const response = await fetch(`${API_BASE_URL}/projects`, {
     method: "GET",
     headers: {
@@ -16,7 +18,7 @@ export async function getProjects() {
   return response.json()
 }
 
-export async function getProjectById(id: string) {
+export async function getProjectById(id: string): Promise<ApiResponse<Project>> {
 
   const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     method: "GET",
@@ -33,7 +35,7 @@ export async function getProjectById(id: string) {
   return response.json()  
 }
 
-export async function createProject(name: string) {
+export async function createProject(name: string): Promise<ApiResponse<Project>> {
   const response = await fetch(`${API_BASE_URL}/projects/`, {
     method: "POST",
     headers: {
@@ -50,7 +52,7 @@ export async function createProject(name: string) {
   return response.json()
 }
 
-export async function deleteProject(id: string) {
+export async function deleteProject(id: string): Promise<ApiResponse<Project>> {
   const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     method: "DELETE",
     headers: {

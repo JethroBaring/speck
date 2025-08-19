@@ -1,11 +1,14 @@
 
 import React, { useRef, useEffect, useState } from 'react';
+import { Plus } from 'lucide-react';
 
 export interface Tab {
   value: string;
   label: string;
   minStatus?: number;
   icon?: React.ReactNode;
+  showPlus?: boolean;
+  onPlusClick?: () => void;
 }
 
 interface TabsProps {
@@ -70,6 +73,17 @@ const Tabs: React.FC<TabsProps> = ({
         >
           {tab.icon}
           {tab.label}
+          {tab.showPlus && activeTab === tab.value && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                tab.onPlusClick?.();
+              }}
+              className="ml-1 p-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            >
+              <Plus className="h-3 w-3" />
+            </button>
+          )}
         </button>
       ))}
       

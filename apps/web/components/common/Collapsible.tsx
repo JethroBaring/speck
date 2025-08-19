@@ -9,7 +9,9 @@ export interface CollapsibleProps {
   headerClassName?: string;
   contentClassName?: string;
   showChevron?: boolean;
+  headerActions?: React.ReactNode;
   onToggle?: (isOpen: boolean) => void;
+  onHeaderClick?: () => void;
 }
 
 const Collapsible: React.FC<CollapsibleProps> = ({
@@ -20,7 +22,9 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   headerClassName = '',
   contentClassName = '',
   showChevron = true,
+  headerActions,
   onToggle,
+  onHeaderClick,
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [contentHeight, setContentHeight] = useState(0);
@@ -41,33 +45,46 @@ const Collapsible: React.FC<CollapsibleProps> = ({
 
   return (
     <Card className={className}>
-      <button
-        onClick={handleToggle}
+      <div
+        role="button"
+        onClick={onHeaderClick}
         className={`flex w-full justify-between items-center px-4 py-3 text-left text-gray-800 dark:text-white/90 font-semibold transition-all duration-200 ${headerClassName}`}
       >
         <div className="flex items-center gap-2">
           {typeof title === 'string' ? <span>{title}</span> : title}
         </div>
-        {showChevron && (
-          <div className="flex items-center">
-            <svg
-              className={`h-4 w-4 transform transition-transform duration-200 ${
-                isOpen ? 'rotate-180' : ''
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            {headerActions}
           </div>
-        )}
-      </button>
+          {showChevron && (
+            <button 
+              className="flex items-center hover:bg-white/[0.3] p-1 rounded-lg" 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggle();
+              }}
+            >
+              <svg
+                className={`h-4 w-4 transform transition-transform duration-200 ${
+                  isOpen ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+        
+      </div>
       
       <div 
         className="overflow-hidden transition-all duration-300 ease-out"

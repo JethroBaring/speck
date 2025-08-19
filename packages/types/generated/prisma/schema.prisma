@@ -257,7 +257,6 @@ model TestCaseRun {
   errorMessage   String?           @map("error_message")
   stackTrace     String?           @map("stack_trace") @db.Text
   logs           String?           @db.Text // Console logs or test output
-  metadata       Json? // Additional test-specific data
 
   // Relations
   testCase     TestCase         @relation("TestCaseRuns", fields: [testCaseId], references: [id], onDelete: Cascade)
@@ -279,7 +278,6 @@ model TestStepResult {
   errorMessage  String?        @map("error_message")
   screenshot    String? // URL or path to screenshot for this specific step
   logs          String?        @db.Text // Step-specific logs
-  metadata      Json? // Step-specific data (element selectors, values, etc.)
 
   // Relations
   testCaseRun TestCaseRun @relation("TestCaseRunSteps", fields: [testCaseRunId], references: [id], onDelete: Cascade)
@@ -401,7 +399,6 @@ model Notification {
   title     String
   message   String
   isRead    Boolean          @default(false) @map("is_read")
-  metadata  Json? // Additional context data (projectId, testCaseId, etc.)
   actionUrl String?          @map("action_url") // URL to navigate to when clicked
   createdAt DateTime         @default(now()) @map("created_at")
   updatedAt DateTime         @updatedAt @map("updated_at")
