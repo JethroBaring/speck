@@ -392,6 +392,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 			restoreCaretPosition(newCaret);
 			setIsDropdownOpen(false);
 			setSuggestions([]);
+			onChange?.(newText);
 	};
 
 	const handleInput = (e: React.ChangeEvent<HTMLDivElement>) => {
@@ -473,6 +474,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 				// caret after the opening quote and selected content
 				restoreCaretPosition(end + 1);
 				updateAutocomplete();
+				onChange?.(newText);
 				return;
 			}
 			const caretPos = getCaretPosition();
@@ -488,6 +490,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 			addCaretAnchorIfNeeded(newText);
 			restoreCaretPosition(caretPos + 1);
 			updateAutocomplete();
+			onChange?.(newText);
 			return;
 		}
 
@@ -503,6 +506,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 			addCaretAnchorIfNeeded(newText);
 			restoreCaretPosition(insertPos + 1);
 			setIsDropdownOpen(false);
+			onChange?.(newText);
 			return;
 		}
 
@@ -514,6 +518,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 							addCaretAnchorIfNeeded(newText);
 							restoreCaretPosition(start);
 							updateAutocomplete();
+							onChange?.(newText);
 							return;
 						}
 						const caretPos = getCaretPosition();
@@ -526,6 +531,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 						addCaretAnchorIfNeeded(newText);
 						restoreCaretPosition(caretPos - 1);
 						updateAutocomplete();
+						onChange?.(newText);
 						return;
 					}
 
@@ -537,6 +543,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 				addCaretAnchorIfNeeded(newText);
 				restoreCaretPosition(start);
 				updateAutocomplete();
+				onChange?.(newText);
 				return;
 			}
 			if (start >= currentText.length) return; // nothing to delete
@@ -546,6 +553,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 			addCaretAnchorIfNeeded(newText);
 			restoreCaretPosition(start);
 			updateAutocomplete();
+			onChange?.(newText);
 			return;
 		}
 
