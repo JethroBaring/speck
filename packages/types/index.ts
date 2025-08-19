@@ -20,7 +20,15 @@ import {
   TestSuiteFunctionUncheckedCreateInputSchema,
   TestSuiteFunctionUncheckedUpdateInputSchema,
   ProjectInvitationUncheckedCreateInputSchema,
-  ProjectInvitationUncheckedUpdateInputSchema
+  ProjectInvitationUncheckedUpdateInputSchema,
+  TestSuiteRunUncheckedCreateInputSchema,
+  TestSuiteRunUncheckedUpdateInputSchema,
+  TestCaseRunUncheckedCreateInputSchema,
+  TestCaseRunUncheckedUpdateInputSchema,
+  TestStepResultUncheckedCreateInputSchema,
+  TestStepResultUncheckedUpdateInputSchema,
+  NotificationUncheckedCreateInputSchema,
+  NotificationUncheckedUpdateInputSchema
 } from "@repo/types/zod";
 import z from "zod";
 
@@ -165,10 +173,6 @@ export const ProjectInvitationUpdateSchema = ProjectInvitationBaseUpdateSchema.o
   id: true,
   projectId: true,
 });
-
-// TEST SUITE RUN SCHEMAS
-
-
 
 // EXPORT TYPES FOR ALL SCHEMAS
 export type TestSuiteCreateInput = z.infer<typeof TestSuiteCreateSchema>;

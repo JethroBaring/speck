@@ -1,9 +1,9 @@
 "use client";
 
 import TestSuiteRightSidebar from "@/components/test-suites/RightSidebar";
-import TestCaseEditor from "@/components/common/TestCaseEditor";
 import { Folder, Play, CheckCircle, Clock, BarChart3, PlusCircle } from "lucide-react";
 import Button from "@/components/ui/button/Button";
+import TestCaseEditorWithHelp from "@/components/common/TestCaseEditorWithHelp";
 
 export default function TestSuitePage() {
 
@@ -45,7 +45,7 @@ export default function TestSuitePage() {
 					</div>
 				</div>
 				<div className="flex-1 p-4">
-					<TestCaseEditor />
+					<TestCaseEditorWithHelp />
 				</div>
 			</div>
 			<TestSuiteRightSidebar />

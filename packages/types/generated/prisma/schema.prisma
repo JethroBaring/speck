@@ -33,12 +33,12 @@ model User {
   createdTestCases    TestCase[]          @relation("TestCaseCreator")
   sentInvitations     ProjectInvitation[] @relation("InvitationSender")
   receivedInvitations ProjectInvitation[] @relation("InvitationReceiver")
-  // groups             Group[]             @relation("GroupCreator")
   projectVariables    ProjectVariable[]   @relation("ProjectVariableCreator")
   testSuiteVariables  TestSuiteVariable[] @relation("TestSuiteVariableCreator")
   projectFunctions    ProjectFunction[]   @relation("ProjectFunctionCreator")
   testSuiteFunctions  TestSuiteFunction[] @relation("TestSuiteFunctionCreator")
   testSuites          TestSuites[]        @relation("TestSuitesCreator")
+  notifications       Notification[]      @relation("UserNotifications") // Add this line
 
   @@unique([email])
   @@map("user")
@@ -141,6 +141,7 @@ model TestSuites {
   testCases TestCase[]          @relation("TestSuiteTestCases")
   variables TestSuiteVariable[] @relation("TestSuiteVariables")
   functions TestSuiteFunction[] @relation("TestSuiteFunctions")
+  runs      TestSuiteRun[]      @relation("TestSuiteRuns")
 
   @@map("test_suites")
 }
@@ -221,6 +222,71 @@ model TestSuiteFunction {
   @@map("test_suite_functions")
 }
 
+model TestSuiteRun {
+  id           Int           @id @default(autoincrement())
+  testSuiteId  Int           @map("test_suite_id")
+  status       TestRunStatus @default(RUNNING)
+  startedAt    DateTime      @default(now()) @map("started_at")
+  completedAt  DateTime?     @map("completed_at")
+  totalTests   Int           @default(0) @map("total_tests")
+  passedTests  Int           @default(0) @map("passed_tests")
+  failedTests  Int           @default(0) @map("failed_tests")
+  skippedTests Int           @default(0) @map("skipped_tests")
+  errorMessage String?       @map("error_message")
+  environment  String? // e.g., "development", "staging", "production"
+  browser      String? // e.g., "chrome", "firefox", "safari"
+  version      String? // browser version
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  testSuite    TestSuites    @relation("TestSuiteRuns", fields: [testSuiteId], references: [id], onDelete: Cascade)
+  testCaseRuns TestCaseRun[] @relation("TestSuiteRunTestCases")
+
+  @@map("test_suite_runs")
+}
+
+model TestCaseRun {
+  id             Int               @id @default(autoincrement())
+  testCaseId     Int               @map("test_case_id")
+  testSuiteRunId Int               @map("test_suite_run_id")
+  status         TestCaseRunStatus @default(RUNNING)
+  startedAt      DateTime          @default(now()) @map("started_at")
+  completedAt    DateTime?         @map("completed_at")
+  duration       Int? // Duration in milliseconds
+  errorMessage   String?           @map("error_message")
+  stackTrace     String?           @map("stack_trace") @db.Text
+  logs           String?           @db.Text // Console logs or test output
+  metadata       Json? // Additional test-specific data
+
+  // Relations
+  testCase     TestCase         @relation("TestCaseRuns", fields: [testCaseId], references: [id], onDelete: Cascade)
+  testSuiteRun TestSuiteRun     @relation("TestSuiteRunTestCases", fields: [testSuiteRunId], references: [id], onDelete: Cascade)
+  stepResults  TestStepResult[] @relation("TestCaseRunSteps")
+
+  @@map("test_case_runs")
+}
+
+model TestStepResult {
+  id            Int            @id @default(autoincrement())
+  testCaseRunId Int            @map("test_case_run_id")
+  stepNumber    Int            @map("step_number") // Which step in the sequence (1, 2, 3...)
+  stepName      String         @map("step_name") // Human-readable step description
+  status        TestStepStatus @default(RUNNING)
+  startedAt     DateTime       @default(now()) @map("started_at")
+  completedAt   DateTime?      @map("completed_at")
+  duration      Int? // Duration in milliseconds
+  errorMessage  String?        @map("error_message")
+  screenshot    String? // URL or path to screenshot for this specific step
+  logs          String?        @db.Text // Step-specific logs
+  metadata      Json? // Step-specific data (element selectors, values, etc.)
+
+  // Relations
+  testCaseRun TestCaseRun @relation("TestCaseRunSteps", fields: [testCaseRunId], references: [id], onDelete: Cascade)
+
+  @@map("test_step_results")
+}
+
 model Page {
   id           Int      @id @default(autoincrement())
   projectId    Int      @map("project_id")
@@ -261,17 +327,18 @@ model PageElement {
 model TestCase {
   id          Int      @id @default(autoincrement())
   projectId   Int      @map("project_id")
-  testSuiteId Int?     @map("test_suite_id") // NEW: Optional group assignment
+  testSuiteId Int?     @map("test_suite_id")
   name        String
   description String?
-  code        String   @db.Text // NEW: Store DSL code directly
+  code        String   @db.Text
   createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  testSuite TestSuites? @relation("TestSuiteTestCases", fields: [testSuiteId], references: [id])
-  creator   User?       @relation("TestCaseCreator", fields: [createdBy], references: [id])
+  testSuite    TestSuites?   @relation("TestSuiteTestCases", fields: [testSuiteId], references: [id])
+  creator      User?         @relation("TestCaseCreator", fields: [createdBy], references: [id])
+  testCaseRuns TestCaseRun[] @relation("TestCaseRuns")
 
   @@map("test_cases")
 }
@@ -294,14 +361,66 @@ model ProjectInvitation {
   @@map("project_invitations")
 }
 
-generator zod {
-  provider = "zod-prisma-types"
-  output   = "../generated/zod"
-}
-
 enum ProjectInvitationStatus {
   PENDING
   ACCEPTED
   DECLINED
   EXPIRED
+}
+
+enum TestRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  TIMEOUT
+}
+
+enum TestCaseRunStatus {
+  RUNNING
+  PASSED
+  FAILED
+  SKIPPED
+  TIMEOUT
+  ERROR
+}
+
+enum TestStepStatus {
+  RUNNING
+  PASSED
+  FAILED
+  SKIPPED
+  TIMEOUT
+  ERROR
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    String           @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false) @map("is_read")
+  metadata  Json? // Additional context data (projectId, testCaseId, etc.)
+  actionUrl String?          @map("action_url") // URL to navigate to when clicked
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  PROJECT_INVITATION // Project invitation received
+  PROJECT_MEMBER_JOINED // New member joined project
+  ROLE_CHANGED // User role changed in project
+  TEST_SUITE_COMPLETED // Test suite execution completed
+  FEATURE_UPDATE // New feature available
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+  output   = "../generated/zod"
 }
