@@ -23,6 +23,6 @@
 		"strictBindCallApply": false,
 		"noFallthroughCasesInSwitch": false
 	},
-	"include": ["index.ts"],
-	"exclude": ["generated/**", "node_modules/**"]
+	"include": ["index.ts", "generated/**/*"],
+	"exclude": ["node_modules/**"]
 }

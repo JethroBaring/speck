@@ -12,11 +12,9 @@ import {
 import ComponentCard from "./ComponentCard";
 import { Code, HelpCircle, Pencil, Check } from "lucide-react";
 import { useTestCase, useUpdateTestCase } from "@/hooks/useTestCases";
-import { useSearchParams } from "next/navigation";
 
-const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onChange?: (text: string) => void; isSaving?: boolean, lastSavedAt?: number | null }> = ({ className, value, onChange, isSaving, lastSavedAt }) => {
-	const searchParams = useSearchParams();
-	const testCaseId = (searchParams.get("testCaseId") ?? searchParams.get("id")) as string | null;
+const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onChange?: (text: string) => void; isSaving?: boolean, lastSavedAt?: number | null, testCaseId?: string }> = ({ className, value, onChange, isSaving, lastSavedAt, testCaseId }) => {
+
 	const { data: testCase } = useTestCase(testCaseId || "");
 	const { mutate: updateTestCase } = useUpdateTestCase()
 
@@ -147,19 +145,19 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 		const currentRaw = editorRef.current.innerText || "";
 		const current = currentRaw.replace(/\u200B/g, "");
 		if (current === incoming) return;
-		const prevCaret = getCaretPosition();
-		const prevLen = current.length;
+		
+		// Always place caret at end when switching test cases (testCaseId changes)
+		const shouldPlaceCaretAtEnd = current.length === 0 || current !== incoming;
+		
 		rebuildContentWithSyntaxHighlighting(incoming);
 		addCaretAnchorIfNeeded(incoming);
 		setShowPlaceholder(incoming.length === 0);
-		// If this is the first load (or switching to a new case), put caret at end
-		if (prevLen === 0) {
+		
+		// Place caret at end when switching test cases or when content is completely different
+		if (shouldPlaceCaretAtEnd) {
 			restoreCaretPosition(incoming.length);
-		} else {
-			restoreCaretPosition(Math.min(prevCaret, incoming.length));
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [value]);
+	}, [value, testCaseId]);
 
 	const COMMAND_DESCRIPTIONS: Record<string, string> = {
 		goto: "navigate the browser to a URL",
@@ -821,6 +819,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 
 	return (
 			<ComponentCard
+			key={testCaseId}
 			className="h-full"
 			header={<div className="flex items-center justify-between min-h-[2rem]">
 				<div className="flex items-center gap-2 text">

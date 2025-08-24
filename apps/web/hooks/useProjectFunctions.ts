@@ -41,7 +41,7 @@ export function useCreateProjectFunction(projectId: string) {
       });
       
       // Also update the individual project cache if it exists
-      queryClient.setQueryData(['projects', newProjectFunction.data.id], newProjectFunction.data);
+      queryClient.setQueryData(['projects', newProjectFunction.data?.id], newProjectFunction.data);
     },
     onError: (err, newProjectFunctionName, context) => {
       // If the mutation fails, we could show an error toast here
@@ -67,14 +67,14 @@ export function useDeleteProjectFunction(projectId: string) {
         // Filter out the deleted project
         const updated = {
           ...old,
-          data: old.data.filter((projectFunction: any) => projectFunction.id !== deletedProjectFunction.data.id)
+          data: old.data.filter((projectFunction: any) => projectFunction.id !== deletedProjectFunction.data?.id)
         };
         console.log('Updated cache:', updated);
         return updated;
       });
       
       // Also invalidate the individual project cache
-      queryClient.removeQueries({ queryKey: ['projects', deletedProjectFunction.data.id] });
+      queryClient.removeQueries({ queryKey: ['projects', deletedProjectFunction.data?.id] });
     },
     onError: (err, deletedProjectId, context) => {
       // If the mutation fails, we could show an error toast here

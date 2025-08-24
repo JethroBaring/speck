@@ -58,6 +58,7 @@ export class TestSuitesController {
     @Body(new ZodValidationPipe(TestCaseCreateSchema))
     createTestCaseDto: any,
   ) {
+    console.log(createTestCaseDto);
     return this.testCasesService.create(+id, createTestCaseDto);
   }
 

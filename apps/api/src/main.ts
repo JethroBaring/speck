@@ -2,6 +2,7 @@ import { NestFactory, Reflector } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ConfigService } from "@nestjs/config";
 import { ResponseInterceptor } from "./common/interceptors/response.interceptor";
+import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
 import { AllExceptionsFilter } from "./common/filters/http-exception.filter";
 import {
 	SwaggerModule,
@@ -12,6 +13,7 @@ import {
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		bodyParser: false,
+		logger: ['log', 'error', 'warn', 'debug', 'verbose'],
 	});
 	const configService = app.get(ConfigService);
 	const reflector = app.get(Reflector);
@@ -22,7 +24,10 @@ async function bootstrap() {
 		allowedHeaders: ["Content-Type", "Authorization", "x-goog-acl"],
 	});
 	// app.setGlobalPrefix('api');
-	app.useGlobalInterceptors(new ResponseInterceptor(reflector));
+	app.useGlobalInterceptors(
+		new LoggingInterceptor(),
+		new ResponseInterceptor(reflector)
+	);
 	app.useGlobalFilters(new AllExceptionsFilter());
 	const config = new DocumentBuilder()
 		.setTitle("Intervly API")

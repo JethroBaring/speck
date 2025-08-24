@@ -45,6 +45,22 @@ export class ProjectsService {
       where: {
         id,
       },
+      include: {
+        _count: {
+          select: {
+            testSuites: true,
+          },
+        },
+        testSuites: {
+          select: {
+            _count: {
+              select: {
+                testCases: true,
+              },
+            },
+          },
+        },
+      }
     })
   }
 

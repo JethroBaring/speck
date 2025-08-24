@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import { HorizontaLDots } from "../icons/index";
 import Button from "@/components/ui/button/Button";
@@ -16,7 +16,7 @@ import { useProjectModalStore } from "@/stores/useProjectModalStore";
 
 type Project = {
 	name: string;
-	id: string;
+	id: number;
 };
 
 const AppSidebar: React.FC = () => {
@@ -27,7 +27,7 @@ const AppSidebar: React.FC = () => {
 	const pathname = usePathname();
 	const [projectName, setProjectName] = useState("");
 	const toast = useToastStore();
-
+	const router = useRouter();
 	const renderProjects = (projects: Project[]) => (
 		<ul className="flex flex-col gap-4">
 			{projects.map((project) => (
@@ -58,12 +58,12 @@ const AppSidebar: React.FC = () => {
 		</ul>
 	);
 
-	const isActive = useCallback((projectId: string) => pathname.includes(`/projects/${projectId}`), [pathname]);
+	const isActive = useCallback((projectId: number) => pathname.includes(`/projects/${projectId}`), [pathname]);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		createProject(projectName, {
-			onSuccess: () => {
+			onSuccess: (data) => {
 				closeModal();
 				setProjectName("");
 				
@@ -72,6 +72,7 @@ const AppSidebar: React.FC = () => {
 					message: "Project created successfully",
 					type: "success",
 				})
+				router.push(`/projects/${data?.data?.id}`);
 			},
 		});
 	};
@@ -166,7 +167,7 @@ const AppSidebar: React.FC = () => {
 										<HorizontaLDots />
 									)}
 								</h2>
-								{!isLoading && renderProjects(projects?.data)}
+								{!isLoading && projects?.data && renderProjects(projects?.data)}
 							</div>
 						</div>
 					</nav>

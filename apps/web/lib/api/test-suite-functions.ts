@@ -4,7 +4,7 @@ import { ApiResponse } from "../interface"
 import type { TestSuiteFunction } from "@repo/types/zod";
 
 export async function getTestSuiteFunctions(testSuiteId: string): Promise<ApiResponse<TestSuiteFunction[]>> {
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/functions`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-functions`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,12 +16,14 @@ export async function getTestSuiteFunctions(testSuiteId: string): Promise<ApiRes
     throw new Error("Failed to fetch test suite functions")
   }
 
+  console.log(response);
+
   return response.json()
 }
 
 export async function getTestSuiteFunctionById(testSuiteId: string, testSuiteFunctionId: string): Promise<ApiResponse<TestSuiteFunction>> {
 
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/functions/${testSuiteFunctionId}`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-functions/${testSuiteFunctionId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +39,7 @@ export async function getTestSuiteFunctionById(testSuiteId: string, testSuiteFun
 }
 
 export async function createTestSuiteFunction(testSuiteId: string, createTestSuiteFunctionDto: TestSuiteFunctionCreateInput): Promise<ApiResponse<TestSuiteFunction>> {
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/functions`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-functions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +56,7 @@ export async function createTestSuiteFunction(testSuiteId: string, createTestSui
 }
 
 export async function deleteTestSuiteFunction(testSuiteId: string, testSuiteFunctionId: string): Promise<ApiResponse<TestSuiteFunction>> {
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/functions/${testSuiteFunctionId}`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-functions/${testSuiteFunctionId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

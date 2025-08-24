@@ -29,7 +29,7 @@ import {
   TestStepResultUncheckedUpdateInputSchema,
   NotificationUncheckedCreateInputSchema,
   NotificationUncheckedUpdateInputSchema
-} from "@repo/types/zod";
+} from "./generated/zod";
 import z from "zod";
 
 // TEST SUITE SCHEMAS
@@ -101,12 +101,12 @@ const TestCaseBaseCreateSchema = TestCaseUncheckedCreateInputSchema as unknown a
 const TestCaseBaseUpdateSchema = TestCaseUncheckedUpdateInputSchema as unknown as z.ZodObject<any>;
 
 export const TestCaseCreateSchema = TestCaseBaseCreateSchema.omit({
-  projectId: true,
+  testSuiteId: true,
 });
 
 export const TestCaseUpdateSchema = TestCaseBaseUpdateSchema.omit({
   id: true,
-  projectId: true,
+  testSuiteId: true,
 });
 
 // PROJECT VARIABLE SCHEMAS

@@ -151,6 +151,7 @@ model ProjectVariable {
   projectId   Int      @map("project_id")
   name        String // Variable name (without @ symbol)
   value       String // Selector or value
+  type        String // 'string' or 'number' or 'boolean'
   description String?
   createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -170,6 +171,7 @@ model TestSuiteVariable {
   testSuiteId     Int      @map("test_suite_id")
   name        String // Variable name (without @ symbol)
   value       String // Selector or value
+  type        String // 'string' or 'number' or 'boolean'
   description String?
   createdBy   String?   @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -188,6 +190,7 @@ model ProjectFunction {
   id          Int      @id @default(autoincrement())
   projectId   Int      @map("project_id")
   name        String // Function name
+  parameters  String? // Parameters for the function
   code        String   @db.Text // DSL code for the function
   description String?
   createdBy   String?   @map("created_by")
@@ -207,6 +210,7 @@ model TestSuiteFunction {
   id          Int      @id @default(autoincrement())
   testSuiteId     Int      @map("test_suite_id")
   name        String // Function name
+  parameters  String? // Parameters for the function
   code        String   @db.Text // DSL code for the function
   description String?
   createdBy   String?   @map("created_by")
@@ -325,7 +329,6 @@ model PageElement {
 
 model TestCase {
   id          Int      @id @default(autoincrement())
-  projectId   Int      @map("project_id")
   testSuiteId     Int?     @map("test_suite_id")
   name        String
   description String?

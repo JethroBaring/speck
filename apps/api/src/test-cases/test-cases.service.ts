@@ -10,7 +10,7 @@ export class TestCasesService {
     testSuiteId: number,
     createTestCaseDto: Prisma.TestCaseCreateInput,
   ) {
-    return await this.prisma.testCase.create({
+    const x=  await this.prisma.testCase.create({
       data: {
         ...createTestCaseDto,
         testSuite: {
@@ -20,6 +20,9 @@ export class TestCasesService {
         },
       },
     });
+
+    console.log(x);
+    return x;
   }
 
   async findAllByProjectId(projectId: number) {

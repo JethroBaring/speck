@@ -26,13 +26,13 @@ export const ProjectMemberScalarFieldEnumSchema = z.enum(['id','projectId','user
 
 export const TestSuitesScalarFieldEnumSchema = z.enum(['id','projectId','name','description','createdBy','createdAt','updatedAt']);
 
-export const ProjectVariableScalarFieldEnumSchema = z.enum(['id','projectId','name','value','description','createdBy','createdAt','updatedAt']);
+export const ProjectVariableScalarFieldEnumSchema = z.enum(['id','projectId','name','value','type','description','createdBy','createdAt','updatedAt']);
 
-export const TestSuiteVariableScalarFieldEnumSchema = z.enum(['id','testSuiteId','name','value','description','createdBy','createdAt','updatedAt']);
+export const TestSuiteVariableScalarFieldEnumSchema = z.enum(['id','testSuiteId','name','value','type','description','createdBy','createdAt','updatedAt']);
 
-export const ProjectFunctionScalarFieldEnumSchema = z.enum(['id','projectId','name','code','description','createdBy','createdAt','updatedAt']);
+export const ProjectFunctionScalarFieldEnumSchema = z.enum(['id','projectId','name','parameters','code','description','createdBy','createdAt','updatedAt']);
 
-export const TestSuiteFunctionScalarFieldEnumSchema = z.enum(['id','testSuiteId','name','code','description','createdBy','createdAt','updatedAt']);
+export const TestSuiteFunctionScalarFieldEnumSchema = z.enum(['id','testSuiteId','name','parameters','code','description','createdBy','createdAt','updatedAt']);
 
 export const TestSuiteRunScalarFieldEnumSchema = z.enum(['id','testSuiteId','status','startedAt','completedAt','totalTests','passedTests','failedTests','skippedTests','errorMessage','environment','browser','version','createdAt','updatedAt']);
 
@@ -44,7 +44,7 @@ export const PageScalarFieldEnumSchema = z.enum(['id','projectId','name','url','
 
 export const PageElementScalarFieldEnumSchema = z.enum(['id','pageId','elementName','selector','description','createdBy','createdAt','updatedAt']);
 
-export const TestCaseScalarFieldEnumSchema = z.enum(['id','projectId','testSuiteId','name','description','code','createdBy','createdAt','updatedAt']);
+export const TestCaseScalarFieldEnumSchema = z.enum(['id','testSuiteId','name','description','code','createdBy','createdAt','updatedAt']);
 
 export const ProjectInvitationScalarFieldEnumSchema = z.enum(['id','projectId','userId','invitedBy','status','expiresAt','createdAt','updatedAt']);
 
@@ -205,6 +205,7 @@ export const ProjectVariableSchema = z.object({
   projectId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().nullable(),
   createdBy: z.string().nullable(),
   createdAt: z.coerce.date(),
@@ -222,6 +223,7 @@ export const TestSuiteVariableSchema = z.object({
   testSuiteId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().nullable(),
   createdBy: z.string().nullable(),
   createdAt: z.coerce.date(),
@@ -238,6 +240,7 @@ export const ProjectFunctionSchema = z.object({
   id: z.number().int(),
   projectId: z.number().int(),
   name: z.string(),
+  parameters: z.string().nullable(),
   code: z.string(),
   description: z.string().nullable(),
   createdBy: z.string().nullable(),
@@ -255,6 +258,7 @@ export const TestSuiteFunctionSchema = z.object({
   id: z.number().int(),
   testSuiteId: z.number().int(),
   name: z.string(),
+  parameters: z.string().nullable(),
   code: z.string(),
   description: z.string().nullable(),
   createdBy: z.string().nullable(),
@@ -369,7 +373,6 @@ export type PageElement = z.infer<typeof PageElementSchema>
 
 export const TestCaseSchema = z.object({
   id: z.number().int(),
-  projectId: z.number().int(),
   testSuiteId: z.number().int().nullable(),
   name: z.string(),
   description: z.string().nullable(),
@@ -697,6 +700,7 @@ export const ProjectVariableSelectSchema: z.ZodType<Prisma.ProjectVariableSelect
   projectId: z.boolean().optional(),
   name: z.boolean().optional(),
   value: z.boolean().optional(),
+  type: z.boolean().optional(),
   description: z.boolean().optional(),
   createdBy: z.boolean().optional(),
   createdAt: z.boolean().optional(),
@@ -723,6 +727,7 @@ export const TestSuiteVariableSelectSchema: z.ZodType<Prisma.TestSuiteVariableSe
   testSuiteId: z.boolean().optional(),
   name: z.boolean().optional(),
   value: z.boolean().optional(),
+  type: z.boolean().optional(),
   description: z.boolean().optional(),
   createdBy: z.boolean().optional(),
   createdAt: z.boolean().optional(),
@@ -748,6 +753,7 @@ export const ProjectFunctionSelectSchema: z.ZodType<Prisma.ProjectFunctionSelect
   id: z.boolean().optional(),
   projectId: z.boolean().optional(),
   name: z.boolean().optional(),
+  parameters: z.boolean().optional(),
   code: z.boolean().optional(),
   description: z.boolean().optional(),
   createdBy: z.boolean().optional(),
@@ -774,6 +780,7 @@ export const TestSuiteFunctionSelectSchema: z.ZodType<Prisma.TestSuiteFunctionSe
   id: z.boolean().optional(),
   testSuiteId: z.boolean().optional(),
   name: z.boolean().optional(),
+  parameters: z.boolean().optional(),
   code: z.boolean().optional(),
   description: z.boolean().optional(),
   createdBy: z.boolean().optional(),
@@ -984,7 +991,6 @@ export const TestCaseCountOutputTypeSelectSchema: z.ZodType<Prisma.TestCaseCount
 
 export const TestCaseSelectSchema: z.ZodType<Prisma.TestCaseSelect> = z.object({
   id: z.boolean().optional(),
-  projectId: z.boolean().optional(),
   testSuiteId: z.boolean().optional(),
   name: z.boolean().optional(),
   description: z.boolean().optional(),
@@ -1669,6 +1675,7 @@ export const ProjectVariableWhereInputSchema: z.ZodType<Prisma.ProjectVariableWh
   projectId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -1682,6 +1689,7 @@ export const ProjectVariableOrderByWithRelationInputSchema: z.ZodType<Prisma.Pro
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -1711,6 +1719,7 @@ export const ProjectVariableWhereUniqueInputSchema: z.ZodType<Prisma.ProjectVari
   projectId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -1724,6 +1733,7 @@ export const ProjectVariableOrderByWithAggregationInputSchema: z.ZodType<Prisma.
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -1743,6 +1753,7 @@ export const ProjectVariableScalarWhereWithAggregatesInputSchema: z.ZodType<Pris
   projectId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
@@ -1757,6 +1768,7 @@ export const TestSuiteVariableWhereInputSchema: z.ZodType<Prisma.TestSuiteVariab
   testSuiteId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -1770,6 +1782,7 @@ export const TestSuiteVariableOrderByWithRelationInputSchema: z.ZodType<Prisma.T
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -1799,6 +1812,7 @@ export const TestSuiteVariableWhereUniqueInputSchema: z.ZodType<Prisma.TestSuite
   testSuiteId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -1812,6 +1826,7 @@ export const TestSuiteVariableOrderByWithAggregationInputSchema: z.ZodType<Prism
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -1831,6 +1846,7 @@ export const TestSuiteVariableScalarWhereWithAggregatesInputSchema: z.ZodType<Pr
   testSuiteId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
@@ -1844,6 +1860,7 @@ export const ProjectFunctionWhereInputSchema: z.ZodType<Prisma.ProjectFunctionWh
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   projectId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -1857,6 +1874,7 @@ export const ProjectFunctionOrderByWithRelationInputSchema: z.ZodType<Prisma.Pro
   id: z.lazy(() => SortOrderSchema).optional(),
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1886,6 +1904,7 @@ export const ProjectFunctionWhereUniqueInputSchema: z.ZodType<Prisma.ProjectFunc
   NOT: z.union([ z.lazy(() => ProjectFunctionWhereInputSchema),z.lazy(() => ProjectFunctionWhereInputSchema).array() ]).optional(),
   projectId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -1899,6 +1918,7 @@ export const ProjectFunctionOrderByWithAggregationInputSchema: z.ZodType<Prisma.
   id: z.lazy(() => SortOrderSchema).optional(),
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1918,6 +1938,7 @@ export const ProjectFunctionScalarWhereWithAggregatesInputSchema: z.ZodType<Pris
   id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   projectId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
@@ -1932,6 +1953,7 @@ export const TestSuiteFunctionWhereInputSchema: z.ZodType<Prisma.TestSuiteFuncti
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -1945,6 +1967,7 @@ export const TestSuiteFunctionOrderByWithRelationInputSchema: z.ZodType<Prisma.T
   id: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -1974,6 +1997,7 @@ export const TestSuiteFunctionWhereUniqueInputSchema: z.ZodType<Prisma.TestSuite
   NOT: z.union([ z.lazy(() => TestSuiteFunctionWhereInputSchema),z.lazy(() => TestSuiteFunctionWhereInputSchema).array() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -1987,6 +2011,7 @@ export const TestSuiteFunctionOrderByWithAggregationInputSchema: z.ZodType<Prism
   id: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -2006,6 +2031,7 @@ export const TestSuiteFunctionScalarWhereWithAggregatesInputSchema: z.ZodType<Pr
   id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
@@ -2481,7 +2507,6 @@ export const TestCaseWhereInputSchema: z.ZodType<Prisma.TestCaseWhereInput> = z.
   OR: z.lazy(() => TestCaseWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TestCaseWhereInputSchema),z.lazy(() => TestCaseWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
-  projectId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -2496,7 +2521,6 @@ export const TestCaseWhereInputSchema: z.ZodType<Prisma.TestCaseWhereInput> = z.
 
 export const TestCaseOrderByWithRelationInputSchema: z.ZodType<Prisma.TestCaseOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -2517,7 +2541,6 @@ export const TestCaseWhereUniqueInputSchema: z.ZodType<Prisma.TestCaseWhereUniqu
   AND: z.union([ z.lazy(() => TestCaseWhereInputSchema),z.lazy(() => TestCaseWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => TestCaseWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TestCaseWhereInputSchema),z.lazy(() => TestCaseWhereInputSchema).array() ]).optional(),
-  projectId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number().int() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -2532,7 +2555,6 @@ export const TestCaseWhereUniqueInputSchema: z.ZodType<Prisma.TestCaseWhereUniqu
 
 export const TestCaseOrderByWithAggregationInputSchema: z.ZodType<Prisma.TestCaseOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -2552,7 +2574,6 @@ export const TestCaseScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Test
   OR: z.lazy(() => TestCaseScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TestCaseScalarWhereWithAggregatesInputSchema),z.lazy(() => TestCaseScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
-  projectId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntNullableWithAggregatesFilterSchema),z.number() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
@@ -3328,6 +3349,7 @@ export const TestSuitesUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TestSuit
 export const ProjectVariableCreateInputSchema: z.ZodType<Prisma.ProjectVariableCreateInput> = z.object({
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -3340,6 +3362,7 @@ export const ProjectVariableUncheckedCreateInputSchema: z.ZodType<Prisma.Project
   projectId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -3349,6 +3372,7 @@ export const ProjectVariableUncheckedCreateInputSchema: z.ZodType<Prisma.Project
 export const ProjectVariableUpdateInputSchema: z.ZodType<Prisma.ProjectVariableUpdateInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3361,6 +3385,7 @@ export const ProjectVariableUncheckedUpdateInputSchema: z.ZodType<Prisma.Project
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3372,6 +3397,7 @@ export const ProjectVariableCreateManyInputSchema: z.ZodType<Prisma.ProjectVaria
   projectId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -3381,6 +3407,7 @@ export const ProjectVariableCreateManyInputSchema: z.ZodType<Prisma.ProjectVaria
 export const ProjectVariableUpdateManyMutationInputSchema: z.ZodType<Prisma.ProjectVariableUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3391,6 +3418,7 @@ export const ProjectVariableUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Pro
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3400,6 +3428,7 @@ export const ProjectVariableUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Pro
 export const TestSuiteVariableCreateInputSchema: z.ZodType<Prisma.TestSuiteVariableCreateInput> = z.object({
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -3412,6 +3441,7 @@ export const TestSuiteVariableUncheckedCreateInputSchema: z.ZodType<Prisma.TestS
   testSuiteId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -3421,6 +3451,7 @@ export const TestSuiteVariableUncheckedCreateInputSchema: z.ZodType<Prisma.TestS
 export const TestSuiteVariableUpdateInputSchema: z.ZodType<Prisma.TestSuiteVariableUpdateInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3433,6 +3464,7 @@ export const TestSuiteVariableUncheckedUpdateInputSchema: z.ZodType<Prisma.TestS
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3444,6 +3476,7 @@ export const TestSuiteVariableCreateManyInputSchema: z.ZodType<Prisma.TestSuiteV
   testSuiteId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -3453,6 +3486,7 @@ export const TestSuiteVariableCreateManyInputSchema: z.ZodType<Prisma.TestSuiteV
 export const TestSuiteVariableUpdateManyMutationInputSchema: z.ZodType<Prisma.TestSuiteVariableUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3463,6 +3497,7 @@ export const TestSuiteVariableUncheckedUpdateManyInputSchema: z.ZodType<Prisma.T
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3471,6 +3506,7 @@ export const TestSuiteVariableUncheckedUpdateManyInputSchema: z.ZodType<Prisma.T
 
 export const ProjectFunctionCreateInputSchema: z.ZodType<Prisma.ProjectFunctionCreateInput> = z.object({
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -3483,6 +3519,7 @@ export const ProjectFunctionUncheckedCreateInputSchema: z.ZodType<Prisma.Project
   id: z.number().int().optional(),
   projectId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -3492,6 +3529,7 @@ export const ProjectFunctionUncheckedCreateInputSchema: z.ZodType<Prisma.Project
 
 export const ProjectFunctionUpdateInputSchema: z.ZodType<Prisma.ProjectFunctionUpdateInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3504,6 +3542,7 @@ export const ProjectFunctionUncheckedUpdateInputSchema: z.ZodType<Prisma.Project
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3515,6 +3554,7 @@ export const ProjectFunctionCreateManyInputSchema: z.ZodType<Prisma.ProjectFunct
   id: z.number().int().optional(),
   projectId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -3524,6 +3564,7 @@ export const ProjectFunctionCreateManyInputSchema: z.ZodType<Prisma.ProjectFunct
 
 export const ProjectFunctionUpdateManyMutationInputSchema: z.ZodType<Prisma.ProjectFunctionUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3534,6 +3575,7 @@ export const ProjectFunctionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Pro
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3543,6 +3585,7 @@ export const ProjectFunctionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Pro
 
 export const TestSuiteFunctionCreateInputSchema: z.ZodType<Prisma.TestSuiteFunctionCreateInput> = z.object({
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -3555,6 +3598,7 @@ export const TestSuiteFunctionUncheckedCreateInputSchema: z.ZodType<Prisma.TestS
   id: z.number().int().optional(),
   testSuiteId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -3564,6 +3608,7 @@ export const TestSuiteFunctionUncheckedCreateInputSchema: z.ZodType<Prisma.TestS
 
 export const TestSuiteFunctionUpdateInputSchema: z.ZodType<Prisma.TestSuiteFunctionUpdateInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3576,6 +3621,7 @@ export const TestSuiteFunctionUncheckedUpdateInputSchema: z.ZodType<Prisma.TestS
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3587,6 +3633,7 @@ export const TestSuiteFunctionCreateManyInputSchema: z.ZodType<Prisma.TestSuiteF
   id: z.number().int().optional(),
   testSuiteId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -3596,6 +3643,7 @@ export const TestSuiteFunctionCreateManyInputSchema: z.ZodType<Prisma.TestSuiteF
 
 export const TestSuiteFunctionUpdateManyMutationInputSchema: z.ZodType<Prisma.TestSuiteFunctionUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3606,6 +3654,7 @@ export const TestSuiteFunctionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.T
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4086,7 +4135,6 @@ export const PageElementUncheckedUpdateManyInputSchema: z.ZodType<Prisma.PageEle
 }).strict();
 
 export const TestCaseCreateInputSchema: z.ZodType<Prisma.TestCaseCreateInput> = z.object({
-  projectId: z.number().int(),
   name: z.string(),
   description: z.string().optional().nullable(),
   code: z.string(),
@@ -4099,7 +4147,6 @@ export const TestCaseCreateInputSchema: z.ZodType<Prisma.TestCaseCreateInput> = 
 
 export const TestCaseUncheckedCreateInputSchema: z.ZodType<Prisma.TestCaseUncheckedCreateInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   testSuiteId: z.number().int().optional().nullable(),
   name: z.string(),
   description: z.string().optional().nullable(),
@@ -4111,7 +4158,6 @@ export const TestCaseUncheckedCreateInputSchema: z.ZodType<Prisma.TestCaseUnchec
 }).strict();
 
 export const TestCaseUpdateInputSchema: z.ZodType<Prisma.TestCaseUpdateInput> = z.object({
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4124,7 +4170,6 @@ export const TestCaseUpdateInputSchema: z.ZodType<Prisma.TestCaseUpdateInput> = 
 
 export const TestCaseUncheckedUpdateInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4137,7 +4182,6 @@ export const TestCaseUncheckedUpdateInputSchema: z.ZodType<Prisma.TestCaseUnchec
 
 export const TestCaseCreateManyInputSchema: z.ZodType<Prisma.TestCaseCreateManyInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   testSuiteId: z.number().int().optional().nullable(),
   name: z.string(),
   description: z.string().optional().nullable(),
@@ -4148,7 +4192,6 @@ export const TestCaseCreateManyInputSchema: z.ZodType<Prisma.TestCaseCreateManyI
 }).strict();
 
 export const TestCaseUpdateManyMutationInputSchema: z.ZodType<Prisma.TestCaseUpdateManyMutationInput> = z.object({
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4158,7 +4201,6 @@ export const TestCaseUpdateManyMutationInputSchema: z.ZodType<Prisma.TestCaseUpd
 
 export const TestCaseUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4910,6 +4952,7 @@ export const ProjectVariableCountOrderByAggregateInputSchema: z.ZodType<Prisma.P
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -4926,6 +4969,7 @@ export const ProjectVariableMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Pro
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -4937,6 +4981,7 @@ export const ProjectVariableMinOrderByAggregateInputSchema: z.ZodType<Prisma.Pro
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -4963,6 +5008,7 @@ export const TestSuiteVariableCountOrderByAggregateInputSchema: z.ZodType<Prisma
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -4979,6 +5025,7 @@ export const TestSuiteVariableMaxOrderByAggregateInputSchema: z.ZodType<Prisma.T
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -4990,6 +5037,7 @@ export const TestSuiteVariableMinOrderByAggregateInputSchema: z.ZodType<Prisma.T
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
@@ -5010,6 +5058,7 @@ export const ProjectFunctionCountOrderByAggregateInputSchema: z.ZodType<Prisma.P
   id: z.lazy(() => SortOrderSchema).optional(),
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.lazy(() => SortOrderSchema).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -5026,6 +5075,7 @@ export const ProjectFunctionMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Pro
   id: z.lazy(() => SortOrderSchema).optional(),
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.lazy(() => SortOrderSchema).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -5037,6 +5087,7 @@ export const ProjectFunctionMinOrderByAggregateInputSchema: z.ZodType<Prisma.Pro
   id: z.lazy(() => SortOrderSchema).optional(),
   projectId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.lazy(() => SortOrderSchema).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -5058,6 +5109,7 @@ export const TestSuiteFunctionCountOrderByAggregateInputSchema: z.ZodType<Prisma
   id: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.lazy(() => SortOrderSchema).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -5074,6 +5126,7 @@ export const TestSuiteFunctionMaxOrderByAggregateInputSchema: z.ZodType<Prisma.T
   id: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.lazy(() => SortOrderSchema).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -5085,6 +5138,7 @@ export const TestSuiteFunctionMinOrderByAggregateInputSchema: z.ZodType<Prisma.T
   id: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  parameters: z.lazy(() => SortOrderSchema).optional(),
   code: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -5495,7 +5549,6 @@ export const TestSuitesNullableScalarRelationFilterSchema: z.ZodType<Prisma.Test
 
 export const TestCaseCountOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
@@ -5507,13 +5560,11 @@ export const TestCaseCountOrderByAggregateInputSchema: z.ZodType<Prisma.TestCase
 
 export const TestCaseAvgOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseAvgOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TestCaseMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
@@ -5525,7 +5576,6 @@ export const TestCaseMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseMa
 
 export const TestCaseMinOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
@@ -5537,7 +5587,6 @@ export const TestCaseMinOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseMi
 
 export const TestCaseSumOrderByAggregateInputSchema: z.ZodType<Prisma.TestCaseSumOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
-  projectId: z.lazy(() => SortOrderSchema).optional(),
   testSuiteId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -7845,7 +7894,6 @@ export const PageElementCreateManyCreatorInputEnvelopeSchema: z.ZodType<Prisma.P
 }).strict();
 
 export const TestCaseCreateWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseCreateWithoutCreatorInput> = z.object({
-  projectId: z.number().int(),
   name: z.string(),
   description: z.string().optional().nullable(),
   code: z.string(),
@@ -7857,7 +7905,6 @@ export const TestCaseCreateWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseC
 
 export const TestCaseUncheckedCreateWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseUncheckedCreateWithoutCreatorInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   testSuiteId: z.number().int().optional().nullable(),
   name: z.string(),
   description: z.string().optional().nullable(),
@@ -7938,6 +7985,7 @@ export const ProjectInvitationCreateManyUserInputEnvelopeSchema: z.ZodType<Prism
 export const ProjectVariableCreateWithoutCreatorInputSchema: z.ZodType<Prisma.ProjectVariableCreateWithoutCreatorInput> = z.object({
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -7949,6 +7997,7 @@ export const ProjectVariableUncheckedCreateWithoutCreatorInputSchema: z.ZodType<
   projectId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
@@ -7967,6 +8016,7 @@ export const ProjectVariableCreateManyCreatorInputEnvelopeSchema: z.ZodType<Pris
 export const TestSuiteVariableCreateWithoutCreatorInputSchema: z.ZodType<Prisma.TestSuiteVariableCreateWithoutCreatorInput> = z.object({
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -7978,6 +8028,7 @@ export const TestSuiteVariableUncheckedCreateWithoutCreatorInputSchema: z.ZodTyp
   testSuiteId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
@@ -7995,6 +8046,7 @@ export const TestSuiteVariableCreateManyCreatorInputEnvelopeSchema: z.ZodType<Pr
 
 export const ProjectFunctionCreateWithoutCreatorInputSchema: z.ZodType<Prisma.ProjectFunctionCreateWithoutCreatorInput> = z.object({
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -8006,6 +8058,7 @@ export const ProjectFunctionUncheckedCreateWithoutCreatorInputSchema: z.ZodType<
   id: z.number().int().optional(),
   projectId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -8024,6 +8077,7 @@ export const ProjectFunctionCreateManyCreatorInputEnvelopeSchema: z.ZodType<Pris
 
 export const TestSuiteFunctionCreateWithoutCreatorInputSchema: z.ZodType<Prisma.TestSuiteFunctionCreateWithoutCreatorInput> = z.object({
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -8035,6 +8089,7 @@ export const TestSuiteFunctionUncheckedCreateWithoutCreatorInputSchema: z.ZodTyp
   id: z.number().int().optional(),
   testSuiteId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -8321,7 +8376,6 @@ export const TestCaseScalarWhereInputSchema: z.ZodType<Prisma.TestCaseScalarWher
   OR: z.lazy(() => TestCaseScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TestCaseScalarWhereInputSchema),z.lazy(() => TestCaseScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
-  projectId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -8401,6 +8455,7 @@ export const ProjectVariableScalarWhereInputSchema: z.ZodType<Prisma.ProjectVari
   projectId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -8431,6 +8486,7 @@ export const TestSuiteVariableScalarWhereInputSchema: z.ZodType<Prisma.TestSuite
   testSuiteId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -8460,6 +8516,7 @@ export const ProjectFunctionScalarWhereInputSchema: z.ZodType<Prisma.ProjectFunc
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   projectId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -8490,6 +8547,7 @@ export const TestSuiteFunctionScalarWhereInputSchema: z.ZodType<Prisma.TestSuite
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   testSuiteId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  parameters: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   code: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -8959,6 +9017,7 @@ export const TestSuitesCreateManyProjectInputEnvelopeSchema: z.ZodType<Prisma.Te
 export const ProjectVariableCreateWithoutProjectInputSchema: z.ZodType<Prisma.ProjectVariableCreateWithoutProjectInput> = z.object({
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -8969,6 +9028,7 @@ export const ProjectVariableUncheckedCreateWithoutProjectInputSchema: z.ZodType<
   id: z.number().int().optional(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -8987,6 +9047,7 @@ export const ProjectVariableCreateManyProjectInputEnvelopeSchema: z.ZodType<Pris
 
 export const ProjectFunctionCreateWithoutProjectInputSchema: z.ZodType<Prisma.ProjectFunctionCreateWithoutProjectInput> = z.object({
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -8997,6 +9058,7 @@ export const ProjectFunctionCreateWithoutProjectInputSchema: z.ZodType<Prisma.Pr
 export const ProjectFunctionUncheckedCreateWithoutProjectInputSchema: z.ZodType<Prisma.ProjectFunctionUncheckedCreateWithoutProjectInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -9443,7 +9505,6 @@ export const UserCreateOrConnectWithoutTestSuitesInputSchema: z.ZodType<Prisma.U
 }).strict();
 
 export const TestCaseCreateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCaseCreateWithoutTestSuiteInput> = z.object({
-  projectId: z.number().int(),
   name: z.string(),
   description: z.string().optional().nullable(),
   code: z.string(),
@@ -9455,7 +9516,6 @@ export const TestCaseCreateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCas
 
 export const TestCaseUncheckedCreateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCaseUncheckedCreateWithoutTestSuiteInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   name: z.string(),
   description: z.string().optional().nullable(),
   code: z.string(),
@@ -9478,6 +9538,7 @@ export const TestCaseCreateManyTestSuiteInputEnvelopeSchema: z.ZodType<Prisma.Te
 export const TestSuiteVariableCreateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteVariableCreateWithoutTestSuiteInput> = z.object({
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -9488,6 +9549,7 @@ export const TestSuiteVariableUncheckedCreateWithoutTestSuiteInputSchema: z.ZodT
   id: z.number().int().optional(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -9506,6 +9568,7 @@ export const TestSuiteVariableCreateManyTestSuiteInputEnvelopeSchema: z.ZodType<
 
 export const TestSuiteFunctionCreateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteFunctionCreateWithoutTestSuiteInput> = z.object({
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -9516,6 +9579,7 @@ export const TestSuiteFunctionCreateWithoutTestSuiteInputSchema: z.ZodType<Prism
 export const TestSuiteFunctionUncheckedCreateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteFunctionUncheckedCreateWithoutTestSuiteInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -10624,7 +10688,6 @@ export const TestCaseRunScalarWhereInputSchema: z.ZodType<Prisma.TestCaseRunScal
 }).strict();
 
 export const TestCaseCreateWithoutTestCaseRunsInputSchema: z.ZodType<Prisma.TestCaseCreateWithoutTestCaseRunsInput> = z.object({
-  projectId: z.number().int(),
   name: z.string(),
   description: z.string().optional().nullable(),
   code: z.string(),
@@ -10636,7 +10699,6 @@ export const TestCaseCreateWithoutTestCaseRunsInputSchema: z.ZodType<Prisma.Test
 
 export const TestCaseUncheckedCreateWithoutTestCaseRunsInputSchema: z.ZodType<Prisma.TestCaseUncheckedCreateWithoutTestCaseRunsInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   testSuiteId: z.number().int().optional().nullable(),
   name: z.string(),
   description: z.string().optional().nullable(),
@@ -10738,7 +10800,6 @@ export const TestCaseUpdateToOneWithWhereWithoutTestCaseRunsInputSchema: z.ZodTy
 }).strict();
 
 export const TestCaseUpdateWithoutTestCaseRunsInputSchema: z.ZodType<Prisma.TestCaseUpdateWithoutTestCaseRunsInput> = z.object({
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -10750,7 +10811,6 @@ export const TestCaseUpdateWithoutTestCaseRunsInputSchema: z.ZodType<Prisma.Test
 
 export const TestCaseUncheckedUpdateWithoutTestCaseRunsInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateWithoutTestCaseRunsInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -12018,7 +12078,6 @@ export const PageElementCreateManyCreatorInputSchema: z.ZodType<Prisma.PageEleme
 
 export const TestCaseCreateManyCreatorInputSchema: z.ZodType<Prisma.TestCaseCreateManyCreatorInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   testSuiteId: z.number().int().optional().nullable(),
   name: z.string(),
   description: z.string().optional().nullable(),
@@ -12052,6 +12111,7 @@ export const ProjectVariableCreateManyCreatorInputSchema: z.ZodType<Prisma.Proje
   projectId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
@@ -12062,6 +12122,7 @@ export const TestSuiteVariableCreateManyCreatorInputSchema: z.ZodType<Prisma.Tes
   testSuiteId: z.number().int(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
@@ -12071,6 +12132,7 @@ export const ProjectFunctionCreateManyCreatorInputSchema: z.ZodType<Prisma.Proje
   id: z.number().int().optional(),
   projectId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -12081,6 +12143,7 @@ export const TestSuiteFunctionCreateManyCreatorInputSchema: z.ZodType<Prisma.Tes
   id: z.number().int().optional(),
   testSuiteId: z.number().int(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -12307,7 +12370,6 @@ export const PageElementUncheckedUpdateManyWithoutCreatorInputSchema: z.ZodType<
 }).strict();
 
 export const TestCaseUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseUpdateWithoutCreatorInput> = z.object({
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12319,7 +12381,6 @@ export const TestCaseUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseU
 
 export const TestCaseUncheckedUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateWithoutCreatorInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -12331,7 +12392,6 @@ export const TestCaseUncheckedUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.
 
 export const TestCaseUncheckedUpdateManyWithoutCreatorInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateManyWithoutCreatorInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -12401,6 +12461,7 @@ export const ProjectInvitationUncheckedUpdateManyWithoutUserInputSchema: z.ZodTy
 export const ProjectVariableUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.ProjectVariableUpdateWithoutCreatorInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12412,6 +12473,7 @@ export const ProjectVariableUncheckedUpdateWithoutCreatorInputSchema: z.ZodType<
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12422,6 +12484,7 @@ export const ProjectVariableUncheckedUpdateManyWithoutCreatorInputSchema: z.ZodT
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12430,6 +12493,7 @@ export const ProjectVariableUncheckedUpdateManyWithoutCreatorInputSchema: z.ZodT
 export const TestSuiteVariableUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.TestSuiteVariableUpdateWithoutCreatorInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12441,6 +12505,7 @@ export const TestSuiteVariableUncheckedUpdateWithoutCreatorInputSchema: z.ZodTyp
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12451,6 +12516,7 @@ export const TestSuiteVariableUncheckedUpdateManyWithoutCreatorInputSchema: z.Zo
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12458,6 +12524,7 @@ export const TestSuiteVariableUncheckedUpdateManyWithoutCreatorInputSchema: z.Zo
 
 export const ProjectFunctionUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.ProjectFunctionUpdateWithoutCreatorInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12469,6 +12536,7 @@ export const ProjectFunctionUncheckedUpdateWithoutCreatorInputSchema: z.ZodType<
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12479,6 +12547,7 @@ export const ProjectFunctionUncheckedUpdateManyWithoutCreatorInputSchema: z.ZodT
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12487,6 +12556,7 @@ export const ProjectFunctionUncheckedUpdateManyWithoutCreatorInputSchema: z.ZodT
 
 export const TestSuiteFunctionUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.TestSuiteFunctionUpdateWithoutCreatorInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12498,6 +12568,7 @@ export const TestSuiteFunctionUncheckedUpdateWithoutCreatorInputSchema: z.ZodTyp
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12508,6 +12579,7 @@ export const TestSuiteFunctionUncheckedUpdateManyWithoutCreatorInputSchema: z.Zo
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   testSuiteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12622,6 +12694,7 @@ export const ProjectVariableCreateManyProjectInputSchema: z.ZodType<Prisma.Proje
   id: z.number().int().optional(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -12631,6 +12704,7 @@ export const ProjectVariableCreateManyProjectInputSchema: z.ZodType<Prisma.Proje
 export const ProjectFunctionCreateManyProjectInputSchema: z.ZodType<Prisma.ProjectFunctionCreateManyProjectInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -12761,6 +12835,7 @@ export const TestSuitesUncheckedUpdateManyWithoutProjectInputSchema: z.ZodType<P
 export const ProjectVariableUpdateWithoutProjectInputSchema: z.ZodType<Prisma.ProjectVariableUpdateWithoutProjectInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12771,6 +12846,7 @@ export const ProjectVariableUncheckedUpdateWithoutProjectInputSchema: z.ZodType<
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12781,6 +12857,7 @@ export const ProjectVariableUncheckedUpdateManyWithoutProjectInputSchema: z.ZodT
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12789,6 +12866,7 @@ export const ProjectVariableUncheckedUpdateManyWithoutProjectInputSchema: z.ZodT
 
 export const ProjectFunctionUpdateWithoutProjectInputSchema: z.ZodType<Prisma.ProjectFunctionUpdateWithoutProjectInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12799,6 +12877,7 @@ export const ProjectFunctionUpdateWithoutProjectInputSchema: z.ZodType<Prisma.Pr
 export const ProjectFunctionUncheckedUpdateWithoutProjectInputSchema: z.ZodType<Prisma.ProjectFunctionUncheckedUpdateWithoutProjectInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -12809,6 +12888,7 @@ export const ProjectFunctionUncheckedUpdateWithoutProjectInputSchema: z.ZodType<
 export const ProjectFunctionUncheckedUpdateManyWithoutProjectInputSchema: z.ZodType<Prisma.ProjectFunctionUncheckedUpdateManyWithoutProjectInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -12818,7 +12898,6 @@ export const ProjectFunctionUncheckedUpdateManyWithoutProjectInputSchema: z.ZodT
 
 export const TestCaseCreateManyTestSuiteInputSchema: z.ZodType<Prisma.TestCaseCreateManyTestSuiteInput> = z.object({
   id: z.number().int().optional(),
-  projectId: z.number().int(),
   name: z.string(),
   description: z.string().optional().nullable(),
   code: z.string(),
@@ -12831,6 +12910,7 @@ export const TestSuiteVariableCreateManyTestSuiteInputSchema: z.ZodType<Prisma.T
   id: z.number().int().optional(),
   name: z.string(),
   value: z.string(),
+  type: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
@@ -12840,6 +12920,7 @@ export const TestSuiteVariableCreateManyTestSuiteInputSchema: z.ZodType<Prisma.T
 export const TestSuiteFunctionCreateManyTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteFunctionCreateManyTestSuiteInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
+  parameters: z.string().optional().nullable(),
   code: z.string(),
   description: z.string().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -12865,7 +12946,6 @@ export const TestSuiteRunCreateManyTestSuiteInputSchema: z.ZodType<Prisma.TestSu
 }).strict();
 
 export const TestCaseUpdateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCaseUpdateWithoutTestSuiteInput> = z.object({
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12877,7 +12957,6 @@ export const TestCaseUpdateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCas
 
 export const TestCaseUncheckedUpdateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateWithoutTestSuiteInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12889,7 +12968,6 @@ export const TestCaseUncheckedUpdateWithoutTestSuiteInputSchema: z.ZodType<Prism
 
 export const TestCaseUncheckedUpdateManyWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestCaseUncheckedUpdateManyWithoutTestSuiteInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  projectId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12901,6 +12979,7 @@ export const TestCaseUncheckedUpdateManyWithoutTestSuiteInputSchema: z.ZodType<P
 export const TestSuiteVariableUpdateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteVariableUpdateWithoutTestSuiteInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12911,6 +12990,7 @@ export const TestSuiteVariableUncheckedUpdateWithoutTestSuiteInputSchema: z.ZodT
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12921,6 +13001,7 @@ export const TestSuiteVariableUncheckedUpdateManyWithoutTestSuiteInputSchema: z.
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12929,6 +13010,7 @@ export const TestSuiteVariableUncheckedUpdateManyWithoutTestSuiteInputSchema: z.
 
 export const TestSuiteFunctionUpdateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteFunctionUpdateWithoutTestSuiteInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -12939,6 +13021,7 @@ export const TestSuiteFunctionUpdateWithoutTestSuiteInputSchema: z.ZodType<Prism
 export const TestSuiteFunctionUncheckedUpdateWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteFunctionUncheckedUpdateWithoutTestSuiteInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -12949,6 +13032,7 @@ export const TestSuiteFunctionUncheckedUpdateWithoutTestSuiteInputSchema: z.ZodT
 export const TestSuiteFunctionUncheckedUpdateManyWithoutTestSuiteInputSchema: z.ZodType<Prisma.TestSuiteFunctionUncheckedUpdateManyWithoutTestSuiteInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parameters: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   code: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),

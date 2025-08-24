@@ -11471,6 +11471,7 @@ export namespace Prisma {
     projectId: number | null
     name: string | null
     value: string | null
+    type: string | null
     description: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -11482,6 +11483,7 @@ export namespace Prisma {
     projectId: number | null
     name: string | null
     value: string | null
+    type: string | null
     description: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -11493,6 +11495,7 @@ export namespace Prisma {
     projectId: number
     name: number
     value: number
+    type: number
     description: number
     createdBy: number
     createdAt: number
@@ -11516,6 +11519,7 @@ export namespace Prisma {
     projectId?: true
     name?: true
     value?: true
+    type?: true
     description?: true
     createdBy?: true
     createdAt?: true
@@ -11527,6 +11531,7 @@ export namespace Prisma {
     projectId?: true
     name?: true
     value?: true
+    type?: true
     description?: true
     createdBy?: true
     createdAt?: true
@@ -11538,6 +11543,7 @@ export namespace Prisma {
     projectId?: true
     name?: true
     value?: true
+    type?: true
     description?: true
     createdBy?: true
     createdAt?: true
@@ -11636,6 +11642,7 @@ export namespace Prisma {
     projectId: number
     name: string
     value: string
+    type: string
     description: string | null
     createdBy: string | null
     createdAt: Date
@@ -11666,6 +11673,7 @@ export namespace Prisma {
     projectId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -11679,6 +11687,7 @@ export namespace Prisma {
     projectId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -11692,6 +11701,7 @@ export namespace Prisma {
     projectId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -11705,13 +11715,14 @@ export namespace Prisma {
     projectId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProjectVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "value" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["projectVariable"]>
+  export type ProjectVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "value" | "type" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["projectVariable"]>
   export type ProjectVariableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     creator?: boolean | ProjectVariable$creatorArgs<ExtArgs>
@@ -11736,6 +11747,7 @@ export namespace Prisma {
       projectId: number
       name: string
       value: string
+      type: string
       description: string | null
       createdBy: string | null
       createdAt: Date
@@ -12169,6 +12181,7 @@ export namespace Prisma {
     readonly projectId: FieldRef<"ProjectVariable", 'Int'>
     readonly name: FieldRef<"ProjectVariable", 'String'>
     readonly value: FieldRef<"ProjectVariable", 'String'>
+    readonly type: FieldRef<"ProjectVariable", 'String'>
     readonly description: FieldRef<"ProjectVariable", 'String'>
     readonly createdBy: FieldRef<"ProjectVariable", 'String'>
     readonly createdAt: FieldRef<"ProjectVariable", 'DateTime'>
@@ -12633,6 +12646,7 @@ export namespace Prisma {
     testSuiteId: number | null
     name: string | null
     value: string | null
+    type: string | null
     description: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -12644,6 +12658,7 @@ export namespace Prisma {
     testSuiteId: number | null
     name: string | null
     value: string | null
+    type: string | null
     description: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -12655,6 +12670,7 @@ export namespace Prisma {
     testSuiteId: number
     name: number
     value: number
+    type: number
     description: number
     createdBy: number
     createdAt: number
@@ -12678,6 +12694,7 @@ export namespace Prisma {
     testSuiteId?: true
     name?: true
     value?: true
+    type?: true
     description?: true
     createdBy?: true
     createdAt?: true
@@ -12689,6 +12706,7 @@ export namespace Prisma {
     testSuiteId?: true
     name?: true
     value?: true
+    type?: true
     description?: true
     createdBy?: true
     createdAt?: true
@@ -12700,6 +12718,7 @@ export namespace Prisma {
     testSuiteId?: true
     name?: true
     value?: true
+    type?: true
     description?: true
     createdBy?: true
     createdAt?: true
@@ -12798,6 +12817,7 @@ export namespace Prisma {
     testSuiteId: number
     name: string
     value: string
+    type: string
     description: string | null
     createdBy: string | null
     createdAt: Date
@@ -12828,6 +12848,7 @@ export namespace Prisma {
     testSuiteId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -12841,6 +12862,7 @@ export namespace Prisma {
     testSuiteId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -12854,6 +12876,7 @@ export namespace Prisma {
     testSuiteId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -12867,13 +12890,14 @@ export namespace Prisma {
     testSuiteId?: boolean
     name?: boolean
     value?: boolean
+    type?: boolean
     description?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TestSuiteVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "value" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuiteVariable"]>
+  export type TestSuiteVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "value" | "type" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuiteVariable"]>
   export type TestSuiteVariableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
     creator?: boolean | TestSuiteVariable$creatorArgs<ExtArgs>
@@ -12898,6 +12922,7 @@ export namespace Prisma {
       testSuiteId: number
       name: string
       value: string
+      type: string
       description: string | null
       createdBy: string | null
       createdAt: Date
@@ -13331,6 +13356,7 @@ export namespace Prisma {
     readonly testSuiteId: FieldRef<"TestSuiteVariable", 'Int'>
     readonly name: FieldRef<"TestSuiteVariable", 'String'>
     readonly value: FieldRef<"TestSuiteVariable", 'String'>
+    readonly type: FieldRef<"TestSuiteVariable", 'String'>
     readonly description: FieldRef<"TestSuiteVariable", 'String'>
     readonly createdBy: FieldRef<"TestSuiteVariable", 'String'>
     readonly createdAt: FieldRef<"TestSuiteVariable", 'DateTime'>
@@ -13794,6 +13820,7 @@ export namespace Prisma {
     id: number | null
     projectId: number | null
     name: string | null
+    parameters: string | null
     code: string | null
     description: string | null
     createdBy: string | null
@@ -13805,6 +13832,7 @@ export namespace Prisma {
     id: number | null
     projectId: number | null
     name: string | null
+    parameters: string | null
     code: string | null
     description: string | null
     createdBy: string | null
@@ -13816,6 +13844,7 @@ export namespace Prisma {
     id: number
     projectId: number
     name: number
+    parameters: number
     code: number
     description: number
     createdBy: number
@@ -13839,6 +13868,7 @@ export namespace Prisma {
     id?: true
     projectId?: true
     name?: true
+    parameters?: true
     code?: true
     description?: true
     createdBy?: true
@@ -13850,6 +13880,7 @@ export namespace Prisma {
     id?: true
     projectId?: true
     name?: true
+    parameters?: true
     code?: true
     description?: true
     createdBy?: true
@@ -13861,6 +13892,7 @@ export namespace Prisma {
     id?: true
     projectId?: true
     name?: true
+    parameters?: true
     code?: true
     description?: true
     createdBy?: true
@@ -13959,6 +13991,7 @@ export namespace Prisma {
     id: number
     projectId: number
     name: string
+    parameters: string | null
     code: string
     description: string | null
     createdBy: string | null
@@ -13989,6 +14022,7 @@ export namespace Prisma {
     id?: boolean
     projectId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -14002,6 +14036,7 @@ export namespace Prisma {
     id?: boolean
     projectId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -14015,6 +14050,7 @@ export namespace Prisma {
     id?: boolean
     projectId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -14028,6 +14064,7 @@ export namespace Prisma {
     id?: boolean
     projectId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -14035,7 +14072,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProjectFunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "code" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["projectFunction"]>
+  export type ProjectFunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "name" | "parameters" | "code" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["projectFunction"]>
   export type ProjectFunctionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     creator?: boolean | ProjectFunction$creatorArgs<ExtArgs>
@@ -14059,6 +14096,7 @@ export namespace Prisma {
       id: number
       projectId: number
       name: string
+      parameters: string | null
       code: string
       description: string | null
       createdBy: string | null
@@ -14492,6 +14530,7 @@ export namespace Prisma {
     readonly id: FieldRef<"ProjectFunction", 'Int'>
     readonly projectId: FieldRef<"ProjectFunction", 'Int'>
     readonly name: FieldRef<"ProjectFunction", 'String'>
+    readonly parameters: FieldRef<"ProjectFunction", 'String'>
     readonly code: FieldRef<"ProjectFunction", 'String'>
     readonly description: FieldRef<"ProjectFunction", 'String'>
     readonly createdBy: FieldRef<"ProjectFunction", 'String'>
@@ -14956,6 +14995,7 @@ export namespace Prisma {
     id: number | null
     testSuiteId: number | null
     name: string | null
+    parameters: string | null
     code: string | null
     description: string | null
     createdBy: string | null
@@ -14967,6 +15007,7 @@ export namespace Prisma {
     id: number | null
     testSuiteId: number | null
     name: string | null
+    parameters: string | null
     code: string | null
     description: string | null
     createdBy: string | null
@@ -14978,6 +15019,7 @@ export namespace Prisma {
     id: number
     testSuiteId: number
     name: number
+    parameters: number
     code: number
     description: number
     createdBy: number
@@ -15001,6 +15043,7 @@ export namespace Prisma {
     id?: true
     testSuiteId?: true
     name?: true
+    parameters?: true
     code?: true
     description?: true
     createdBy?: true
@@ -15012,6 +15055,7 @@ export namespace Prisma {
     id?: true
     testSuiteId?: true
     name?: true
+    parameters?: true
     code?: true
     description?: true
     createdBy?: true
@@ -15023,6 +15067,7 @@ export namespace Prisma {
     id?: true
     testSuiteId?: true
     name?: true
+    parameters?: true
     code?: true
     description?: true
     createdBy?: true
@@ -15121,6 +15166,7 @@ export namespace Prisma {
     id: number
     testSuiteId: number
     name: string
+    parameters: string | null
     code: string
     description: string | null
     createdBy: string | null
@@ -15151,6 +15197,7 @@ export namespace Prisma {
     id?: boolean
     testSuiteId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -15164,6 +15211,7 @@ export namespace Prisma {
     id?: boolean
     testSuiteId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -15177,6 +15225,7 @@ export namespace Prisma {
     id?: boolean
     testSuiteId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -15190,6 +15239,7 @@ export namespace Prisma {
     id?: boolean
     testSuiteId?: boolean
     name?: boolean
+    parameters?: boolean
     code?: boolean
     description?: boolean
     createdBy?: boolean
@@ -15197,7 +15247,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TestSuiteFunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "code" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuiteFunction"]>
+  export type TestSuiteFunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "parameters" | "code" | "description" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testSuiteFunction"]>
   export type TestSuiteFunctionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestSuitesDefaultArgs<ExtArgs>
     creator?: boolean | TestSuiteFunction$creatorArgs<ExtArgs>
@@ -15221,6 +15271,7 @@ export namespace Prisma {
       id: number
       testSuiteId: number
       name: string
+      parameters: string | null
       code: string
       description: string | null
       createdBy: string | null
@@ -15654,6 +15705,7 @@ export namespace Prisma {
     readonly id: FieldRef<"TestSuiteFunction", 'Int'>
     readonly testSuiteId: FieldRef<"TestSuiteFunction", 'Int'>
     readonly name: FieldRef<"TestSuiteFunction", 'String'>
+    readonly parameters: FieldRef<"TestSuiteFunction", 'String'>
     readonly code: FieldRef<"TestSuiteFunction", 'String'>
     readonly description: FieldRef<"TestSuiteFunction", 'String'>
     readonly createdBy: FieldRef<"TestSuiteFunction", 'String'>
@@ -22147,19 +22199,16 @@ export namespace Prisma {
 
   export type TestCaseAvgAggregateOutputType = {
     id: number | null
-    projectId: number | null
     testSuiteId: number | null
   }
 
   export type TestCaseSumAggregateOutputType = {
     id: number | null
-    projectId: number | null
     testSuiteId: number | null
   }
 
   export type TestCaseMinAggregateOutputType = {
     id: number | null
-    projectId: number | null
     testSuiteId: number | null
     name: string | null
     description: string | null
@@ -22171,7 +22220,6 @@ export namespace Prisma {
 
   export type TestCaseMaxAggregateOutputType = {
     id: number | null
-    projectId: number | null
     testSuiteId: number | null
     name: string | null
     description: string | null
@@ -22183,7 +22231,6 @@ export namespace Prisma {
 
   export type TestCaseCountAggregateOutputType = {
     id: number
-    projectId: number
     testSuiteId: number
     name: number
     description: number
@@ -22197,19 +22244,16 @@ export namespace Prisma {
 
   export type TestCaseAvgAggregateInputType = {
     id?: true
-    projectId?: true
     testSuiteId?: true
   }
 
   export type TestCaseSumAggregateInputType = {
     id?: true
-    projectId?: true
     testSuiteId?: true
   }
 
   export type TestCaseMinAggregateInputType = {
     id?: true
-    projectId?: true
     testSuiteId?: true
     name?: true
     description?: true
@@ -22221,7 +22265,6 @@ export namespace Prisma {
 
   export type TestCaseMaxAggregateInputType = {
     id?: true
-    projectId?: true
     testSuiteId?: true
     name?: true
     description?: true
@@ -22233,7 +22276,6 @@ export namespace Prisma {
 
   export type TestCaseCountAggregateInputType = {
     id?: true
-    projectId?: true
     testSuiteId?: true
     name?: true
     description?: true
@@ -22332,7 +22374,6 @@ export namespace Prisma {
 
   export type TestCaseGroupByOutputType = {
     id: number
-    projectId: number
     testSuiteId: number | null
     name: string
     description: string | null
@@ -22363,7 +22404,6 @@ export namespace Prisma {
 
   export type TestCaseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    projectId?: boolean
     testSuiteId?: boolean
     name?: boolean
     description?: boolean
@@ -22379,7 +22419,6 @@ export namespace Prisma {
 
   export type TestCaseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    projectId?: boolean
     testSuiteId?: boolean
     name?: boolean
     description?: boolean
@@ -22393,7 +22432,6 @@ export namespace Prisma {
 
   export type TestCaseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    projectId?: boolean
     testSuiteId?: boolean
     name?: boolean
     description?: boolean
@@ -22407,7 +22445,6 @@ export namespace Prisma {
 
   export type TestCaseSelectScalar = {
     id?: boolean
-    projectId?: boolean
     testSuiteId?: boolean
     name?: boolean
     description?: boolean
@@ -22417,7 +22454,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TestCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "testSuiteId" | "name" | "description" | "code" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testCase"]>
+  export type TestCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "testSuiteId" | "name" | "description" | "code" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["testCase"]>
   export type TestCaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testSuite?: boolean | TestCase$testSuiteArgs<ExtArgs>
     creator?: boolean | TestCase$creatorArgs<ExtArgs>
@@ -22442,7 +22479,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      projectId: number
       testSuiteId: number | null
       name: string
       description: string | null
@@ -22877,7 +22913,6 @@ export namespace Prisma {
    */
   interface TestCaseFieldRefs {
     readonly id: FieldRef<"TestCase", 'Int'>
-    readonly projectId: FieldRef<"TestCase", 'Int'>
     readonly testSuiteId: FieldRef<"TestCase", 'Int'>
     readonly name: FieldRef<"TestCase", 'String'>
     readonly description: FieldRef<"TestCase", 'String'>
@@ -25770,6 +25805,7 @@ export namespace Prisma {
     projectId: 'projectId',
     name: 'name',
     value: 'value',
+    type: 'type',
     description: 'description',
     createdBy: 'createdBy',
     createdAt: 'createdAt',
@@ -25784,6 +25820,7 @@ export namespace Prisma {
     testSuiteId: 'testSuiteId',
     name: 'name',
     value: 'value',
+    type: 'type',
     description: 'description',
     createdBy: 'createdBy',
     createdAt: 'createdAt',
@@ -25797,6 +25834,7 @@ export namespace Prisma {
     id: 'id',
     projectId: 'projectId',
     name: 'name',
+    parameters: 'parameters',
     code: 'code',
     description: 'description',
     createdBy: 'createdBy',
@@ -25811,6 +25849,7 @@ export namespace Prisma {
     id: 'id',
     testSuiteId: 'testSuiteId',
     name: 'name',
+    parameters: 'parameters',
     code: 'code',
     description: 'description',
     createdBy: 'createdBy',
@@ -25907,7 +25946,6 @@ export namespace Prisma {
 
   export const TestCaseScalarFieldEnum: {
     id: 'id',
-    projectId: 'projectId',
     testSuiteId: 'testSuiteId',
     name: 'name',
     description: 'description',
@@ -26679,6 +26717,7 @@ export namespace Prisma {
     projectId?: IntFilter<"ProjectVariable"> | number
     name?: StringFilter<"ProjectVariable"> | string
     value?: StringFilter<"ProjectVariable"> | string
+    type?: StringFilter<"ProjectVariable"> | string
     description?: StringNullableFilter<"ProjectVariable"> | string | null
     createdBy?: StringNullableFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeFilter<"ProjectVariable"> | Date | string
@@ -26692,6 +26731,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26709,6 +26749,7 @@ export namespace Prisma {
     projectId?: IntFilter<"ProjectVariable"> | number
     name?: StringFilter<"ProjectVariable"> | string
     value?: StringFilter<"ProjectVariable"> | string
+    type?: StringFilter<"ProjectVariable"> | string
     description?: StringNullableFilter<"ProjectVariable"> | string | null
     createdBy?: StringNullableFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeFilter<"ProjectVariable"> | Date | string
@@ -26722,6 +26763,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26741,6 +26783,7 @@ export namespace Prisma {
     projectId?: IntWithAggregatesFilter<"ProjectVariable"> | number
     name?: StringWithAggregatesFilter<"ProjectVariable"> | string
     value?: StringWithAggregatesFilter<"ProjectVariable"> | string
+    type?: StringWithAggregatesFilter<"ProjectVariable"> | string
     description?: StringNullableWithAggregatesFilter<"ProjectVariable"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProjectVariable"> | Date | string
@@ -26755,6 +26798,7 @@ export namespace Prisma {
     testSuiteId?: IntFilter<"TestSuiteVariable"> | number
     name?: StringFilter<"TestSuiteVariable"> | string
     value?: StringFilter<"TestSuiteVariable"> | string
+    type?: StringFilter<"TestSuiteVariable"> | string
     description?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdBy?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
@@ -26768,6 +26812,7 @@ export namespace Prisma {
     testSuiteId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26785,6 +26830,7 @@ export namespace Prisma {
     testSuiteId?: IntFilter<"TestSuiteVariable"> | number
     name?: StringFilter<"TestSuiteVariable"> | string
     value?: StringFilter<"TestSuiteVariable"> | string
+    type?: StringFilter<"TestSuiteVariable"> | string
     description?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdBy?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
@@ -26798,6 +26844,7 @@ export namespace Prisma {
     testSuiteId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26817,6 +26864,7 @@ export namespace Prisma {
     testSuiteId?: IntWithAggregatesFilter<"TestSuiteVariable"> | number
     name?: StringWithAggregatesFilter<"TestSuiteVariable"> | string
     value?: StringWithAggregatesFilter<"TestSuiteVariable"> | string
+    type?: StringWithAggregatesFilter<"TestSuiteVariable"> | string
     description?: StringNullableWithAggregatesFilter<"TestSuiteVariable"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TestSuiteVariable"> | Date | string
@@ -26830,6 +26878,7 @@ export namespace Prisma {
     id?: IntFilter<"ProjectFunction"> | number
     projectId?: IntFilter<"ProjectFunction"> | number
     name?: StringFilter<"ProjectFunction"> | string
+    parameters?: StringNullableFilter<"ProjectFunction"> | string | null
     code?: StringFilter<"ProjectFunction"> | string
     description?: StringNullableFilter<"ProjectFunction"> | string | null
     createdBy?: StringNullableFilter<"ProjectFunction"> | string | null
@@ -26843,6 +26892,7 @@ export namespace Prisma {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrderInput | SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -26860,6 +26910,7 @@ export namespace Prisma {
     NOT?: ProjectFunctionWhereInput | ProjectFunctionWhereInput[]
     projectId?: IntFilter<"ProjectFunction"> | number
     name?: StringFilter<"ProjectFunction"> | string
+    parameters?: StringNullableFilter<"ProjectFunction"> | string | null
     code?: StringFilter<"ProjectFunction"> | string
     description?: StringNullableFilter<"ProjectFunction"> | string | null
     createdBy?: StringNullableFilter<"ProjectFunction"> | string | null
@@ -26873,6 +26924,7 @@ export namespace Prisma {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrderInput | SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -26892,6 +26944,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"ProjectFunction"> | number
     projectId?: IntWithAggregatesFilter<"ProjectFunction"> | number
     name?: StringWithAggregatesFilter<"ProjectFunction"> | string
+    parameters?: StringNullableWithAggregatesFilter<"ProjectFunction"> | string | null
     code?: StringWithAggregatesFilter<"ProjectFunction"> | string
     description?: StringNullableWithAggregatesFilter<"ProjectFunction"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"ProjectFunction"> | string | null
@@ -26906,6 +26959,7 @@ export namespace Prisma {
     id?: IntFilter<"TestSuiteFunction"> | number
     testSuiteId?: IntFilter<"TestSuiteFunction"> | number
     name?: StringFilter<"TestSuiteFunction"> | string
+    parameters?: StringNullableFilter<"TestSuiteFunction"> | string | null
     code?: StringFilter<"TestSuiteFunction"> | string
     description?: StringNullableFilter<"TestSuiteFunction"> | string | null
     createdBy?: StringNullableFilter<"TestSuiteFunction"> | string | null
@@ -26919,6 +26973,7 @@ export namespace Prisma {
     id?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrderInput | SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -26936,6 +26991,7 @@ export namespace Prisma {
     NOT?: TestSuiteFunctionWhereInput | TestSuiteFunctionWhereInput[]
     testSuiteId?: IntFilter<"TestSuiteFunction"> | number
     name?: StringFilter<"TestSuiteFunction"> | string
+    parameters?: StringNullableFilter<"TestSuiteFunction"> | string | null
     code?: StringFilter<"TestSuiteFunction"> | string
     description?: StringNullableFilter<"TestSuiteFunction"> | string | null
     createdBy?: StringNullableFilter<"TestSuiteFunction"> | string | null
@@ -26949,6 +27005,7 @@ export namespace Prisma {
     id?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrderInput | SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -26968,6 +27025,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"TestSuiteFunction"> | number
     testSuiteId?: IntWithAggregatesFilter<"TestSuiteFunction"> | number
     name?: StringWithAggregatesFilter<"TestSuiteFunction"> | string
+    parameters?: StringNullableWithAggregatesFilter<"TestSuiteFunction"> | string | null
     code?: StringWithAggregatesFilter<"TestSuiteFunction"> | string
     description?: StringNullableWithAggregatesFilter<"TestSuiteFunction"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"TestSuiteFunction"> | string | null
@@ -27428,7 +27486,6 @@ export namespace Prisma {
     OR?: TestCaseWhereInput[]
     NOT?: TestCaseWhereInput | TestCaseWhereInput[]
     id?: IntFilter<"TestCase"> | number
-    projectId?: IntFilter<"TestCase"> | number
     testSuiteId?: IntNullableFilter<"TestCase"> | number | null
     name?: StringFilter<"TestCase"> | string
     description?: StringNullableFilter<"TestCase"> | string | null
@@ -27443,7 +27500,6 @@ export namespace Prisma {
 
   export type TestCaseOrderByWithRelationInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -27461,7 +27517,6 @@ export namespace Prisma {
     AND?: TestCaseWhereInput | TestCaseWhereInput[]
     OR?: TestCaseWhereInput[]
     NOT?: TestCaseWhereInput | TestCaseWhereInput[]
-    projectId?: IntFilter<"TestCase"> | number
     testSuiteId?: IntNullableFilter<"TestCase"> | number | null
     name?: StringFilter<"TestCase"> | string
     description?: StringNullableFilter<"TestCase"> | string | null
@@ -27476,7 +27531,6 @@ export namespace Prisma {
 
   export type TestCaseOrderByWithAggregationInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -27496,7 +27550,6 @@ export namespace Prisma {
     OR?: TestCaseScalarWhereWithAggregatesInput[]
     NOT?: TestCaseScalarWhereWithAggregatesInput | TestCaseScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"TestCase"> | number
-    projectId?: IntWithAggregatesFilter<"TestCase"> | number
     testSuiteId?: IntNullableWithAggregatesFilter<"TestCase"> | number | null
     name?: StringWithAggregatesFilter<"TestCase"> | string
     description?: StringNullableWithAggregatesFilter<"TestCase"> | string | null
@@ -28266,6 +28319,7 @@ export namespace Prisma {
   export type ProjectVariableCreateInput = {
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28278,6 +28332,7 @@ export namespace Prisma {
     projectId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -28287,6 +28342,7 @@ export namespace Prisma {
   export type ProjectVariableUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28299,6 +28355,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28310,6 +28367,7 @@ export namespace Prisma {
     projectId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -28319,6 +28377,7 @@ export namespace Prisma {
   export type ProjectVariableUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28329,6 +28388,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28338,6 +28398,7 @@ export namespace Prisma {
   export type TestSuiteVariableCreateInput = {
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28350,6 +28411,7 @@ export namespace Prisma {
     testSuiteId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -28359,6 +28421,7 @@ export namespace Prisma {
   export type TestSuiteVariableUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28371,6 +28434,7 @@ export namespace Prisma {
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28382,6 +28446,7 @@ export namespace Prisma {
     testSuiteId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -28391,6 +28456,7 @@ export namespace Prisma {
   export type TestSuiteVariableUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28401,6 +28467,7 @@ export namespace Prisma {
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28409,6 +28476,7 @@ export namespace Prisma {
 
   export type ProjectFunctionCreateInput = {
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -28421,6 +28489,7 @@ export namespace Prisma {
     id?: number
     projectId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -28430,6 +28499,7 @@ export namespace Prisma {
 
   export type ProjectFunctionUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28442,6 +28512,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28453,6 +28524,7 @@ export namespace Prisma {
     id?: number
     projectId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -28462,6 +28534,7 @@ export namespace Prisma {
 
   export type ProjectFunctionUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28472,6 +28545,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28481,6 +28555,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionCreateInput = {
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -28493,6 +28568,7 @@ export namespace Prisma {
     id?: number
     testSuiteId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -28502,6 +28578,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28514,6 +28591,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28525,6 +28603,7 @@ export namespace Prisma {
     id?: number
     testSuiteId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -28534,6 +28613,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28544,6 +28624,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29024,7 +29105,6 @@ export namespace Prisma {
   }
 
   export type TestCaseCreateInput = {
-    projectId: number
     name: string
     description?: string | null
     code: string
@@ -29037,7 +29117,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedCreateInput = {
     id?: number
-    projectId: number
     testSuiteId?: number | null
     name: string
     description?: string | null
@@ -29049,7 +29128,6 @@ export namespace Prisma {
   }
 
   export type TestCaseUpdateInput = {
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -29062,7 +29140,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     testSuiteId?: NullableIntFieldUpdateOperationsInput | number | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29075,7 +29152,6 @@ export namespace Prisma {
 
   export type TestCaseCreateManyInput = {
     id?: number
-    projectId: number
     testSuiteId?: number | null
     name: string
     description?: string | null
@@ -29086,7 +29162,6 @@ export namespace Prisma {
   }
 
   export type TestCaseUpdateManyMutationInput = {
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -29096,7 +29171,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     testSuiteId?: NullableIntFieldUpdateOperationsInput | number | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29848,6 +29922,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -29864,6 +29939,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -29875,6 +29951,7 @@ export namespace Prisma {
     projectId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -29901,6 +29978,7 @@ export namespace Prisma {
     testSuiteId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -29917,6 +29995,7 @@ export namespace Prisma {
     testSuiteId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -29928,6 +30007,7 @@ export namespace Prisma {
     testSuiteId?: SortOrder
     name?: SortOrder
     value?: SortOrder
+    type?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -29948,6 +30028,7 @@ export namespace Prisma {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrder
     code?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
@@ -29964,6 +30045,7 @@ export namespace Prisma {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrder
     code?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
@@ -29975,6 +30057,7 @@ export namespace Prisma {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrder
     code?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
@@ -29996,6 +30079,7 @@ export namespace Prisma {
     id?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrder
     code?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
@@ -30012,6 +30096,7 @@ export namespace Prisma {
     id?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrder
     code?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
@@ -30023,6 +30108,7 @@ export namespace Prisma {
     id?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
+    parameters?: SortOrder
     code?: SortOrder
     description?: SortOrder
     createdBy?: SortOrder
@@ -30433,7 +30519,6 @@ export namespace Prisma {
 
   export type TestCaseCountOrderByAggregateInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
     description?: SortOrder
@@ -30445,13 +30530,11 @@ export namespace Prisma {
 
   export type TestCaseAvgOrderByAggregateInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrder
   }
 
   export type TestCaseMaxOrderByAggregateInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
     description?: SortOrder
@@ -30463,7 +30546,6 @@ export namespace Prisma {
 
   export type TestCaseMinOrderByAggregateInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrder
     name?: SortOrder
     description?: SortOrder
@@ -30475,7 +30557,6 @@ export namespace Prisma {
 
   export type TestCaseSumOrderByAggregateInput = {
     id?: SortOrder
-    projectId?: SortOrder
     testSuiteId?: SortOrder
   }
 
@@ -32783,7 +32864,6 @@ export namespace Prisma {
   }
 
   export type TestCaseCreateWithoutCreatorInput = {
-    projectId: number
     name: string
     description?: string | null
     code: string
@@ -32795,7 +32875,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedCreateWithoutCreatorInput = {
     id?: number
-    projectId: number
     testSuiteId?: number | null
     name: string
     description?: string | null
@@ -32876,6 +32955,7 @@ export namespace Prisma {
   export type ProjectVariableCreateWithoutCreatorInput = {
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32887,6 +32967,7 @@ export namespace Prisma {
     projectId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32905,6 +32986,7 @@ export namespace Prisma {
   export type TestSuiteVariableCreateWithoutCreatorInput = {
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32916,6 +32998,7 @@ export namespace Prisma {
     testSuiteId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32933,6 +33016,7 @@ export namespace Prisma {
 
   export type ProjectFunctionCreateWithoutCreatorInput = {
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -32944,6 +33028,7 @@ export namespace Prisma {
     id?: number
     projectId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -32962,6 +33047,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionCreateWithoutCreatorInput = {
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -32973,6 +33059,7 @@ export namespace Prisma {
     id?: number
     testSuiteId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -33259,7 +33346,6 @@ export namespace Prisma {
     OR?: TestCaseScalarWhereInput[]
     NOT?: TestCaseScalarWhereInput | TestCaseScalarWhereInput[]
     id?: IntFilter<"TestCase"> | number
-    projectId?: IntFilter<"TestCase"> | number
     testSuiteId?: IntNullableFilter<"TestCase"> | number | null
     name?: StringFilter<"TestCase"> | string
     description?: StringNullableFilter<"TestCase"> | string | null
@@ -33339,6 +33425,7 @@ export namespace Prisma {
     projectId?: IntFilter<"ProjectVariable"> | number
     name?: StringFilter<"ProjectVariable"> | string
     value?: StringFilter<"ProjectVariable"> | string
+    type?: StringFilter<"ProjectVariable"> | string
     description?: StringNullableFilter<"ProjectVariable"> | string | null
     createdBy?: StringNullableFilter<"ProjectVariable"> | string | null
     createdAt?: DateTimeFilter<"ProjectVariable"> | Date | string
@@ -33369,6 +33456,7 @@ export namespace Prisma {
     testSuiteId?: IntFilter<"TestSuiteVariable"> | number
     name?: StringFilter<"TestSuiteVariable"> | string
     value?: StringFilter<"TestSuiteVariable"> | string
+    type?: StringFilter<"TestSuiteVariable"> | string
     description?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdBy?: StringNullableFilter<"TestSuiteVariable"> | string | null
     createdAt?: DateTimeFilter<"TestSuiteVariable"> | Date | string
@@ -33398,6 +33486,7 @@ export namespace Prisma {
     id?: IntFilter<"ProjectFunction"> | number
     projectId?: IntFilter<"ProjectFunction"> | number
     name?: StringFilter<"ProjectFunction"> | string
+    parameters?: StringNullableFilter<"ProjectFunction"> | string | null
     code?: StringFilter<"ProjectFunction"> | string
     description?: StringNullableFilter<"ProjectFunction"> | string | null
     createdBy?: StringNullableFilter<"ProjectFunction"> | string | null
@@ -33428,6 +33517,7 @@ export namespace Prisma {
     id?: IntFilter<"TestSuiteFunction"> | number
     testSuiteId?: IntFilter<"TestSuiteFunction"> | number
     name?: StringFilter<"TestSuiteFunction"> | string
+    parameters?: StringNullableFilter<"TestSuiteFunction"> | string | null
     code?: StringFilter<"TestSuiteFunction"> | string
     description?: StringNullableFilter<"TestSuiteFunction"> | string | null
     createdBy?: StringNullableFilter<"TestSuiteFunction"> | string | null
@@ -33897,6 +33987,7 @@ export namespace Prisma {
   export type ProjectVariableCreateWithoutProjectInput = {
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33907,6 +33998,7 @@ export namespace Prisma {
     id?: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -33925,6 +34017,7 @@ export namespace Prisma {
 
   export type ProjectFunctionCreateWithoutProjectInput = {
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -33935,6 +34028,7 @@ export namespace Prisma {
   export type ProjectFunctionUncheckedCreateWithoutProjectInput = {
     id?: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -34381,7 +34475,6 @@ export namespace Prisma {
   }
 
   export type TestCaseCreateWithoutTestSuiteInput = {
-    projectId: number
     name: string
     description?: string | null
     code: string
@@ -34393,7 +34486,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedCreateWithoutTestSuiteInput = {
     id?: number
-    projectId: number
     name: string
     description?: string | null
     code: string
@@ -34416,6 +34508,7 @@ export namespace Prisma {
   export type TestSuiteVariableCreateWithoutTestSuiteInput = {
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34426,6 +34519,7 @@ export namespace Prisma {
     id?: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -34444,6 +34538,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionCreateWithoutTestSuiteInput = {
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -34454,6 +34549,7 @@ export namespace Prisma {
   export type TestSuiteFunctionUncheckedCreateWithoutTestSuiteInput = {
     id?: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -35562,7 +35658,6 @@ export namespace Prisma {
   }
 
   export type TestCaseCreateWithoutTestCaseRunsInput = {
-    projectId: number
     name: string
     description?: string | null
     code: string
@@ -35574,7 +35669,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedCreateWithoutTestCaseRunsInput = {
     id?: number
-    projectId: number
     testSuiteId?: number | null
     name: string
     description?: string | null
@@ -35676,7 +35770,6 @@ export namespace Prisma {
   }
 
   export type TestCaseUpdateWithoutTestCaseRunsInput = {
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -35688,7 +35781,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateWithoutTestCaseRunsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     testSuiteId?: NullableIntFieldUpdateOperationsInput | number | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36956,7 +37048,6 @@ export namespace Prisma {
 
   export type TestCaseCreateManyCreatorInput = {
     id?: number
-    projectId: number
     testSuiteId?: number | null
     name: string
     description?: string | null
@@ -36990,6 +37081,7 @@ export namespace Prisma {
     projectId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37000,6 +37092,7 @@ export namespace Prisma {
     testSuiteId: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37009,6 +37102,7 @@ export namespace Prisma {
     id?: number
     projectId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -37019,6 +37113,7 @@ export namespace Prisma {
     id?: number
     testSuiteId: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdAt?: Date | string
@@ -37245,7 +37340,6 @@ export namespace Prisma {
   }
 
   export type TestCaseUpdateWithoutCreatorInput = {
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -37257,7 +37351,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateWithoutCreatorInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     testSuiteId?: NullableIntFieldUpdateOperationsInput | number | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37269,7 +37362,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateManyWithoutCreatorInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     testSuiteId?: NullableIntFieldUpdateOperationsInput | number | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37339,6 +37431,7 @@ export namespace Prisma {
   export type ProjectVariableUpdateWithoutCreatorInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37350,6 +37443,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37360,6 +37454,7 @@ export namespace Prisma {
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37368,6 +37463,7 @@ export namespace Prisma {
   export type TestSuiteVariableUpdateWithoutCreatorInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37379,6 +37475,7 @@ export namespace Prisma {
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37389,6 +37486,7 @@ export namespace Prisma {
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37396,6 +37494,7 @@ export namespace Prisma {
 
   export type ProjectFunctionUpdateWithoutCreatorInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37407,6 +37506,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37417,6 +37517,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37425,6 +37526,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionUpdateWithoutCreatorInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37436,6 +37538,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37446,6 +37549,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     testSuiteId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37560,6 +37664,7 @@ export namespace Prisma {
     id?: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -37569,6 +37674,7 @@ export namespace Prisma {
   export type ProjectFunctionCreateManyProjectInput = {
     id?: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -37699,6 +37805,7 @@ export namespace Prisma {
   export type ProjectVariableUpdateWithoutProjectInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37709,6 +37816,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37719,6 +37827,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37727,6 +37836,7 @@ export namespace Prisma {
 
   export type ProjectFunctionUpdateWithoutProjectInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37737,6 +37847,7 @@ export namespace Prisma {
   export type ProjectFunctionUncheckedUpdateWithoutProjectInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37747,6 +37858,7 @@ export namespace Prisma {
   export type ProjectFunctionUncheckedUpdateManyWithoutProjectInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37756,7 +37868,6 @@ export namespace Prisma {
 
   export type TestCaseCreateManyTestSuiteInput = {
     id?: number
-    projectId: number
     name: string
     description?: string | null
     code: string
@@ -37769,6 +37880,7 @@ export namespace Prisma {
     id?: number
     name: string
     value: string
+    type: string
     description?: string | null
     createdBy?: string | null
     createdAt?: Date | string
@@ -37778,6 +37890,7 @@ export namespace Prisma {
   export type TestSuiteFunctionCreateManyTestSuiteInput = {
     id?: number
     name: string
+    parameters?: string | null
     code: string
     description?: string | null
     createdBy?: string | null
@@ -37803,7 +37916,6 @@ export namespace Prisma {
   }
 
   export type TestCaseUpdateWithoutTestSuiteInput = {
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -37815,7 +37927,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateWithoutTestSuiteInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -37827,7 +37938,6 @@ export namespace Prisma {
 
   export type TestCaseUncheckedUpdateManyWithoutTestSuiteInput = {
     id?: IntFieldUpdateOperationsInput | number
-    projectId?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
@@ -37839,6 +37949,7 @@ export namespace Prisma {
   export type TestSuiteVariableUpdateWithoutTestSuiteInput = {
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37849,6 +37960,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37859,6 +37971,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37867,6 +37980,7 @@ export namespace Prisma {
 
   export type TestSuiteFunctionUpdateWithoutTestSuiteInput = {
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37877,6 +37991,7 @@ export namespace Prisma {
   export type TestSuiteFunctionUncheckedUpdateWithoutTestSuiteInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37887,6 +38002,7 @@ export namespace Prisma {
   export type TestSuiteFunctionUncheckedUpdateManyWithoutTestSuiteInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null

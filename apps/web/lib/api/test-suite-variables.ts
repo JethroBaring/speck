@@ -4,7 +4,7 @@ import { ApiResponse } from "../interface"
 import type { TestSuiteVariable } from "@repo/types/zod";
 
 export async function getTestSuiteVariables(testSuiteId: string): Promise<ApiResponse<TestSuiteVariable[]>> {
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/variables`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-variables`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export async function getTestSuiteById(testSuiteId: string): Promise<ApiResponse
 }
 
 export async function createTestSuiteVariable(testSuiteId: string, createTestSuiteVariableDto: TestSuiteVariableCreateInput): Promise<ApiResponse<TestSuiteVariable>> {
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/variables`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-variables`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export async function createTestSuiteVariable(testSuiteId: string, createTestSui
 }
 
 export async function deleteTestSuiteVariable(testSuiteId: string, testSuiteVariableId: string): Promise<ApiResponse<TestSuiteVariable>> {
-  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/variables/${testSuiteVariableId}`, {
+  const response = await fetch(`${API_BASE_URL}/test-suites/${testSuiteId}/test-suite-variables/${testSuiteVariableId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

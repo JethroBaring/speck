@@ -8,6 +8,10 @@ export function useTestSuiteFunctions(testSuiteId: string) {
     queryKey: ['test-suites', testSuiteId, 'functions'],
     queryFn: () => getTestSuiteFunctions(testSuiteId),
     enabled: !!testSuiteId,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 }
 
@@ -41,7 +45,7 @@ export function useCreateTestSuiteFunction(testSuiteId: string) {
       });
       
       // Also update the individual project cache if it exists
-      queryClient.setQueryData(['test-suites', newTestSuiteFunction.data.id], newTestSuiteFunction.data);
+      queryClient.setQueryData(['test-suites', newTestSuiteFunction.data?.id], newTestSuiteFunction.data);
     },
     onError: (err, newTestSuiteFunctionName, context) => {
       // If the mutation fails, we could show an error toast here
@@ -67,14 +71,14 @@ export function useDeleteTestSuiteFunction(testSuiteId: string) {
         // Filter out the deleted project
         const updated = {
           ...old,
-          data: old.data.filter((testSuiteFunction: any) => testSuiteFunction.id !== deletedTestSuiteFunction.data.id)
+          data: old.data.filter((testSuiteFunction: any) => testSuiteFunction.id !== deletedTestSuiteFunction.data?.id)
         };
         console.log('Updated cache:', updated);
         return updated;
       });
       
       // Also invalidate the individual project cache
-      queryClient.removeQueries({ queryKey: ['test-suites', deletedTestSuiteFunction.data.id] });
+      queryClient.removeQueries({ queryKey: ['test-suites', deletedTestSuiteFunction.data?.id] });
     },
     onError: (err, deletedTestSuiteId, context) => {
       // If the mutation fails, we could show an error toast here

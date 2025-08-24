@@ -8,14 +8,22 @@ export function useTestCases(testSuiteId: string) {
     queryKey: ['test-cases', testSuiteId],
     queryFn: () => getTestCases(testSuiteId),
     enabled: !!testSuiteId,
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: false,
+    // staleTime: 2 * 60 * 1000, // 2 minutes
+    // gcTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 
 export function useTestCase(testCaseId: string) {
   return useQuery({
-    queryKey: ['test-cases', testCaseId],
+    queryKey: ['test-case', 'detail', testCaseId],
     queryFn: () => getTestCaseById(testCaseId),
     enabled: !!testCaseId,
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: false,
+    // staleTime: 3 * 60 * 1000, // 3 minutes
+    // gcTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 
@@ -48,8 +56,8 @@ export function useCreateTestCase(testSuiteId: string) {
         return old;
       });
       
-      // Also update the individual project cache if it exists
-      queryClient.setQueryData(['test-cases', newTestCase.data.id], newTestCase.data);
+      // Also update the individual project cache if it exists with new query key
+      queryClient.setQueryData(['test-case', 'detail', newTestCase?.data?.id], newTestCase?.data);
     },
     onError: (err, newTestCaseName, context) => {
       // If the mutation fails, we could show an error toast here
@@ -75,14 +83,14 @@ export function useDeleteTestCase(testSuiteId: string) {
         // Filter out the deleted project
         const updated = {
           ...old,
-          data: old.data.filter((testCase: any) => testCase.id !== deletedTestCase.data.id)
+          data: old.data.filter((testCase: any) => testCase.id !== deletedTestCase?.data?.id)
         };
         console.log('Updated cache:', updated);
         return updated;
       });
       
-      // Also invalidate the individual project cache
-      queryClient.removeQueries({ queryKey: ['test-cases', deletedTestCase.data.id] });
+      // Also invalidate the individual project cache with new query key
+      queryClient.removeQueries({ queryKey: ['test-case', 'detail', deletedTestCase?.data?.id] });
     },
     onError: (err, deletedTestCaseId, context) => {
       // If the mutation fails, we could show an error toast here
@@ -99,8 +107,8 @@ export function useUpdateTestCase() {
     onSuccess: (updatedTestCase) => {
       console.log('TestCase updated successfully:', updatedTestCase);
       
-      // Update the individual test case cache
-      queryClient.setQueryData(['test-cases', updatedTestCase.data.id], updatedTestCase);
+      // Update the individual test case cache with new query key
+      queryClient.setQueryData(['test-case', 'detail', updatedTestCase?.data?.id], updatedTestCase);
       
       // Update all test-cases list caches that might contain this test case
       queryClient.setQueriesData(
@@ -111,7 +119,7 @@ export function useUpdateTestCase() {
           const updated = {
             ...old,
             data: old.data.map((testCase: any) => 
-              testCase.id === updatedTestCase.data.id ? updatedTestCase.data : testCase
+              testCase.id === updatedTestCase?.data?.id ? updatedTestCase?.data : testCase
             )
           };
           console.log('Updated test-cases list cache:', updated);

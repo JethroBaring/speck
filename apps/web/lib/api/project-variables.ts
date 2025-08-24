@@ -4,7 +4,7 @@ import { ApiResponse } from "../interface"
 import type { ProjectVariable } from "@repo/types/zod";
 
 export async function getProjectVariables(projectId: string): Promise<ApiResponse<ProjectVariable[]>> {
-  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/variables`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/project-variables`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export async function getProjectVariables(projectId: string): Promise<ApiRespons
 
 export async function getProjectVariableById(projectId: string, projectVariableId: string): Promise<ApiResponse<ProjectVariable>> {
 
-  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/variables/${projectVariableId}`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/project-variables/${projectVariableId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export async function getProjectVariableById(projectId: string, projectVariableI
 }
 
 export async function createProjectVariable(projectId: string, createProjectVariableDto: ProjectVariableCreateInput): Promise<ApiResponse<ProjectVariable>> {
-  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/variables`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/project-variables`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export async function createProjectVariable(projectId: string, createProjectVari
 }
 
 export async function deleteProjectVariable(projectId: string, projectVariableId: string): Promise<ApiResponse<ProjectVariable>> {
-  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/variables/${projectVariableId}`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${projectId}/project-variables/${projectVariableId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
