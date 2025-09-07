@@ -7,7 +7,7 @@ export class TestCasesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(
-    testSuiteId: number,
+    testSuiteId: string,
     createTestCaseDto: Prisma.TestCaseCreateInput,
   ) {
     const x=  await this.prisma.testCase.create({
@@ -25,7 +25,7 @@ export class TestCasesService {
     return x;
   }
 
-  async findAllByProjectId(projectId: number) {
+  async findAllByProjectId(projectId: string) {
     return await this.prisma.testCase.findMany({
       where: {
         testSuite: {
@@ -35,7 +35,7 @@ export class TestCasesService {
     });
   }
 
-  async findAll(testSuiteId: number) {
+  async findAll(testSuiteId: string) {
     return await this.prisma.testCase.findMany({
       where: {
         testSuite: {
@@ -45,7 +45,7 @@ export class TestCasesService {
     });
   }
 
-  async findOne(testCaseId: number) {
+  async findOne(testCaseId: string) {
     return await this.prisma.testCase.findUnique({
       where: {
         id: testCaseId,
@@ -54,7 +54,7 @@ export class TestCasesService {
   }
 
   async update(
-    testCaseId: number,
+    testCaseId: string,
     updateTestCaseDto: Prisma.TestCaseUpdateInput,
   ) {
     return await this.prisma.testCase.update({
@@ -65,7 +65,7 @@ export class TestCasesService {
     });
   }
 
-  async remove(testCaseId: number) {
+  async remove(testCaseId: string) {
     return await this.prisma.testCase.delete({
       where: {
         id: testCaseId,

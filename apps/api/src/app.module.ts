@@ -12,10 +12,16 @@ import { ProjectVariablesModule } from './project-variables/project-variables.mo
 import { TestSuiteFunctionsModule } from './test-suite-functions/test-suite-functions.module';
 import { ProjectFunctionsModule } from './project-functions/project-functions.module';
 import { TestSuitesModule } from './test-suites/test-suites.module';
-import { ProjectInvitationsModule } from './project-invitations/project-invitations.module';
 import { ProjectsModule } from './projects/projects.module';
 import { PagesModule } from './pages/pages.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { OrganizationModule } from './organization/organization.module';
+import { OrganizationMembersModule } from './organization-members/organization-members.module';
+import { OrganizationRolesModule } from './organization-roles/organization-roles.module';
+import { MailModule } from './mail/mail.module';
+import { OrganizationInvitationsModule } from './organization-invitations/organization-invitations.module';
+import { MinioModule } from "./common/minio/minio.module";
+import { TestRunnerModule } from './test-runner/test-runner.module';
 
 @Module({
   imports: [
@@ -36,12 +42,18 @@ import { PrismaModule } from './prisma/prisma.module';
     TestSuitesModule,
     TestCasesModule,
     ProjectMembersModule,
-    ProjectInvitationsModule,
     TestSuiteVariablesModule,
     ProjectVariablesModule,
     TestSuiteFunctionsModule,
     ProjectFunctionsModule,
     PagesModule,
+    OrganizationModule,
+    OrganizationMembersModule,
+    OrganizationRolesModule,
+    MailModule,
+    OrganizationInvitationsModule,
+    MinioModule,
+    TestRunnerModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }],

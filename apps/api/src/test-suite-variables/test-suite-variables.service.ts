@@ -7,7 +7,7 @@ export class TestSuiteVariablesService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(
-    testSuiteId: number,
+    testSuiteId: string,
     createTestSuiteVariableDto: Prisma.TestSuiteVariableCreateInput,
   ) {
     return this.prisma.testSuiteVariable.create({
@@ -22,7 +22,7 @@ export class TestSuiteVariablesService {
     });
   }
 
-  findAll(testSuiteId: number) {
+  findAll(testSuiteId: string) {
     return this.prisma.testSuiteVariable.findMany({
       where: {
         testSuiteId,
@@ -31,8 +31,8 @@ export class TestSuiteVariablesService {
   }
 
   update(
-    testSuiteId: number,
-    id: number,
+    testSuiteId: string,
+    id: string,
     updateTestSuiteVariableDto: Prisma.TestSuiteVariableUpdateInput,
   ) {
     return this.prisma.testSuiteVariable.update({
@@ -44,7 +44,7 @@ export class TestSuiteVariablesService {
     });
   }
 
-  remove(testSuiteId: number, id: number) {
+  remove(testSuiteId: string, id: string) {
     return this.prisma.testSuiteVariable.delete({
       where: {
         id,

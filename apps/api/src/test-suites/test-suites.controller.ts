@@ -35,7 +35,7 @@ export class TestSuitesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.testSuitesService.findOne(+id);
+    return this.testSuitesService.findOne(id);
   }
 
   @Patch(':id')
@@ -44,12 +44,12 @@ export class TestSuitesController {
     @Body(new ZodValidationPipe(TestSuiteUpdateSchema))
     updateTestSuiteDto: any,
   ) {
-    return this.testSuitesService.update(+id, updateTestSuiteDto);
+    return this.testSuitesService.update(id, updateTestSuiteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.testSuitesService.remove(+id);
+    return this.testSuitesService.remove(id);
   }
 
   @Post(':id/test-cases')
@@ -59,18 +59,18 @@ export class TestSuitesController {
     createTestCaseDto: any,
   ) {
     console.log(createTestCaseDto);
-    return this.testCasesService.create(+id, createTestCaseDto);
+    return this.testCasesService.create(id, createTestCaseDto);
   }
 
   @Get(':id/test-cases')
   findTestCases(@Param('id') id: string) {
-    return this.testCasesService.findAll(+id);
+    return this.testCasesService.findAll(id);
   }
 
   // Test Suite Variables
   @Get(':id/test-suite-variables')
   findTestSuiteVariables(@Param('id') id: string) {
-    return this.testSuiteVariablesService.findAll(+id);
+    return this.testSuiteVariablesService.findAll(id);
   }
 
   @Post(':id/test-suite-variables')
@@ -80,7 +80,7 @@ export class TestSuitesController {
     createTestSuiteVariableDto: any,
   ) {
     return this.testSuiteVariablesService.create(
-      +id,
+      id,
       createTestSuiteVariableDto,
     );
   }
@@ -93,8 +93,8 @@ export class TestSuitesController {
     updateTestSuiteVariableDto: any,
   ) {
     return this.testSuiteVariablesService.update(
-      +id,
-      +variableId,
+      id,
+      variableId,
       updateTestSuiteVariableDto,
     );
   }
@@ -104,13 +104,13 @@ export class TestSuitesController {
     @Param('id') id: string,
     @Param('variableId') variableId: string,
   ) {
-    return this.testSuiteVariablesService.remove(+id, +variableId);
+    return this.testSuiteVariablesService.remove(id, variableId);
   }
 
   // Test Suite Functions
   @Get(':id/test-suite-functions')
   findTestSuiteFunctions(@Param('id') id: string) {
-    return this.testSuiteFunctionsService.findAll(+id);
+    return this.testSuiteFunctionsService.findAll(id);
   }
 
   @Post(':id/test-suite-functions')
@@ -120,7 +120,7 @@ export class TestSuitesController {
     createTestSuiteFunctionDto: any,
   ) {
     return this.testSuiteFunctionsService.create(
-      +id,
+      id,
       createTestSuiteFunctionDto,
     );
   }
@@ -133,8 +133,8 @@ export class TestSuitesController {
     updateTestSuiteFunctionDto: any,
   ) {
     return this.testSuiteFunctionsService.update(
-      +id,
-      +functionId,
+      id,
+      functionId,
       updateTestSuiteFunctionDto,
     );
   }
@@ -144,7 +144,7 @@ export class TestSuitesController {
     @Param('id') id: string,
     @Param('functionId') functionId: string,
   ) {
-    return this.testSuiteFunctionsService.remove(+id, +functionId);
+    return this.testSuiteFunctionsService.remove(id, functionId);
   }
 
   // @Post(':id/test-suite-runs')
@@ -155,4 +155,9 @@ export class TestSuitesController {
   // ) {
   //   return this.testSuiteRunsService.create(+id, createTestSuiteRunDto);
   // }
+
+  @Post(':id/run')
+  run(@Param('id') id: string) {
+    return this.testSuitesService.run(id);
+  }
 }

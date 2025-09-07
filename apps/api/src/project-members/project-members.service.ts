@@ -12,7 +12,7 @@ export class ProjectMembersService {
     })
   }
 
-  async findAll(projectId: number) {
+  async findAll(projectId: string) {
     return await this.prisma.projectMember.findMany({
       where: {
         projectId,
@@ -20,7 +20,7 @@ export class ProjectMembersService {
     })
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.prisma.projectMember.findUnique({
       where: {
         id,
@@ -28,7 +28,7 @@ export class ProjectMembersService {
     })
   }
 
-  async update(projectId: number, memberId: number, updateProjectMemberDto: Prisma.ProjectMemberUpdateInput) {
+  async update(projectId: string, memberId: string, updateProjectMemberDto: Prisma.ProjectMemberUpdateInput) {
     return await this.prisma.projectMember.update({
       where: {
         id: memberId,
@@ -38,7 +38,7 @@ export class ProjectMembersService {
     })
   }
 
-  async remove(projectId: number, memberId: number) {
+  async remove(projectId: string, memberId: string) {
     return await this.prisma.projectMember.delete({
       where: {
         id: memberId,

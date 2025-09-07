@@ -34,6 +34,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
   const [testSuiteFunctionDescription, setTestSuiteFunctionDescription] = useState('');
   const [testSuiteFunctionCode, setTestSuiteFunctionCode] = useState(''); 
   const [testSuiteVariableValue, setTestSuiteVariableValue] = useState('');
+  const [type, setType] = useState('');
   const toast = useToastStore();
   const { data: testCases } = useTestCases(testSuiteId as string);
   const { data: testSuiteFunctions } = useTestSuiteFunctions(testSuiteId as string);
@@ -56,20 +57,6 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
 		{ value: "executions", label: "Executions", icon: <Activity className="h-4 w-4"/> },
 	];
   
-  // Mock data for variables
-  const variables = [
-    { name: '$baseUrl', value: 'https://staging.myecommerce.com', type: 'global' },
-    { name: '$timeout', value: '5000', type: 'global' },
-    { name: '$testUser', value: 'test.user@example.com', type: 'test' },
-    { name: '$testPassword', value: '••••••••••', type: 'test' },
-  ];
-
-  // Mock data for functions
-  // const functions = [
-  //   { name: 'waitForDashboard()', description: 'Wait for dashboard to load and verify user is logged in' },
-  //   { name: 'loginAsUser()', description: 'Complete login flow with provided credentials' },
-  // ];
-
   // Mock data for executions
   const executions = [
     { id: 1, name: 'Test Suite 1', status: 'passed', duration: '2m 34s', timestamp: '2 hours ago' },
@@ -114,7 +101,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
             type: "success",
           })
   
-          router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
+          // router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
         },
       });
     } else {
@@ -133,7 +120,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
             type: "success",
           })
   
-          router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
+          // router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
         },
       });
     }
@@ -146,39 +133,39 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
       createProjectVariable({
         name: testSuiteVariableName,
         value: testSuiteVariableValue,
-        type: scope,
+        type: type,
       }, {
         onSuccess: (response) => {
-          createFunctionModal.closeModal();
+          createVariableModal.closeModal();
           setTestSuiteVariableName("");
+          setScope("")
+          setType("")
           
           toast.addToast({
-            title: "Test case created successfully",
-            message: "Test case created successfully",
+            title: "Variable created successfully",
+            message: "Variable created successfully",
             type: "success",
           })
-  
-          router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
-        },
+          },
       });
     } else {
       createTestSuiteVariable({
         name: testSuiteVariableName,
         value: testSuiteVariableValue,
-        type: scope,
+        type: type,
       }, {
         onSuccess: (response) => {
-          createFunctionModal.closeModal();
+          createVariableModal.closeModal();
           setTestSuiteVariableName("");
+          setScope("")
+          setType("")
           
           toast.addToast({
-            title: "Test case created successfully",
-            message: "Test case created successfully",
+            title: "Variable created successfully",
+            message: "Variable created successfully",
             type: "success",
           })
-  
-          router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
-        },
+          },
       });
     }
 
@@ -276,7 +263,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Database className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                  <h3 className="font-medium text-gray-900 dark:text-white">Variables ({variables.length})</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-white">Variables ({(projectVariables?.data?.length || 0) + (testSuiteVariables?.data?.length || 0)})</h3>
                 </div>
                 <button onClick={createVariableModal.openModal} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
                   <Plus className="h-4 w-4 text-gray-600 dark:text-gray-400" />
@@ -322,7 +309,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                  <h3 className="font-medium text-gray-900 dark:text-white">Functions ({testSuiteFunctions?.data?.length || 0})</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-white">Functions ({(projectFunctions?.data?.length || 0) + (testSuiteFunctions?.data?.length || 0)})</h3>
                 </div>
                 <button onClick={createFunctionModal.openModal} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
                   <Plus className="h-4 w-4 text-gray-600 dark:text-gray-400" />
@@ -436,7 +423,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
                     // { value: 'array', label: 'Array' },
                     // { value: 'object', label: 'Object' },
                   ]}
-                  onChange={(value) => setScope(value)}
+                  onChange={(value) => setType(value)}
                 />
               </div>
               

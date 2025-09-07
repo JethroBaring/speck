@@ -24,7 +24,7 @@ const AppHeader: React.FC = () => {
       const projectId = projectMatch[1];
       // Convert projectId to number since the API returns numeric IDs
       const numericProjectId = parseInt(projectId, 10);
-      return projects.data.find((project: { id: number; name: string }) => project.id === numericProjectId);
+      return projects.data.find((project: { id: string; name: string }) => project.id === projectId);
     }
     return null;
   }, [pathname, projects?.data]);
@@ -42,7 +42,7 @@ const AppHeader: React.FC = () => {
     const testSuiteMatch = pathname.match(/\/projects\/[^\/]+\/test-suites\/([^\/]+)/);
     if (testSuiteMatch && testSuites?.data) {
       const testSuiteId = testSuiteMatch[1];
-      return testSuites.data.find((testSuite: { id: number; name: string }) => testSuite.id === parseInt(testSuiteId, 10));
+      return testSuites.data.find((testSuite: { id: string; name: string }) => testSuite.id === testSuiteId);
     }
     return null;
   }, [pathname, testSuites?.data]);

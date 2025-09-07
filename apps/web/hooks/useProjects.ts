@@ -26,11 +26,11 @@ export function useProject(id: string) {
   });
 }
 
-export function useCreateProject() {
+export function useCreateProject(id: string) {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: createProject,
+    mutationFn: (name: string) => createProject(id, name),
     onSuccess: (newProject) => {
       console.log('Project created successfully:', newProject);
       
@@ -56,7 +56,7 @@ export function useCreateProject() {
       });
       
       // Also update the individual project cache if it exists
-      queryClient.setQueryData(['projects', newProject.data.id], newProject.data);
+      queryClient.setQueryData(['projects', newProject.data?.id], newProject.data);
     },
     onError: (err, newProjectName, context) => {
       // If the mutation fails, we could show an error toast here
@@ -82,14 +82,14 @@ export function useDeleteProject() {
         // Filter out the deleted project
         const updated = {
           ...old,
-          data: old.data.filter((project: any) => project.id !== deletedProject.data.id)
+          data: old.data.filter((project: any) => project.id !== deletedProject.data?.id)
         };
         console.log('Updated cache:', updated);
         return updated;
       });
       
       // Also invalidate the individual project cache
-      queryClient.removeQueries({ queryKey: ['projects', deletedProject.data.id] });
+      queryClient.removeQueries({ queryKey: ['projects', deletedProject.data?.id] });
     },
     onError: (err, deletedProjectId, context) => {
       // If the mutation fails, we could show an error toast here

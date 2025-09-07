@@ -35,8 +35,8 @@ export async function getProjectById(id: string): Promise<ApiResponse<Project>> 
   return response.json()  
 }
 
-export async function createProject(name: string): Promise<ApiResponse<Project>> {
-  const response = await fetch(`${API_BASE_URL}/projects/`, {
+export async function createProject(id: string, name: string): Promise<ApiResponse<Project>> {
+  const response = await fetch(`${API_BASE_URL}/organizations/${id}/projects/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

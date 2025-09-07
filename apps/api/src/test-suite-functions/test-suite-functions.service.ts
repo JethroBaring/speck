@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class TestSuiteFunctionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(testSuiteId: number, createTestSuiteFunctionDto: Prisma.TestSuiteFunctionCreateInput) {
+  create(testSuiteId: string, createTestSuiteFunctionDto: Prisma.TestSuiteFunctionCreateInput) {
     return this.prisma.testSuiteFunction.create({
       data: {
         ...createTestSuiteFunctionDto,
@@ -19,7 +19,7 @@ export class TestSuiteFunctionsService {
     });
   }
 
-  findAll(testSuiteId: number) {
+  findAll(testSuiteId: string) {
     return this.prisma.testSuiteFunction.findMany({
       where: {
         testSuiteId,
@@ -27,7 +27,7 @@ export class TestSuiteFunctionsService {
     });
   }
 
-  update(testSuiteId: number, id: number, updateTestSuiteFunctionDto: Prisma.TestSuiteFunctionUpdateInput) {
+  update(testSuiteId: string, id: string, updateTestSuiteFunctionDto: Prisma.TestSuiteFunctionUpdateInput) {
     return this.prisma.testSuiteFunction.update({
       where: {
         id,
@@ -37,7 +37,7 @@ export class TestSuiteFunctionsService {
     });
   }
 
-  remove(testSuiteId: number, id: number) {
+  remove(testSuiteId: string, id: string) {
     return this.prisma.testSuiteFunction.delete({
       where: {
         id,

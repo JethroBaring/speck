@@ -209,6 +209,7 @@ export default function SignUpForm() {
 								<div>
 									<Button
 										className="w-full"
+                    size="xs"
                     type="submit"
 										disabled={isLoading || !agreeToTerms}
 									>

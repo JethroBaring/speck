@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class PageElementsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(pageId: number, createPageElementDto: Prisma.PageElementCreateInput) {
+  create(pageId: string, createPageElementDto: Prisma.PageElementCreateInput) {
     return this.prisma.pageElement.create({
       data: {
         ...createPageElementDto,
@@ -19,7 +19,7 @@ export class PageElementsService {
     });
   }
 
-  findAll(pageId: number) {
+  findAll(pageId: string) {
     return this.prisma.pageElement.findMany({
       where: {
         pageId,
@@ -27,7 +27,7 @@ export class PageElementsService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.pageElement.findUnique({
       where: {
         id,
@@ -35,7 +35,7 @@ export class PageElementsService {
     });
   }
 
-  update(id: number, updatePageElementDto: Prisma.PageElementUpdateInput) {
+  update(id: string, updatePageElementDto: Prisma.PageElementUpdateInput) {
     return this.prisma.pageElement.update({
       where: {
         id,
@@ -44,7 +44,7 @@ export class PageElementsService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.pageElement.delete({
       where: {
         id,

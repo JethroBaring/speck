@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Prisma } from "@repo/types/prisma";
+import { Prisma, RoleLevel } from "@repo/types/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
 
 
@@ -9,19 +9,28 @@ export class ProjectsService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(userId: string, createProjectDto: Prisma.ProjectUncheckedCreateInput) {
+  async create(organizationId: string, userId: string, createProjectDto: Prisma.ProjectUncheckedCreateInput) {
     const project = await this.prisma.project.create({
       data: {
         ...createProjectDto,
         createdBy: userId,
+        organizationId,
       }
     })
     
+    const organizationMember = await this.prisma.organizationMember.findUnique({
+      where: {
+        organizationId_userId: {
+          organizationId,
+          userId,
+        },
+      },
+    })
+
     await this.prisma.projectMember.create({
       data: {
         projectId: project.id,
-        userId,
-        role: 'Admin',
+        organizationMemberId: organizationMember?.id!,
       },
     })
 
@@ -29,18 +38,27 @@ export class ProjectsService {
   }
 
   async findAll(userId: string) {
+    const organizationMember = await this.prisma.organizationMember.findUnique({
+      where: {
+        organizationId_userId: {
+          organizationId: userId,
+          userId,
+        },
+      },
+    })
+
     return await this.prisma.project.findMany({
       where: {
         members: {
           some: {
-            userId,
+            organizationMemberId: organizationMember?.id!
           }
         }
       },
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.prisma.project.findUnique({
       where: {
         id,
@@ -64,7 +82,7 @@ export class ProjectsService {
     })
   }
 
-  async update(id: number, updateProjectDto: Prisma.ProjectUpdateInput) {
+  async update(id: string, updateProjectDto: Prisma.ProjectUpdateInput) {
     return await this.prisma.project.update({
       where: {
         id,
@@ -73,7 +91,7 @@ export class ProjectsService {
     })
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     try {
       return await this.prisma.project.delete({
         where: {

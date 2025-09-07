@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../../packages/types/generated/prisma"
 }
 
 datasource db {
@@ -26,19 +26,20 @@ model User {
   accounts      Account[]
 
   // Relations
-  createdProjects     Project[]           @relation("ProjectCreator")
-  projectMemberships  ProjectMember[]
-  createdPages        Page[]              @relation("PageCreator")
-  createdPageElements PageElement[]       @relation("PageElementCreator")
-  createdTestCases    TestCase[]          @relation("TestCaseCreator")
-  sentInvitations     ProjectInvitation[] @relation("InvitationSender")
-  receivedInvitations ProjectInvitation[] @relation("InvitationReceiver")
-  projectVariables  ProjectVariable[] @relation("ProjectVariableCreator")
-  testSuiteVariables    TestSuiteVariable[]   @relation("TestSuiteVariableCreator")
-  projectFunctions  ProjectFunction[] @relation("ProjectFunctionCreator")
-  testSuiteFunctions    TestSuiteFunction[]   @relation("TestSuiteFunctionCreator")
-  testSuites        TestSuites[]      @relation("TestSuitesCreator")
-  notifications     Notification[]     @relation("UserNotifications") // Add this line
+  createdProjects     Project[]            @relation("ProjectCreator")
+  createdPages        Page[]               @relation("PageCreator")
+  createdPageElements PageElement[]        @relation("PageElementCreator")
+  createdTestCases    TestCase[]           @relation("TestCaseCreator")
+  projectVariables    ProjectVariable[]    @relation("ProjectVariableCreator")
+  testSuiteVariables  TestSuiteVariable[]  @relation("TestSuiteVariableCreator")
+  projectFunctions    ProjectFunction[]    @relation("ProjectFunctionCreator")
+  testSuiteFunctions  TestSuiteFunction[]  @relation("TestSuiteFunctionCreator")
+  testSuites          TestSuites[]         @relation("TestSuitesCreator")
+  notifications       Notification[]       @relation("UserNotifications") // Add this line
+  organizationMembers OrganizationMember[] @relation("OrganizationMembers")
+  projectMembers      ProjectMember[]      @relation("ProjectMembers")
+
+  organization Organization? @relation("OrganizationOwner")
 
   @@unique([email])
   @@map("user")
@@ -89,77 +90,127 @@ model Verification {
   @@map("verification")
 }
 
-model Project {
-  id          Int      @id @default(autoincrement())
+model Organization {
+  id          String   @id @default(uuid())
   name        String
   description String?
-  baseUrl     String?  @map("base_url") // For CI/CD integration
-  createdBy   String?   @map("created_by")
+  ownerId     String?  @unique @map("owner_id")
+  owner       User?    @relation("OrganizationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  // Relations
-  creator         User?               @relation("ProjectCreator", fields: [createdBy], references: [id])
-  members         ProjectMember[]      @relation("ProjectMembers")
-  pages           Page[]              @relation("ProjectPages")
-  invitations     ProjectInvitation[] @relation("ProjectInvitations")
-  testSuites      TestSuites[]        @relation("ProjectTestSuites")
-  globalVariables ProjectVariable[]   @relation("ProjectVariables")
-  globalFunctions ProjectFunction[]   @relation("ProjectFunctions")
-  
+  roles Role[]
+
+  members  OrganizationMember[]
+  invitations OrganizationInvitation[] @relation("OrganizationInvitations")
+  projects Project[]
+
+  @@map("organizations")
+}
+
+model Role {
+  id             String    @id @default(uuid())
+  organizationId String
+  name           String
+  scope          RoleLevel @default(ORGANIZATION)
+
+  access       RoleAccess
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  permissions  String       @db.Text // JSON string
+
+  organizationMembers OrganizationMember[]
+  organizationInvitations OrganizationInvitation[] @relation("OrganizationInvitations")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, name])
+  @@map("roles")
+}
+
+model OrganizationMember {
+  id             String @id @default(uuid())
+  organizationId String
+  userId         String
+  roleId         String
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role           Role            @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user           User            @relation("OrganizationMembers", fields: [userId], references: [id], onDelete: Cascade)
+  projectMembers ProjectMember[] @relation("ProjectOrganizationMembers")
+
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  organizationId String
+  name           String
+  description    String?
+  baseUrl        String?  @map("base_url")
+  createdBy      String?  @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  creator         User?             @relation("ProjectCreator", fields: [createdBy], references: [id])
+  pages           Page[]            @relation("ProjectPages")
+  testSuites      TestSuites[]      @relation("ProjectTestSuites")
+  globalVariables ProjectVariable[] @relation("ProjectVariables")
+  globalFunctions ProjectFunction[] @relation("ProjectFunctions")
+  members         ProjectMember[]   @relation("ProjectMembers")
+
   @@map("projects")
 }
 
 model ProjectMember {
-  id        Int      @id @default(autoincrement())
-  projectId Int      @map("project_id")
-  userId    String   @map("user_id")
-  role      String // 'QA', 'Developer', 'Admin', 'Viewer'
-  joinedAt  DateTime @default(now()) @map("joined_at")
+  id                   String @id @default(uuid())
+  projectId            String
+  organizationMemberId String @unique @map("organization_member_id")
 
-  // Relations
-  project Project @relation("ProjectMembers", fields: [projectId], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project            Project            @relation("ProjectMembers", fields: [projectId], references: [id], onDelete: Cascade)
+  user               User[]             @relation("ProjectMembers")
+  organizationMember OrganizationMember @relation("ProjectOrganizationMembers", fields: [organizationMemberId], references: [id], onDelete: Cascade)
 
-  @@unique([projectId, userId])
   @@map("project_members")
 }
 
-// NEW: Groups for organizing tests, variables, functions
 model TestSuites {
-  id          Int      @id @default(autoincrement())
-  projectId   Int      @map("project_id")
+  id          String   @id @default(uuid())
+  projectId   String   @map("project_id")
   name        String
   description String?
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  project   Project         @relation("ProjectTestSuites", fields: [projectId], references: [id], onDelete: Cascade)
-  creator   User?            @relation("TestSuitesCreator", fields: [createdBy], references: [id])
-  testCases TestCase[]       @relation("TestSuiteTestCases")
+  project   Project             @relation("ProjectTestSuites", fields: [projectId], references: [id], onDelete: Cascade)
+  creator   User?               @relation("TestSuitesCreator", fields: [createdBy], references: [id])
+  testCases TestCase[]          @relation("TestSuiteTestCases")
   variables TestSuiteVariable[] @relation("TestSuiteVariables")
   functions TestSuiteFunction[] @relation("TestSuiteFunctions")
-  runs TestSuiteRun[] @relation("TestSuiteRuns")
+  runs      TestSuiteRun[]      @relation("TestSuiteRuns")
+
   @@map("test_suites")
 }
 
 // NEW: Project-level (global) variables
 model ProjectVariable {
-  id          Int      @id @default(autoincrement())
-  projectId   Int      @map("project_id")
+  id          String   @id @default(uuid())
+  projectId   String   @map("project_id")
   name        String // Variable name (without @ symbol)
   value       String // Selector or value
   type        String // 'string' or 'number' or 'boolean'
   description String?
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
   project Project @relation("ProjectVariables", fields: [projectId], references: [id], onDelete: Cascade)
-  creator User?    @relation("ProjectVariableCreator", fields: [createdBy], references: [id])
+  creator User?   @relation("ProjectVariableCreator", fields: [createdBy], references: [id])
 
   @@unique([projectId, name])
   @@map("project_variables")
@@ -167,19 +218,19 @@ model ProjectVariable {
 
 // NEW: Group-level variables
 model TestSuiteVariable {
-  id          Int      @id @default(autoincrement())
-  testSuiteId     Int      @map("test_suite_id")
+  id          String   @id @default(uuid())
+  testSuiteId String   @map("test_suite_id")
   name        String // Variable name (without @ symbol)
   value       String // Selector or value
   type        String // 'string' or 'number' or 'boolean'
   description String?
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  testSuite   TestSuites @relation("TestSuiteVariables", fields: [testSuiteId], references: [id], onDelete: Cascade)
-  creator User?  @relation("TestSuiteVariableCreator", fields: [createdBy], references: [id])
+  testSuite TestSuites @relation("TestSuiteVariables", fields: [testSuiteId], references: [id], onDelete: Cascade)
+  creator   User?      @relation("TestSuiteVariableCreator", fields: [createdBy], references: [id])
 
   @@unique([testSuiteId, name])
   @@map("test_suite_variables")
@@ -187,19 +238,19 @@ model TestSuiteVariable {
 
 // NEW: Project-level (global) functions
 model ProjectFunction {
-  id          Int      @id @default(autoincrement())
-  projectId   Int      @map("project_id")
+  id          String   @id @default(uuid())
+  projectId   String   @map("project_id")
   name        String // Function name
   parameters  String? // Parameters for the function
   code        String   @db.Text // DSL code for the function
   description String?
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
   project Project @relation("ProjectFunctions", fields: [projectId], references: [id], onDelete: Cascade)
-  creator User?    @relation("ProjectFunctionCreator", fields: [createdBy], references: [id])
+  creator User?   @relation("ProjectFunctionCreator", fields: [createdBy], references: [id])
 
   @@unique([projectId, name])
   @@map("project_functions")
@@ -207,159 +258,176 @@ model ProjectFunction {
 
 // NEW: Group-level functions
 model TestSuiteFunction {
-  id          Int      @id @default(autoincrement())
-  testSuiteId     Int      @map("test_suite_id")
+  id          String   @id @default(uuid())
+  testSuiteId String   @map("test_suite_id")
   name        String // Function name
   parameters  String? // Parameters for the function
   code        String   @db.Text // DSL code for the function
   description String?
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
-  testSuite   TestSuites @relation("TestSuiteFunctions", fields: [testSuiteId], references: [id], onDelete: Cascade)
-  creator User?  @relation("TestSuiteFunctionCreator", fields: [createdBy], references: [id])
+  testSuite TestSuites @relation("TestSuiteFunctions", fields: [testSuiteId], references: [id], onDelete: Cascade)
+  creator   User?      @relation("TestSuiteFunctionCreator", fields: [createdBy], references: [id])
 
   @@unique([testSuiteId, name])
   @@map("test_suite_functions")
 }
 
 model TestSuiteRun {
-  id          Int      @id @default(autoincrement())
-  testSuiteId Int      @map("test_suite_id")
-  status      TestRunStatus @default(RUNNING)
-  startedAt   DateTime @default(now()) @map("started_at")
-  completedAt DateTime? @map("completed_at")
-  totalTests  Int      @default(0) @map("total_tests")
-  passedTests Int      @default(0) @map("passed_tests")
-  failedTests Int      @default(0) @map("failed_tests")
-  skippedTests Int     @default(0) @map("skipped_tests")
-  errorMessage String? @map("error_message")
-  environment String?  // e.g., "development", "staging", "production"
-  browser    String?  // e.g., "chrome", "firefox", "safari"
-  version    String?  // browser version
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  
+  id           String        @id @default(uuid())
+  testSuiteId  String        @map("test_suite_id")
+  status       TestSuiteRunStatus @default(RUNNING)
+  startedAt    DateTime      @default(now()) @map("started_at")
+  completedAt  DateTime?     @map("completed_at")
+  totalTests   Int           @default(0) @map("total_tests")
+  passedTests  Int           @default(0) @map("passed_tests")
+  failedTests  Int           @default(0) @map("failed_tests")
+  skippedTests Int           @default(0) @map("skipped_tests")
+  errorMessage String?       @map("error_message")
+  environment  String? // e.g., "development", "staging", "production"
+  browser      String? // e.g., "chrome", "firefox", "safari"
+  version      String? // browser version
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
   // Relations
-  testSuite TestSuites @relation("TestSuiteRuns", fields: [testSuiteId], references: [id], onDelete: Cascade)
+  testSuite    TestSuites    @relation("TestSuiteRuns", fields: [testSuiteId], references: [id], onDelete: Cascade)
   testCaseRuns TestCaseRun[] @relation("TestSuiteRunTestCases")
-  
+
   @@map("test_suite_runs")
 }
 
 model TestCaseRun {
-  id            Int      @id @default(autoincrement())
-  testCaseId    Int      @map("test_case_id")
-  testSuiteRunId Int     @map("test_suite_run_id")
-  status        TestCaseRunStatus @default(RUNNING)
-  startedAt     DateTime @default(now()) @map("started_at")
-  completedAt   DateTime? @map("completed_at")
-  duration      Int?     // Duration in milliseconds
-  errorMessage  String?  @map("error_message")
-  stackTrace    String?  @map("stack_trace") @db.Text
-  logs          String?  @db.Text // Console logs or test output
-  metadata      Json?    // Additional test-specific data
-  
+  id             String            @id @default(uuid())
+  testCaseId     String            @map("test_case_id")
+  testSuiteRunId String            @map("test_suite_run_id")
+  status         TestCaseRunStatus @default(RUNNING)
+  startedAt      DateTime          @default(now()) @map("started_at")
+  completedAt    DateTime?         @map("completed_at")
+  duration       Int? // Duration in milliseconds
+  errorMessage   String?           @map("error_message")
+  stackTrace     String?           @map("stack_trace") @db.Text
+  logs           String?           @db.Text // Console logs or test output
+
   // Relations
-  testCase     TestCase     @relation("TestCaseRuns", fields: [testCaseId], references: [id], onDelete: Cascade)
-  testSuiteRun TestSuiteRun @relation("TestSuiteRunTestCases", fields: [testSuiteRunId], references: [id], onDelete: Cascade)
+  testCase     TestCase         @relation("TestCaseRuns", fields: [testCaseId], references: [id], onDelete: Cascade)
+  testSuiteRun TestSuiteRun     @relation("TestSuiteRunTestCases", fields: [testSuiteRunId], references: [id], onDelete: Cascade)
   stepResults  TestStepResult[] @relation("TestCaseRunSteps")
-  
+
   @@map("test_case_runs")
 }
 
 model TestStepResult {
-  id            Int      @id @default(autoincrement())
-  testCaseRunId Int      @map("test_case_run_id")
-  stepNumber    Int      @map("step_number") // Which step in the sequence (1, 2, 3...)
-  stepName      String   @map("step_name") // Human-readable step description
+  id            String         @id @default(uuid())
+  testCaseRunId String         @map("test_case_run_id")
+  stepNumber    Int            @map("step_number") // Which step in the sequence (1, 2, 3...)
+  stepName      String         @map("step_name") // Human-readable step description
   status        TestStepStatus @default(RUNNING)
-  startedAt     DateTime @default(now()) @map("started_at")
-  completedAt   DateTime? @map("completed_at")
-  duration      Int?     // Duration in milliseconds
-  errorMessage  String?  @map("error_message")
-  screenshot    String?  // URL or path to screenshot for this specific step
-  logs          String?  @db.Text // Step-specific logs
-  metadata      Json?    // Step-specific data (element selectors, values, etc.)
-  
+  startedAt     DateTime       @default(now()) @map("started_at")
+  completedAt   DateTime?      @map("completed_at")
+  duration      Int? // Duration in milliseconds
+  errorMessage  String?        @map("error_message")
+  screenshot    String? // URL or path to screenshot for this specific step
+  logs          String?        @db.Text // Step-specific logs
+
   // Relations
   testCaseRun TestCaseRun @relation("TestCaseRunSteps", fields: [testCaseRunId], references: [id], onDelete: Cascade)
-  
+
   @@map("test_step_results")
 }
 
 model Page {
-  id           Int      @id @default(autoincrement())
-  projectId    Int      @map("project_id")
+  id           String   @id @default(uuid())
+  projectId    String   @map("project_id")
   name         String
   url          String
   description  String?
   isProtected  Boolean  @default(false) @map("is_protected") // NEW: Auth required
   authFunction String?  @map("auth_function") // NEW: Function name for auth
-  createdBy    String?   @map("created_by")
+  createdBy    String?  @map("created_by")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  // Relations
   project  Project       @relation("ProjectPages", fields: [projectId], references: [id], onDelete: Cascade)
-  creator  User?          @relation("PageCreator", fields: [createdBy], references: [id])
-  elements PageElement[]  @relation("PageElements")
+  creator  User?         @relation("PageCreator", fields: [createdBy], references: [id])
+  elements PageElement[] @relation("PageElements")
 
   @@map("pages")
 }
 
 model PageElement {
-  id          Int      @id @default(autoincrement())
-  pageId      Int      @map("page_id")
+  id          String   @id @default(uuid())
+  pageId      String   @map("page_id")
   elementName String   @map("element_name")
   selector    String
   description String?
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  // Relations
-  page    Page @relation("PageElements", fields: [pageId], references: [id], onDelete: Cascade)
+  page    Page  @relation("PageElements", fields: [pageId], references: [id], onDelete: Cascade)
   creator User? @relation("PageElementCreator", fields: [createdBy], references: [id])
 
   @@map("page_elements")
 }
 
 model TestCase {
-  id          Int      @id @default(autoincrement())
-  testSuiteId     Int?     @map("test_suite_id")
+  id          String   @id @default(uuid())
+  testSuiteId String?  @map("test_suite_id")
   name        String
   description String?
   code        String   @db.Text
-  createdBy   String?   @map("created_by")
+  createdBy   String?  @map("created_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  // Relations
-  testSuite      TestSuites?     @relation("TestSuiteTestCases", fields: [testSuiteId], references: [id])
-  creator        User?            @relation("TestCaseCreator", fields: [createdBy], references: [id])
-  testCaseRuns   TestCaseRun[]    @relation("TestCaseRuns")
+  testSuite    TestSuites?   @relation("TestSuiteTestCases", fields: [testSuiteId], references: [id])
+  creator      User?         @relation("TestCaseCreator", fields: [createdBy], references: [id])
+  testCaseRuns TestCaseRun[] @relation("TestCaseRuns")
 
   @@map("test_cases")
 }
 
-model ProjectInvitation {
-  id           Int      @id @default(autoincrement())
-  projectId    Int      @map("project_id")
-  userId       String   @map("user_id")
-  invitedBy    String   @map("invited_by")
-  status       ProjectInvitationStatus   @default(PENDING)
-  expiresAt    DateTime @map("expires_at")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false) @map("is_read")
+  actionUrl String?          @map("action_url") // URL to navigate to when clicked
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
 
   // Relations
-  project Project @relation("ProjectInvitations", fields: [projectId], references: [id], onDelete: Cascade)
-  inviter User    @relation("InvitationSender", fields: [invitedBy], references: [id])
-  user    User    @relation("InvitationReceiver", fields: [userId], references: [id])
-  @@map("project_invitations")
+  user User @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model OrganizationInvitation {
+  id        String   @id @default(uuid())
+  organizationId String
+  email String
+  status ProjectInvitationStatus @default(PENDING)
+  roleId String
+  role Role @relation("OrganizationInvitations", fields: [roleId], references: [id], onDelete: Cascade)
+  organization Organization @relation("OrganizationInvitations", fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("organization_invitations")
+}
+
+enum NotificationType {
+  PROJECT_INVITATION // Project invitation received
+  PROJECT_MEMBER_JOINED // New member joined project
+  ROLE_CHANGED // User role changed in project
+  TEST_SUITE_COMPLETED // Test suite execution completed
+  FEATURE_UPDATE // New feature available
 }
 
 enum ProjectInvitationStatus {
@@ -369,7 +437,8 @@ enum ProjectInvitationStatus {
   EXPIRED
 }
 
-enum TestRunStatus {
+enum TestSuiteRunStatus {
+  PENDING
   RUNNING
   COMPLETED
   FAILED
@@ -378,6 +447,7 @@ enum TestRunStatus {
 }
 
 enum TestCaseRunStatus {
+  PENDING
   RUNNING
   PASSED
   FAILED
@@ -387,6 +457,7 @@ enum TestCaseRunStatus {
 }
 
 enum TestStepStatus {
+  PENDING
   RUNNING
   PASSED
   FAILED
@@ -395,28 +466,18 @@ enum TestStepStatus {
   ERROR
 }
 
-model Notification {
-  id          Int      @id @default(autoincrement())
-  userId      String   @map("user_id")
-  type        NotificationType
-  title       String
-  message     String
-  isRead      Boolean  @default(false) @map("is_read")
-  metadata    Json?    // Additional context data (projectId, testCaseId, etc.)
-  actionUrl   String?  @map("action_url") // URL to navigate to when clicked
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  
-  // Relations
-  user User @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@map("notifications")
+enum RoleLevel {
+  ORGANIZATION
+  PROJECT
 }
 
-enum NotificationType {
-  PROJECT_INVITATION      // Project invitation received
-  PROJECT_MEMBER_JOINED   // New member joined project
-  ROLE_CHANGED            // User role changed in project
-  TEST_SUITE_COMPLETED    // Test suite execution completed
-  FEATURE_UPDATE          // New feature available
+enum RoleAccess {
+  FULL
+  LIMITED
+  CUSTOM
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+  output   = "../../packages/types/generated/zod"
 }

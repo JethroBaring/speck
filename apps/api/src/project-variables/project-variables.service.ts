@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProjectVariablesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(projectId: number, createProjectVariableDto: Prisma.ProjectVariableCreateInput) {
+  create(projectId: string, createProjectVariableDto: Prisma.ProjectVariableCreateInput) {
     return this.prisma.projectVariable.create({
       data: {
         ...createProjectVariableDto,
@@ -19,7 +19,7 @@ export class ProjectVariablesService {
     });
   }
 
-  findAll(projectId: number) {
+  findAll(projectId: string) {
     return this.prisma.projectVariable.findMany({
       where: {
         projectId,
@@ -27,7 +27,7 @@ export class ProjectVariablesService {
     });
   }
 
-  update(projectId: number, id: number, updateProjectVariableDto: Prisma.ProjectVariableUpdateInput) {
+  update(projectId: string, id: string, updateProjectVariableDto: Prisma.ProjectVariableUpdateInput) {
     return this.prisma.projectVariable.update({
       where: {
         id,
@@ -37,7 +37,7 @@ export class ProjectVariablesService {
     });
   }
 
-  remove(projectId: number, id: number) {
+  remove(projectId: string, id: string) {
     return this.prisma.projectVariable.delete({
       where: {
         id,

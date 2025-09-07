@@ -166,8 +166,36 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.OrganizationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  scope: 'scope',
+  access: 'access',
+  permissions: 'permissions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrganizationMemberScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  roleId: 'roleId'
+};
+
 exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   name: 'name',
   description: 'description',
   baseUrl: 'baseUrl',
@@ -179,9 +207,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
 exports.Prisma.ProjectMemberScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
-  userId: 'userId',
-  role: 'role',
-  joinedAt: 'joinedAt'
+  organizationMemberId: 'organizationMemberId'
 };
 
 exports.Prisma.TestSuitesScalarFieldEnum = {
@@ -322,17 +348,6 @@ exports.Prisma.TestCaseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ProjectInvitationScalarFieldEnum = {
-  id: 'id',
-  projectId: 'projectId',
-  userId: 'userId',
-  invitedBy: 'invitedBy',
-  status: 'status',
-  expiresAt: 'expiresAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -341,6 +356,16 @@ exports.Prisma.NotificationScalarFieldEnum = {
   message: 'message',
   isRead: 'isRead',
   actionUrl: 'actionUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrganizationInvitationScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  email: 'email',
+  status: 'status',
+  roleId: 'roleId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -359,7 +384,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.TestRunStatus = exports.$Enums.TestRunStatus = {
+exports.RoleLevel = exports.$Enums.RoleLevel = {
+  ORGANIZATION: 'ORGANIZATION',
+  PROJECT: 'PROJECT'
+};
+
+exports.RoleAccess = exports.$Enums.RoleAccess = {
+  FULL: 'FULL',
+  LIMITED: 'LIMITED',
+  CUSTOM: 'CUSTOM'
+};
+
+exports.TestSuiteRunStatus = exports.$Enums.TestSuiteRunStatus = {
+  PENDING: 'PENDING',
   RUNNING: 'RUNNING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
@@ -368,6 +405,7 @@ exports.TestRunStatus = exports.$Enums.TestRunStatus = {
 };
 
 exports.TestCaseRunStatus = exports.$Enums.TestCaseRunStatus = {
+  PENDING: 'PENDING',
   RUNNING: 'RUNNING',
   PASSED: 'PASSED',
   FAILED: 'FAILED',
@@ -377,19 +415,13 @@ exports.TestCaseRunStatus = exports.$Enums.TestCaseRunStatus = {
 };
 
 exports.TestStepStatus = exports.$Enums.TestStepStatus = {
+  PENDING: 'PENDING',
   RUNNING: 'RUNNING',
   PASSED: 'PASSED',
   FAILED: 'FAILED',
   SKIPPED: 'SKIPPED',
   TIMEOUT: 'TIMEOUT',
   ERROR: 'ERROR'
-};
-
-exports.ProjectInvitationStatus = exports.$Enums.ProjectInvitationStatus = {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  EXPIRED: 'EXPIRED'
 };
 
 exports.NotificationType = exports.$Enums.NotificationType = {
@@ -400,11 +432,21 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   FEATURE_UPDATE: 'FEATURE_UPDATE'
 };
 
+exports.ProjectInvitationStatus = exports.$Enums.ProjectInvitationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  EXPIRED: 'EXPIRED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  Organization: 'Organization',
+  Role: 'Role',
+  OrganizationMember: 'OrganizationMember',
   Project: 'Project',
   ProjectMember: 'ProjectMember',
   TestSuites: 'TestSuites',
@@ -418,8 +460,8 @@ exports.Prisma.ModelName = {
   Page: 'Page',
   PageElement: 'PageElement',
   TestCase: 'TestCase',
-  ProjectInvitation: 'ProjectInvitation',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  OrganizationInvitation: 'OrganizationInvitation'
 };
 
 /**

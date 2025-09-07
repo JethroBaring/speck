@@ -819,7 +819,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 
 	return (
 			<ComponentCard
-			key={testCaseId}
+			// key={testCaseId}
 			className="h-full"
 			header={<div className="flex items-center justify-between min-h-[2rem]">
 				<div className="flex items-center gap-2 text">

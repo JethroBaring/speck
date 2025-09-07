@@ -25,7 +25,7 @@ export class PagesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.pagesService.findOne(+id);
+    return this.pagesService.findOne(id);
   }
 
   @Patch(':id')
@@ -33,12 +33,12 @@ export class PagesController {
     @Param('id') id: string,
     @Body(new ZodValidationPipe(PageUpdateSchema)) updatePageDto: any,
   ) {
-    return this.pagesService.update(+id, updatePageDto);
+    return this.pagesService.update(id, updatePageDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.pagesService.remove(+id);
+    return this.pagesService.remove(id);
   }
 
   // Page Elements
@@ -47,11 +47,11 @@ export class PagesController {
     @Param('id') id: string,
     @Body(new ZodValidationPipe(PageElementCreateSchema)) createPageElementDto: any,
   ) {
-    return this.pageElementsService.create(+id, createPageElementDto);
+    return this.pageElementsService.create(id, createPageElementDto);
   }
 
   @Get(':id/page-elements')
   findPageElements(@Param('id') id: string) {
-    return this.pageElementsService.findAll(+id);
+    return this.pageElementsService.findAll(id);
   }
 }

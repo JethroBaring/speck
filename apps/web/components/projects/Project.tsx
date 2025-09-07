@@ -148,7 +148,7 @@ export default function Project({ projectId }: { projectId: string }) {
     <div className="p-4 space-y-4">
       {/* Header Controls */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 flex-1">
+        <div className="flex items-center gap-3 flex-1">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 z-9 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -164,8 +164,7 @@ export default function Project({ projectId }: { projectId: string }) {
 
         </div>
         
-        <div className="flex items-center gap-4">
-          {/* View Toggle */}
+        {/* <div className="flex items-center gap-4">
           <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
@@ -188,7 +187,7 @@ export default function Project({ projectId }: { projectId: string }) {
               <List className="h-4 w-4" />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Test Suites Grid */}

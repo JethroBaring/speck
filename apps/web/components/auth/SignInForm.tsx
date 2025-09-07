@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { authClient } from "@/lib/auth/auth-client";
 import { LoaderCircle } from 'lucide-react';
 import { useRouter } from "next/navigation";
+import { userBelongsToOrganization } from "@/lib/api/organizations";
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
+
   const router = useRouter();
   const handleSignin   = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +26,23 @@ export default function SignInForm() {
         await authClient.signIn.email({
             email,
             password,
-        });
-        router.push("/projects");
+        }, {
+          onSuccess: async () => {
+            // After successful login, check if user belongs to an organization
+            try {
+              const response = await userBelongsToOrganization();
+              if (!response?.data) {
+                router.push("/onboarding");
+              } else {
+                router.push("/projects");
+              }
+            } catch (error) {
+              console.error("Error checking organization membership:", error);
+              // Default to onboarding if we can't determine organization status
+              router.push("/onboarding");
+            }
+          }
+        })
     } catch (error) {
         console.error("Login failed:", error);
     } finally {
@@ -156,7 +173,7 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button type="submit" className="w-full" size="sm" disabled={isLoading}>
+                  <Button type="submit" className="w-full" size="xs" disabled={isLoading}>
                     {isLoading ? (
                       <div className="flex items-center justify-center gap-2">
                         <LoaderCircle className="w-4 h-4 mr-2 animate-spin" />

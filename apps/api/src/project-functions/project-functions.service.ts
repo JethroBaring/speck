@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProjectFunctionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(projectId: number, createProjectFunctionDto: Prisma.ProjectFunctionCreateInput) {
+  create(projectId: string, createProjectFunctionDto: Prisma.ProjectFunctionCreateInput) {
     return this.prisma.projectFunction.create({
       data: {
         ...createProjectFunctionDto,
@@ -19,7 +19,7 @@ export class ProjectFunctionsService {
     });
   }
 
-  findAll(projectId: number) {
+  findAll(projectId: string) {
     return this.prisma.projectFunction.findMany({
       where: {
         projectId,
@@ -27,7 +27,7 @@ export class ProjectFunctionsService {
     });
   }
 
-  update(projectId: number, id: number, updateProjectFunctionDto: Prisma.ProjectFunctionUpdateInput) {
+  update(projectId: string, id: string, updateProjectFunctionDto: Prisma.ProjectFunctionUpdateInput) {
     return this.prisma.projectFunction.update({
       where: {
         id,
@@ -37,7 +37,7 @@ export class ProjectFunctionsService {
     });
   }
 
-  remove(projectId: number, id: number) {
+  remove(projectId: string, id: string) {
     return this.prisma.projectFunction.delete({
       where: {
         id,

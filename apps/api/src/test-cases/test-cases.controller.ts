@@ -15,7 +15,7 @@ export class TestCasesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.testCasesService.findOne(+id);
+    return this.testCasesService.findOne(id);
   }
 
   @Patch(':id')
@@ -23,11 +23,11 @@ export class TestCasesController {
     @Param('id') id: string,
     @Body(new ZodValidationPipe(TestCaseUpdateSchema)) updateTestCaseDto: any,
   ) {
-    return this.testCasesService.update(+id, updateTestCaseDto);
+    return this.testCasesService.update(id, updateTestCaseDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.testCasesService.remove(+id);
+    return this.testCasesService.remove(id);
   }
 }

@@ -18,16 +18,16 @@ export class PageElementsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.pageElementsService.findOne(+id);
+    return this.pageElementsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body(new ZodValidationPipe(PageElementUpdateSchema)) updatePageElementDto: any) {
-    return this.pageElementsService.update(+id, updatePageElementDto);
+    return this.pageElementsService.update(id, updatePageElementDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.pageElementsService.remove(+id);
+    return this.pageElementsService.remove(id);
   }
 }

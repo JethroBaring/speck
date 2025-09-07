@@ -11,7 +11,6 @@ import {
 import { ProjectsService } from './projects.service';
 import { ZodValidationPipe } from 'src/common/pipes/zod-validation-pipe';
 import { ProjectMembersService } from 'src/project-members/project-members.service';
-import { ProjectInvitationsService } from 'src/project-invitations/project-invitations.service';
 import { TestSuitesService } from 'src/test-suites/test-suites.service';
 import { TestCasesService } from 'src/test-cases/test-cases.service';
 import { ProjectVariablesService } from 'src/project-variables/project-variables.service';
@@ -24,8 +23,6 @@ import {
   ProjectCreateSchema,
   ProjectFunctionCreateSchema,
   ProjectFunctionUpdateSchema,
-  ProjectInvitationCreateSchema,
-  ProjectInvitationUpdateSchema,
   ProjectMemberUpdateSchema,
   ProjectUpdateSchema,
   ProjectVariableCreateSchema,
@@ -38,22 +35,12 @@ export class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
     private readonly projectMembersService: ProjectMembersService,
-    private readonly projectInvitationsService: ProjectInvitationsService,
     private readonly testSuitesService: TestSuitesService,
     private readonly testCasesService: TestCasesService,
     private readonly projectVariablesService: ProjectVariablesService,
     private readonly projectFunctionsService: ProjectFunctionsService,
     private readonly pagesService: PagesService,
   ) {}
-
-  @Post()
-  create(
-    @Body(new ZodValidationPipe(ProjectCreateSchema))
-    createProjectDto: any,
-    @Session() session: UserSession,
-  ) {
-    return this.projectsService.create(session.user.id, createProjectDto);
-  }
 
   @Get()
   findAll(@Session() session: UserSession) {
@@ -62,7 +49,7 @@ export class ProjectsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.projectsService.findOne(+id);
+    return this.projectsService.findOne(id);
   }
 
   @Patch(':id')
@@ -71,18 +58,18 @@ export class ProjectsController {
     @Body(new ZodValidationPipe(ProjectUpdateSchema))
     updateProjectDto: any,
   ) {
-    return this.projectsService.update(+id, updateProjectDto);
+    return this.projectsService.update(id, updateProjectDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.projectsService.remove(+id);
+    return this.projectsService.remove(id);
   }
 
   // Project Members
   @Get(':id/members')
   findMembers(@Param('id') id: string) {
-    return this.projectMembersService.findAll(+id);
+    return this.projectMembersService.findAll(id);
   }
 
   @Patch(':id/members/:memberId')
@@ -93,47 +80,15 @@ export class ProjectsController {
     updateProjectMemberDto: any,
   ) {
     return this.projectMembersService.update(
-      +id,
-      +memberId,
+      id,
+      memberId,
       updateProjectMemberDto,
     );
   }
 
   @Delete(':id/members/:memberId')
   removeMember(@Param('id') id: string, @Param('memberId') memberId: string) {
-    return this.projectMembersService.remove(+id, +memberId);
-  }
-
-  // Project Invitations
-  @Post(':id/invitations')
-  createInvitation(
-    @Param('id') id: string,
-    @Body(new ZodValidationPipe(ProjectInvitationCreateSchema))
-    createProjectInvitationDto: any,
-  ) {
-    return this.projectInvitationsService.create(
-      +id,
-      createProjectInvitationDto,
-    );
-  }
-
-  @Get(':id/invitations')
-  findInvitations(@Param('id') id: string) {
-    return this.projectInvitationsService.findAll(+id);
-  }
-
-  @Patch(':id/invitations/:invitationId')
-  updateInvitation(
-    @Param('id') id: string,
-    @Param('invitationId') invitationId: string,
-    @Body(new ZodValidationPipe(ProjectInvitationUpdateSchema))
-    updateProjectInvitationDto: any,
-  ) {
-    return this.projectInvitationsService.update(
-      +id,
-      +invitationId,
-      updateProjectInvitationDto,
-    );
+    return this.projectMembersService.remove(id, memberId);
   }
 
   // Test Suites
@@ -146,20 +101,20 @@ export class ProjectsController {
   ) {
     return this.testSuitesService.create(
       session.user.id,
-      +id,
+      id,
       createTestSuiteDto,
     );
   }
 
   @Get(':id/test-suites')
   findTestSuites(@Param('id') id: string) {
-    return this.testSuitesService.findAll(+id);
+    return this.testSuitesService.findAll(id);
   }
 
   // Test Cases
   @Get(':id/test-cases')
   findTestCases(@Param('id') id: string) {
-    return this.testCasesService.findAllByProjectId(+id);
+    return this.testCasesService.findAllByProjectId(id);
   }
 
   // Project Variables
@@ -169,12 +124,12 @@ export class ProjectsController {
     @Body(new ZodValidationPipe(ProjectVariableCreateSchema))
     createProjectVariableDto: any,
   ) {
-    return this.projectVariablesService.create(+id, createProjectVariableDto);
+    return this.projectVariablesService.create(id, createProjectVariableDto);
   }
 
   @Get(':id/project-variables')
   findProjectVariables(@Param('id') id: string) {
-    return this.projectVariablesService.findAll(+id);
+    return this.projectVariablesService.findAll(id);
   }
 
   @Patch(':id/project-variables/:variableId')
@@ -185,8 +140,8 @@ export class ProjectsController {
     updateProjectVariableDto: any,
   ) {
     return this.projectVariablesService.update(
-      +id,
-      +variableId,
+      id,
+      variableId,
       updateProjectVariableDto,
     );
   }
@@ -196,7 +151,7 @@ export class ProjectsController {
     @Param('id') id: string,
     @Param('variableId') variableId: string,
   ) {
-    return this.projectVariablesService.remove(+id, +variableId);
+    return this.projectVariablesService.remove(id, variableId);
   }
 
   // Project Functions
@@ -206,12 +161,12 @@ export class ProjectsController {
     @Body(new ZodValidationPipe(ProjectFunctionCreateSchema))
     createProjectFunctionDto: any,
   ) {
-    return this.projectFunctionsService.create(+id, createProjectFunctionDto);
+    return this.projectFunctionsService.create(id, createProjectFunctionDto);
   }
 
   @Get(':id/project-functions')
   findProjectFunctions(@Param('id') id: string) {
-    return this.projectFunctionsService.findAll(+id);
+    return this.projectFunctionsService.findAll(id);
   }
 
   @Patch(':id/project-functions/:functionId')
@@ -222,8 +177,8 @@ export class ProjectsController {
     updateProjectFunctionDto: any,
   ) {
     return this.projectFunctionsService.update(
-      +id,
-      +functionId,
+      id,
+      functionId,
       updateProjectFunctionDto,
     );
   }
@@ -233,7 +188,7 @@ export class ProjectsController {
     @Param('id') id: string,
     @Param('functionId') functionId: string,
   ) {
-    return this.projectFunctionsService.remove(+id, +functionId);
+    return this.projectFunctionsService.remove(id, functionId);
   }
 
   // Pages
@@ -243,11 +198,11 @@ export class ProjectsController {
     @Body(new ZodValidationPipe(PageCreateSchema))
     createPageDto: any,
   ) {
-    return this.pagesService.create(+id, createPageDto);
+    return this.pagesService.create(id, createPageDto);
   }
 
   @Get(':id/pages')
   findPages(@Param('id') id: string) {
-    return this.pagesService.findAll(+id);
+    return this.pagesService.findAll(id);
   }
 }
