@@ -144,6 +144,7 @@ export class TestQueueController {
       errorMessage?: string;
       stackTrace?: string;
       logs?: string;
+      results?: any;
     },
   ) {
     const result = await this.testQueueService.updateTestCaseRunResult(
@@ -154,6 +155,7 @@ export class TestQueueController {
         errorMessage: body.errorMessage,
         stackTrace: body.stackTrace,
         logs: body.logs,
+        results: body.results,
       },
     );
 
@@ -181,48 +183,6 @@ export class TestQueueController {
     @Query('end') end = 10
   ) {
     return await this.testQueueService.getActiveJobs(Number(start), Number(end));
-  }
-
-  // Worker endpoints for proper job management
-  @Post('queue/claim-job')
-  @Public()
-  async claimNextJob() {
-    const job = await this.testQueueService.claimAndGetNextJob();
-    
-    if (!job) {
-      return { message: 'No jobs available', job: null };
-    }
-    
-    return {
-      message: 'Job claimed successfully',
-      job
-    };
-  }
-
-  @Post('queue/complete-job/:jobId')
-  @Public()
-  async completeJob(
-    @Param('jobId') jobId: string,
-    @Body() body: { result: any; lockKey?: string }
-  ) {
-    const result = await this.testQueueService.completeJob(jobId, body.result, body.lockKey);
-    return {
-      message: 'Job completed successfully',
-      ...result
-    };
-  }
-
-  @Post('queue/fail-job/:jobId')
-  @Public()
-  async failJob(
-    @Param('jobId') jobId: string,
-    @Body() body: { error: string; lockKey?: string }
-  ) {
-    const result = await this.testQueueService.failJob(jobId, body.error, body.lockKey);
-    return {
-      message: 'Job marked as failed',
-      ...result
-    };
   }
 
   // Admin/monitoring endpoints

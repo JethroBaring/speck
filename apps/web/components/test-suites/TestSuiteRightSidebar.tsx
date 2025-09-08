@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 import { Activity, Database, FileText, Plus, Clock, CheckCircle, XCircle, Circle, Edit, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Tabs from "../common/Tabs";
-import Collapsible from "../common/Collapsible";
+import CollapsibleCard from "../common/CollapsibleCard";
 import Card from "../common/Card";
 import { useTestCases } from "@/hooks/useTestCases";
 import { useParams } from "next/navigation";
@@ -21,10 +21,10 @@ import { useCreateProjectFunction, useProjectFunctions } from "@/hooks/useProjec
 import { useCreateProjectVariable, useProjectVariables } from "@/hooks/useProjectVariables";
 import { useCreateTestSuiteVariable, useTestSuiteVariables } from "@/hooks/useTestSuiteVariables";
 
-const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> = ({projectId, testSuiteId}) => {
+const TestSuiteRightSidebar: React.FC<{ projectId: string, testSuiteId: string; }> = ({ projectId, testSuiteId }) => {
 
   const router = useRouter();
-  const { isOpen, openModal, closeModal } = useTestCaseModalStore()
+  const { isOpen, openModal, closeModal } = useTestCaseModalStore();
   const createFunctionModal = useModal();
   const createVariableModal = useModal();
   const [testSuiteFunctionName, setTestSuiteFunctionName] = useState('');
@@ -32,7 +32,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
   const [testSuiteVariableName, setTestSuiteVariableName] = useState('');
   const [testSuiteFunctionParameters, setTestSuiteFunctionParameters] = useState('');
   const [testSuiteFunctionDescription, setTestSuiteFunctionDescription] = useState('');
-  const [testSuiteFunctionCode, setTestSuiteFunctionCode] = useState(''); 
+  const [testSuiteFunctionCode, setTestSuiteFunctionCode] = useState('');
   const [testSuiteVariableValue, setTestSuiteVariableValue] = useState('');
   const [type, setType] = useState('');
   const toast = useToastStore();
@@ -51,12 +51,12 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
     console.log(testSuiteFunctions);
   }, [testSuiteFunctions]);
 
-	const tabs = [
-		{ value: "tests", label: "Tests", icon: <FileText className="h-4 w-4"/> },
-		{ value: "resources", label: "Resources", icon: <Database className="h-4 w-4"/> },
-		{ value: "executions", label: "Executions", icon: <Activity className="h-4 w-4"/> },
-	];
-  
+  const tabs = [
+    { value: "tests", label: "Tests", icon: <FileText className="h-4 w-4" /> },
+    { value: "resources", label: "Resources", icon: <Database className="h-4 w-4" /> },
+    { value: "executions", label: "Executions", icon: <Activity className="h-4 w-4" /> },
+  ];
+
   // Mock data for executions
   const executions = [
     { id: 1, name: 'Test Suite 1', status: 'passed', duration: '2m 34s', timestamp: '2 hours ago' },
@@ -85,7 +85,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
 
   const handleCreateFunction = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(scope === 'global') {
+    if (scope === 'global') {
       createProjectFunction({
         name: testSuiteFunctionName,
         description: "sample",
@@ -94,13 +94,13 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
         onSuccess: (response) => {
           createFunctionModal.closeModal();
           setTestSuiteFunctionName("");
-          
+
           toast.addToast({
             title: "Test case created successfully",
             message: "Test case created successfully",
             type: "success",
-          })
-  
+          });
+
           // router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
         },
       });
@@ -113,13 +113,13 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
         onSuccess: (response) => {
           createFunctionModal.closeModal();
           setTestSuiteFunctionName("");
-          
+
           toast.addToast({
             title: "Test case created successfully",
             message: "Test case created successfully",
             type: "success",
-          })
-  
+          });
+
           // router.push(`/projects/${projectId}/test-suites/${testSuiteId}?testCaseId=${response?.data?.id}`);
         },
       });
@@ -129,7 +129,7 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
 
   const handleCreateVariable = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(scope === 'global') {
+    if (scope === 'global') {
       createProjectVariable({
         name: testSuiteVariableName,
         value: testSuiteVariableValue,
@@ -138,15 +138,15 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
         onSuccess: (response) => {
           createVariableModal.closeModal();
           setTestSuiteVariableName("");
-          setScope("")
-          setType("")
-          
+          setScope("");
+          setType("");
+
           toast.addToast({
             title: "Variable created successfully",
             message: "Variable created successfully",
             type: "success",
-          })
-          },
+          });
+        },
       });
     } else {
       createTestSuiteVariable({
@@ -157,15 +157,15 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
         onSuccess: (response) => {
           createVariableModal.closeModal();
           setTestSuiteVariableName("");
-          setScope("")
-          setType("")
-          
+          setScope("");
+          setType("");
+
           toast.addToast({
             title: "Variable created successfully",
             message: "Variable created successfully",
             type: "success",
-          })
-          },
+          });
+        },
       });
     }
 
@@ -188,63 +188,63 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
             {testCases?.data && testCases.data.length > 0 ? (
               <div className="space-y-3">
                 {testCases.data.map((test: any) => (
-              <Collapsible key={test.id} 
-                className="group"
-                title={
-                <div className="flex items-center gap-3 p-1">
-                  {getTestStatusIcon(test.status)}
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">{test.name}</span>
-                </div>
-              }
-              headerActions={
-                <>
-                  <button 
-                    className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded opacity-0 group-hover:opacity-100 transition-opacity" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log(`Delete test case: ${test.name}`);
-                      // TODO: Implement delete functionality
+                  <CollapsibleCard key={test.id}
+                    className="group"
+                    title={
+                      <div className="flex items-center gap-3 p-1">
+                        {getTestStatusIcon(test.status)}
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">{test.name}</span>
+                      </div>
+                    }
+                    headerActions={
+                      <>
+                        <button
+                          className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log(`Delete test case: ${test.name}`);
+                            // TODO: Implement delete functionality
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4 text-red-500" />
+                        </button>
+                      </>
+                    }
+                    onHeaderClick={() => {
+                      const newUrl = new URL(
+                        `/projects/${projectId}/test-suites/${testSuiteId}`,
+                        window.location.origin
+                      );
+
+                      if (newUrl.searchParams.get("testCaseId") !== test.id) {
+                        newUrl.searchParams.set("testCaseId", test.id);
+                      }
+
+                      const finalUrl = newUrl.toString();
+
+                      if (finalUrl !== window.location.href) {
+                        router.push(finalUrl);
+                      }
                     }}
                   >
-                    <Trash2 className="h-4 w-4 text-red-500" />
-                  </button>
-                </>
-              }
-              onHeaderClick={() => {
-                const newUrl = new URL(
-                  `/projects/${projectId}/test-suites/${testSuiteId}`,
-                  window.location.origin
-                );
-                
-                if (newUrl.searchParams.get("testCaseId") !== test.id) {
-                  newUrl.searchParams.set("testCaseId", test.id);
-                }
-                
-                const finalUrl = newUrl.toString();
-                
-                if (finalUrl !== window.location.href) {
-                  router.push(finalUrl);
-                }
-              }}
-              >
-                <div className="space-y-4 p-1 pt-2.5">
-                  <div className="space-y-3">
-                    {test.code.split('\n').map((instruction: any, stepIndex: any) => (
-                      <div key={stepIndex} className="space-y-2">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center gap-2">
-                            {getTestStatusIcon(test.status)}
-                            <span className="text-sm text-gray-600 dark:text-gray-400">{instruction}</span>
+                    <div className="space-y-4 p-1 pt-2.5">
+                      <div className="space-y-3">
+                        {test.testCaseRuns[0].stepResults.map((stepResult: any, stepIndex: any) => (
+                          <div key={stepIndex} className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                {getTestStatusIcon(test.status)}
+                                <span className="text-sm text-gray-600 dark:text-gray-400">{stepResult.stepName}</span>
+                              </div>
+                            </div>
+                            <Card className="w-full h-52 flex items-center justify-center">
+                              <img src={stepResult.screenshot} alt="Screenshot" className="w-full h-full object-cover rounded-lg" />
+                            </Card>
                           </div>
-                        </div>
-                        <Card className="w-full h-24 flex items-center justify-center">
-                          <span className="text-xs text-gray-500 dark:text-gray-400">Screenshot placeholder</span>
-                        </Card>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </Collapsible>
+                    </div>
+                  </CollapsibleCard>
                 ))}
               </div>
             ) : (
@@ -271,25 +271,25 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
               </div>
               <div className="space-y-3">
                 {projectVariables?.data?.map((variable, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-xl"
                     onClick={() => console.log(`Clicked on variable: ${variable.name}`)}
                   >
                     <Card className="p-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-mono text-sm text-gray-900 dark:text-white">{variable.name}</span>
-                          <span className={getTypeBadge('global')}>
-                            global
-                          </span>
+                        <span className={getTypeBadge('global')}>
+                          global
+                        </span>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">{variable.value}</p>
                     </Card>
                   </div>
                 ))}
                 {testSuiteVariables?.data?.map((variable, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-xl"
                     onClick={() => console.log(`Clicked on variable: ${variable.name}`)}
                   >
@@ -317,25 +317,25 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
               </div>
               <div className="space-y-3">
                 {projectFunctions?.data?.map((func, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-xl"
                     onClick={() => console.log(`Clicked on function: ${func.name}`)}
                   >
                     <Card className="p-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-mono text-sm text-gray-900 dark:text-white">{func.name}</span>
-                          <span className={getTypeBadge('global')}>
-                            global
-                          </span>
+                        <span className={getTypeBadge('global')}>
+                          global
+                        </span>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{func.description}</p>
                     </Card>
                   </div>
                 ))}
                 {testSuiteFunctions?.data?.map((func, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-xl"
                     onClick={() => console.log(`Clicked on function: ${func.name}`)}
                   >
@@ -377,150 +377,150 @@ const TestSuiteRightSidebar: React.FC<{projectId: string, testSuiteId: string}> 
         )}
       </div>
       <Modal isOpen={createVariableModal.isOpen} onClose={createVariableModal.closeModal} className="max-w-[700px] m-4">
-      <form onSubmit={handleCreateVariable} className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-xl dark:bg-gray-900 lg:p-11">
-        {/* Header */}
-        <div className="px-2 pr-14">
-          <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-            Create new test suite variable
-          </h4>
-        </div>
-        
-        {/* Form Content */}
-        <div className="flex flex-col gap-6">
-          <div className="px-2 overflow-y-auto custom-scrollbar">
-            <div className="flex flex-col gap-4">
-              {/* Function Name */}
-              <div className="flex flex-row gap-4">
-              <div className="flex-1">
-                <Label>Variable Name</Label>
-                <Input 
-                  placeholder="Enter variable name" 
-                  onChange={(e) => setTestSuiteVariableName(e.target.value)}
-                />
-              </div>
-              
-              {/* Scope */}
-              <div className="flex-1">
-                <Label>Scope</Label>
-                <Select 
-                  options={[
-                    { value: 'global', label: 'Global - Available to all tests' },
-                    { value: 'test-suite', label: 'Test Suite - Available to this test suite only' }
-                  ]}
-                  onChange={(value) => setScope(value)}
-                />
-              </div>
-              </div>
-              
-              {/* Parameters */}
-              <div>
-                <Label>Type</Label>
-                <Select 
-                  options={[
-                    { value: 'string', label: 'String' },
-                    { value: 'number', label: 'Number' },
-                    { value: 'boolean', label: 'Boolean' },
-                    // { value: 'array', label: 'Array' },
-                    // { value: 'object', label: 'Object' },
-                  ]}
-                  onChange={(value) => setType(value)}
-                />
-              </div>
-              
-              {/* Function Code */}
-              <div>
-              <Label>Value</Label>
-                <Input 
-                  placeholder="Enter variable value" 
-                  onChange={(e) => setTestSuiteVariableValue(e.target.value)}
-                />
+        <form onSubmit={handleCreateVariable} className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-xl dark:bg-gray-900 lg:p-11">
+          {/* Header */}
+          <div className="px-2 pr-14">
+            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+              Create new test suite variable
+            </h4>
+          </div>
+
+          {/* Form Content */}
+          <div className="flex flex-col gap-6">
+            <div className="px-2 overflow-y-auto custom-scrollbar">
+              <div className="flex flex-col gap-4">
+                {/* Function Name */}
+                <div className="flex flex-row gap-4">
+                  <div className="flex-1">
+                    <Label>Variable Name</Label>
+                    <Input
+                      placeholder="Enter variable name"
+                      onChange={(e) => setTestSuiteVariableName(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Scope */}
+                  <div className="flex-1">
+                    <Label>Scope</Label>
+                    <Select
+                      options={[
+                        { value: 'global', label: 'Global - Available to all tests' },
+                        { value: 'test-suite', label: 'Test Suite - Available to this test suite only' }
+                      ]}
+                      onChange={(value) => setScope(value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Parameters */}
+                <div>
+                  <Label>Type</Label>
+                  <Select
+                    options={[
+                      { value: 'string', label: 'String' },
+                      { value: 'number', label: 'Number' },
+                      { value: 'boolean', label: 'Boolean' },
+                      // { value: 'array', label: 'Array' },
+                      // { value: 'object', label: 'Object' },
+                    ]}
+                    onChange={(value) => setType(value)}
+                  />
+                </div>
+
+                {/* Function Code */}
+                <div>
+                  <Label>Value</Label>
+                  <Input
+                    placeholder="Enter variable value"
+                    onChange={(e) => setTestSuiteVariableValue(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
+
+            {/* Footer Buttons */}
+            <div className="flex items-center gap-3 px-2 lg:justify-end">
+              <Button size="xs" variant="outline" onClick={createVariableModal.closeModal}>
+                Cancel
+              </Button>
+              <Button size="xs" type="submit">
+                Create Variable
+              </Button>
+            </div>
           </div>
-          
-          {/* Footer Buttons */}
-          <div className="flex items-center gap-3 px-2 lg:justify-end">
-            <Button size="xs" variant="outline" onClick={createVariableModal.closeModal}>
-              Cancel
-            </Button>
-            <Button size="xs" type="submit">
-              Create Variable
-            </Button>
-          </div>
-        </div>
-      </form>
-    </Modal>
+        </form>
+      </Modal>
       <Modal isOpen={createFunctionModal.isOpen} onClose={createFunctionModal.closeModal} className="max-w-[700px] m-4">
-      <form onSubmit={handleCreateFunction} className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-xl dark:bg-gray-900 lg:p-11">
-        {/* Header */}
-        <div className="px-2 pr-14">
-          <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-            Create new test suite function
-          </h4>
-        </div>
-        
-        {/* Form Content */}
-        <div className="flex flex-col gap-6">
-          <div className="px-2 overflow-y-auto custom-scrollbar">
-            <div className="flex flex-col gap-4">
-              {/* Function Name */}
-              <div className="flex flex-row gap-4">
-              <div className="flex-1">
-                <Label>Function Name</Label>
-                <Input 
-                  placeholder="Enter function name" 
-                  onChange={(e) => setTestSuiteFunctionName(e.target.value)}
-                />
-              </div>
-              
-              {/* Scope */}
-              <div className="flex-1">
-                <Label>Scope</Label>
-                <Select 
-                  options={[
-                    { value: 'global', label: 'Global - Available to all tests' },
-                    { value: 'test-suite', label: 'Test Suite - Available to this test suite only' }
-                  ]}
-                  onChange={(value) => setScope(value)}
-                />
-              </div>
-              </div>
-              
-              {/* Parameters */}
-              <div>
-                <Label>Parameters</Label>
-                <Input 
-                  placeholder="e.g., timeout = 5000" 
-                  onChange={(e) => {}}
-                />
-              </div>
-              
-              {/* Function Code */}
-              <div>
-                <Label>Function Code</Label>
-                <textarea
-                  className="w-full h-32 p-3 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white resize-none"
-                  placeholder="Enter your function code here..."
-                  onChange={(e) => {}}
-                />
+        <form onSubmit={handleCreateFunction} className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-xl dark:bg-gray-900 lg:p-11">
+          {/* Header */}
+          <div className="px-2 pr-14">
+            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+              Create new test suite function
+            </h4>
+          </div>
+
+          {/* Form Content */}
+          <div className="flex flex-col gap-6">
+            <div className="px-2 overflow-y-auto custom-scrollbar">
+              <div className="flex flex-col gap-4">
+                {/* Function Name */}
+                <div className="flex flex-row gap-4">
+                  <div className="flex-1">
+                    <Label>Function Name</Label>
+                    <Input
+                      placeholder="Enter function name"
+                      onChange={(e) => setTestSuiteFunctionName(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Scope */}
+                  <div className="flex-1">
+                    <Label>Scope</Label>
+                    <Select
+                      options={[
+                        { value: 'global', label: 'Global - Available to all tests' },
+                        { value: 'test-suite', label: 'Test Suite - Available to this test suite only' }
+                      ]}
+                      onChange={(value) => setScope(value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Parameters */}
+                <div>
+                  <Label>Parameters</Label>
+                  <Input
+                    placeholder="e.g., timeout = 5000"
+                    onChange={(e) => { }}
+                  />
+                </div>
+
+                {/* Function Code */}
+                <div>
+                  <Label>Function Code</Label>
+                  <textarea
+                    className="w-full h-32 p-3 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white resize-none"
+                    placeholder="Enter your function code here..."
+                    onChange={(e) => { }}
+                  />
+                </div>
               </div>
             </div>
+
+            {/* Footer Buttons */}
+            <div className="flex items-center gap-3 px-2 lg:justify-end">
+              <Button size="xs" variant="outline" onClick={createFunctionModal.closeModal}>
+                Cancel
+              </Button>
+              <Button size="xs" type="submit">
+                Create Function
+              </Button>
+            </div>
           </div>
-          
-          {/* Footer Buttons */}
-          <div className="flex items-center gap-3 px-2 lg:justify-end">
-            <Button size="xs" variant="outline" onClick={createFunctionModal.closeModal}>
-              Cancel
-            </Button>
-            <Button size="xs" type="submit">
-              Create Function
-            </Button>
-          </div>
-        </div>
-      </form>
-    </Modal>
+        </form>
+      </Modal>
     </div>
   );
-}
+};
 
 export default TestSuiteRightSidebar;

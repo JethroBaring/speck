@@ -1,6 +1,6 @@
 // hooks/useUsers.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getTestSuites, getTestSuiteById, createTestSuite, deleteTestSuite } from '@/lib/api/test-suites';
+import { getTestSuites, getTestSuiteById, createTestSuite, deleteTestSuite, runTestSuite } from '@/lib/api/test-suites';
 import { TestSuiteCreateInput } from '@repo/types/schemas';
 
 export function useTestSuites(projectId: string) {
@@ -109,5 +109,11 @@ export function useDeleteTestSuite(projectId: string) {
       // If the mutation fails, we could show an error toast here
       console.error('Failed to delete test suite:', err);
     },
+  });
+}
+
+export function useRunTestSuite(testSuiteId: string) {
+  return useMutation({
+    mutationFn: () => runTestSuite(testSuiteId),
   });
 }

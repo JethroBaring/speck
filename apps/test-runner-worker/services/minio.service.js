@@ -6,6 +6,7 @@ class MinioService {
     const minioUrl = process.env.MINIO_URL;
     const accessKey = process.env.MINIO_ACCESS_KEY;
     const secretKey = process.env.MINIO_SECRET_KEY;
+    
 
     if (!minioUrl || !accessKey || !secretKey) {
       throw new Error('MinIO configuration is missing. Please check MINIO_URL, MINIO_ACCESS_KEY, and MINIO_SECRET_KEY environment variables.');
@@ -14,7 +15,7 @@ class MinioService {
     // Parse the URL to extract hostname and port
     const url = new URL(minioUrl);
     const endPoint = url.hostname;
-    const port = url.port ? parseInt(url.port) : (url.protocol === 'https:' ? 443 : 80);
+    const port = 9000;
     const useSSL = url.protocol === 'https:';
 
     this.client = new Minio.Client({

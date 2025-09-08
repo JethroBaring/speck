@@ -12,6 +12,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { Injectable, Logger } from '@nestjs/common';
 import { TestQueueService } from '../test-queue.service';
+import { RedisService } from '../../redis/redis.service';
 
 export interface WebSocketMessage {
   type: string;
@@ -38,7 +39,7 @@ export interface TestProgressData {
 @Injectable()
 @WebSocketGateway({
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
     credentials: true,
   },
   namespace: '/test-runner',
@@ -51,10 +52,12 @@ export class TestWebSocketGateway
 
   private readonly logger = new Logger(TestWebSocketGateway.name);
 
-  constructor(private testQueueService: TestQueueService) {}
+  constructor(private testQueueService: TestQueueService, private redisService: RedisService) {}
 
   afterInit(server: Server) {
     this.logger.log('WebSocket Gateway initialized');
+    this.redisService.setWebSocketGateway(this);
+    this.logger.log('RedisService gateway wiring completed');
   }
 
   handleConnection(client: Socket) {
@@ -242,7 +245,7 @@ export class TestWebSocketGateway
 
   emitTestSuiteCompleted(data: TestProgressData) {
     this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-suite-completed', {
-      type: 'suite-completed',
+      type: 'test-suite-completed',
       data,
       timestamp: new Date().toISOString(),
     });

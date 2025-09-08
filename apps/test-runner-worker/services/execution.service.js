@@ -4,6 +4,16 @@ const fs = require("fs");
 const apiService = require("./api.service");
 const minioService = require("./minio.service");
 
+const TestStepStatus = {
+  PENDING: "PENDING",
+  RUNNING: "RUNNING",
+  PASSED: "PASSED",
+  FAILED: "FAILED",
+  SKIPPED: "SKIPPED",
+  TIMEOUT: "TIMEOUT",
+  ERROR: "ERROR",
+}
+
 class ExecutionService {
   constructor() {
     this.screenshotsDir = path.join(__dirname, "../screenshots");
@@ -13,17 +23,19 @@ class ExecutionService {
     const { code, setupState, testCaseRunId } = jobData;
     const startTime = Date.now();
     let browser;
+    let page;
+    const results = [];
 
     try {
       browser = await this.launchBrowser();
-      const page = await browser.newPage();
+      page = await browser.newPage();
 
       // Apply setup state if provided
       if (setupState) {
         await this.applySetupState(page, setupState);
       }
 
-      const results = await this.executeTestCommands(page, code, testCaseRunId);
+      await this.executeTestCommands(page, code, testCaseRunId, results);
       const duration = Date.now() - startTime;
 
       console.log("✅ Test completed successfully");
@@ -36,10 +48,11 @@ class ExecutionService {
       const duration = Date.now() - startTime;
       console.error("❌ Test failed:", error.message);
 
-      const screenshotUrl = await this.captureErrorScreenshot(browser, testCaseRunId);
+      const screenshotUrl = await this.captureErrorScreenshot(page, testCaseRunId);
       return {
         success: false,
         error: error.message,
+        results,
         screenshotUrl,
         duration,
       };
@@ -65,8 +78,7 @@ class ExecutionService {
     });
   }
 
-  async executeTestCommands(page, code, testCaseRunId) {
-    const results = [];
+  async executeTestCommands(page, code, testCaseRunId, results) {
     const lines = code.split("\n").filter((line) => line.trim());
     console.log(`📝 Processing ${lines.length} commands`);
 
@@ -84,17 +96,18 @@ class ExecutionService {
           step: i + 1,
           command: line,
           screenshotUrl,
-          status: "success",
+          status: TestStepStatus.PASSED,
         });
       } catch (error) {
         console.error(`❌ Step ${i + 1} failed:`, error.message);
         results.push({
           step: i + 1,
           command: line,
-          status: "failed",
+          screenshotUrl: null,
+          status: TestStepStatus.FAILED,
           error: error.message,
         });
-        throw error;
+        // Continue executing remaining steps instead of failing fast
       }
     }
 
@@ -165,19 +178,16 @@ class ExecutionService {
     return uploadResult.url;
   }
 
-  async captureErrorScreenshot(browser, testCaseRunId) {
+  async captureErrorScreenshot(page, testCaseRunId) {
     try {
-      if (browser) {
-        const pages = await browser.pages();
-        if (pages.length > 0) {
-          const screenshot = await pages[0].screenshot({ type: "png" });
-          const timestamp = Date.now();
-          const filename = `test-case-${testCaseRunId}-error-${timestamp}.png`;
-          
-          // Upload directly to MinIO
-          const uploadResult = await minioService.uploadScreenshot(screenshot, filename);
-          return uploadResult.url;
-        }
+      if (page) {
+        const screenshot = await page.screenshot({ type: "png" });
+        const timestamp = Date.now();
+        const filename = `test-case-${testCaseRunId}-error-${timestamp}.png`;
+        
+        // Upload directly to MinIO
+        const uploadResult = await minioService.uploadScreenshot(screenshot, filename);
+        return uploadResult.url;
       }
     } catch (error) {
       console.error("Failed to capture error screenshot:", error.message);

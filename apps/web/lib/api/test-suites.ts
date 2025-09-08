@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../constants"
 import { TestSuiteCreateInput } from "@repo/types/schemas"
-import type { TestSuites } from "@repo/types/zod"
+import type { TestSuiteRun, TestSuites } from "@repo/types/zod"
 import { ApiResponse } from "../interface";
 
 export async function getTestSuites(projectId: string): Promise<ApiResponse<TestSuites[]>> {
@@ -13,7 +13,7 @@ export async function getTestSuites(projectId: string): Promise<ApiResponse<Test
   })
 
   if(!response.ok) {
-    throw new Error("Failed to fetch projects")
+    throw new Error("Failed to fetch test suites")
   }
 
   return response.json()
@@ -30,7 +30,7 @@ export async function getTestSuiteById(testSuiteId: string): Promise<ApiResponse
   })
 
   if(!response.ok) {
-    throw new Error("Failed to fetch project")
+    throw new Error("Failed to fetch test suite")
   }
 
   return response.json()  
@@ -47,7 +47,7 @@ export async function createTestSuite(projectId: string, createTestSuiteDto: Tes
   })
 
   if(!response.ok) {
-    throw new Error("Failed to create project")
+    throw new Error("Failed to create test suite")
   }
 
   return response.json()
@@ -63,7 +63,23 @@ export async function deleteTestSuite(projectId: string, testSuiteId: string): P
   })
 
   if(!response.ok) {
-    throw new Error("Failed to delete project")
+    throw new Error("Failed to delete test suite")
+  }
+
+  return response.json()
+}
+
+export async function runTestSuite(testSuiteId: string): Promise<ApiResponse<any>> {
+  const response = await fetch(`${API_BASE_URL}/test-runner/run-suite/${testSuiteId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+
+  if(!response.ok) {
+    throw new Error("Failed to run test suite")
   }
 
   return response.json()

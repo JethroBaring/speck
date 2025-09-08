@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@repo/types/prisma';
+import { MinioService } from "src/common/minio/minio.service";
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TestCasesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly minioService: MinioService) {}
 
   async create(
     testSuiteId: string,
@@ -36,13 +37,33 @@ export class TestCasesService {
   }
 
   async findAll(testSuiteId: string) {
-    return await this.prisma.testCase.findMany({
+    const testCases = await this.prisma.testCase.findMany({
       where: {
         testSuite: {
           id: testSuiteId,
         },
       },
+      include: {
+        testCaseRuns: {
+          orderBy: { startedAt: 'desc' },
+          take: 1,
+          include: {
+            stepResults: true,
+          },
+        }
+      }
     });
+
+    testCases.forEach(testCase => {
+      testCase.testCaseRuns = testCase.testCaseRuns.sort((a, b) => a.id.localeCompare(b.id));
+      testCase.testCaseRuns.forEach(testCaseRun => {
+        testCaseRun.stepResults.forEach(async stepResult => {
+          stepResult.screenshot = await this.minioService.getSignedAccessUrl("test-step-screenshots", stepResult.screenshot!.split("/").pop()!, 3600);
+        });
+      });
+    });
+
+    return testCases;
   }
 
   async findOne(testCaseId: string) {

@@ -3,7 +3,7 @@
 import { Activity, Database, FileText, Plus, Globe, TestTube, Clock, CheckCircle, XCircle, Circle, Users, ChartColumnDecreasing, Settings } from "lucide-react";
 import React, { useState } from "react";
 import Tabs from "../common/Tabs";
-import Collapsible from "../common/Collapsible";
+import Collapsible from "../common/CollapsibleCard";
 import Card from "../common/Card";
 import Button from "../ui/button/Button";
 import Label from "../form/Label";

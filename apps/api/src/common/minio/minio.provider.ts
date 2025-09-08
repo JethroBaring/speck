@@ -15,7 +15,7 @@ export const MinioProvider = {
     // Parse the URL to extract hostname and port
     const url = new URL(minioUrl);
     const endPoint = url.hostname;
-    const port = url.port ? parseInt(url.port) : (url.protocol === 'https:' ? 443 : 80);
+    const port = 9000;
     const useSSL = url.protocol === 'https:';
 
     return new Minio.Client({

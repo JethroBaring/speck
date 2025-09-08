@@ -32,6 +32,15 @@ export class TestSuitesService {
       where: {
         id: testSuiteId,
       },
+      include: {
+        runs: {
+          where: {
+            status: TestSuiteRunStatus.RUNNING,
+          },
+          orderBy: { startedAt: 'desc' as const },
+          take: 1,
+        },
+      },
     });
   }
 

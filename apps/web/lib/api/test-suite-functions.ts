@@ -16,8 +16,6 @@ export async function getTestSuiteFunctions(testSuiteId: string): Promise<ApiRes
     throw new Error("Failed to fetch test suite functions")
   }
 
-  console.log(response);
-
   return response.json()
 }
 

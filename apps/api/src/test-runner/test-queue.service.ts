@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bullmq';
 import { RedisService } from "src/redis/redis.service";
-import { TestSuiteRunStatus, TestCaseRunStatus } from "generated/prisma";
+import { TestSuiteRunStatus, TestCaseRunStatus, TestStepStatus } from "generated/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
 
 export interface TestSuiteQueueData {
@@ -100,7 +100,7 @@ export class TestQueueService {
             data: {
               testCaseId: testCase.id,
               testSuiteRunId: testSuiteRun.id,
-              status: TestCaseRunStatus.RUNNING,
+              status: TestCaseRunStatus.PENDING,
             },
             include: {
               testCase: true
@@ -108,8 +108,6 @@ export class TestQueueService {
           })
         )
       );
-
-      console.log(testCaseRuns);
 
       // Update total tests count
       await this.prisma.testSuiteRun.update({
@@ -467,12 +465,35 @@ export class TestQueueService {
     errorMessage?: string;
     stackTrace?: string;
     logs?: string;
+    results?: any;
   }) {
+
+    for(const r of result?.results || []) {
+      await this.prisma.testStepResult.create({
+        data: {
+          testCaseRunId: testCaseRunId,
+          stepNumber: r.step,
+          stepName: r.command,
+          screenshot: r.screenshotUrl,
+          status: r.status,
+
+          // Will be finalized in the future
+          startedAt: new Date(),
+          completedAt: new Date(),
+          duration: 0,
+          errorMessage: null,
+          logs: null
+        }
+      });
+    }
+
     // Update test case run
     const testCaseRun = await this.prisma.testCaseRun.update({
       where: { id: testCaseRunId },
       data: {
-        status: result.status,
+        status: Array.isArray(result.results) && result.results.length > 0 && result.results.every(r => r.status === TestStepStatus.PASSED)
+          ? TestCaseRunStatus.PASSED
+          : TestCaseRunStatus.FAILED,
         completedAt: new Date(),
         duration: result.duration,
         errorMessage: result.errorMessage,
@@ -498,6 +519,27 @@ export class TestQueueService {
       testSuiteRunId: testCaseRun?.testSuiteRunId!,
       timestamp: new Date().toISOString(),
     });
+
+    const remaining = await this.prisma.testCaseRun.count({
+      where: {
+        testSuiteRunId: testCaseRun?.testSuiteRunId!,
+        status: { in: [TestCaseRunStatus.RUNNING, TestCaseRunStatus.PENDING] },
+      },
+    });
+
+    if (remaining === 0) {
+      await this.prisma.testSuiteRun.update({
+        where: { id: testCaseRun?.testSuiteRunId! },
+        data: { status: TestSuiteRunStatus.COMPLETED, completedAt: new Date() },
+      });
+      console.log("testCaseRun?.testSuiteRunId!", testCaseRun?.testSuiteRunId!);
+      await this.redisService.publishTestSuiteEvent({
+        type: 'test-suite-completed',
+        testSuiteRunId: testCaseRun?.testSuiteRunId!,
+        data: { status: TestSuiteRunStatus.COMPLETED },
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     return {
       testCaseRun,
@@ -594,71 +636,6 @@ export class TestQueueService {
       execution: counts,
       setup: await this.setupQueue.getJobCounts(),
     };
-  }
-
-  async claimAndGetNextJob() {
-    // Get the next waiting job
-    const jobs = await this.executionQueue.getWaiting(0, 1);
-    
-    if (jobs.length === 0) {
-      return null;
-    }
-
-    const job = jobs[0];
-    const lockKey = `job-lock:${job.id}`;
-    
-    // Try to acquire a lock for this job to prevent other workers from picking it up
-    const lockAcquired = await this.redisService.acquireLock(lockKey, 300); // 5 minute lock
-    
-    if (!lockAcquired) {
-      this.logger.warn(`Job ${job.id} is already being processed by another worker`);
-      return null;
-    }
-    
-    return {
-      id: job.id,
-      data: job.data,
-      timestamp: job.timestamp,
-      lockKey, // Include lock key so we can release it later
-    };
-  }
-
-  async completeJob(jobId: string, result: any, lockKey?: string) {
-    const job = await this.executionQueue.getJob(jobId);
-    
-    if (!job) {
-      throw new Error(`Job ${jobId} not found`);
-    }
-
-    // Remove the job from the queue to prevent reprocessing
-    await job.remove();
-    
-    // Release the lock if provided
-    if (lockKey) {
-      await this.redisService.releaseLock(lockKey);
-    }
-    
-    this.logger.log(`Job ${jobId} completed and removed successfully`);
-    return { success: true };
-  }
-
-  async failJob(jobId: string, error: string, lockKey?: string) {
-    const job = await this.executionQueue.getJob(jobId);
-    
-    if (!job) {
-      throw new Error(`Job ${jobId} not found`);
-    }
-
-    // Remove the job from the queue to prevent reprocessing
-    await job.remove();
-    
-    // Release the lock if provided
-    if (lockKey) {
-      await this.redisService.releaseLock(lockKey);
-    }
-    
-    this.logger.log(`Job ${jobId} failed and removed: ${error}`);
-    return { success: true };
   }
 }
 

@@ -5,7 +5,7 @@ import { TestWebSocketGateway } from '../test-runner/websocket/test-websocket.ga
 
 export interface RedisTestEvent {
   type: 'suite-started' | 'setup-completed' | 'setup-failed' | 
-        'test-case-started' | 'test-case-completed' | 'suite-completed' |
+        'test-case-started' | 'test-case-completed' | 'test-suite-completed' |
         'suite-cancelled' | 'test-case-cancelled';
   testSuiteRunId: string;
   testCaseRunId?: string;
@@ -77,7 +77,10 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   private async handleRedisMessage(channel: string, message: string) {
-    if (!this.webSocketGateway) return;
+    if (!this.webSocketGateway) {
+      console.warn('RedisService received message but WebSocketGateway is not wired. Channel:', channel);
+      return;
+    }
 
     try {
       const event = JSON.parse(message);
@@ -113,7 +116,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       case 'suite-started':
         this.webSocketGateway.emitTestSuiteStarted(progressData);
         break;
-      case 'suite-completed':
+      case 'test-suite-completed':
+        console.log("testSuiteRunId", progressData.testSuiteRunId);
         this.webSocketGateway.emitTestSuiteCompleted(progressData);
         break;
       case 'suite-cancelled':

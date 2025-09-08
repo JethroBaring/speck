@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
- 
+import Card from './Card';
 
-export interface CollapsibleProps {
+export interface CollapsiebleCardProps {
   title: string | React.ReactNode;
   children: React.ReactNode;
   defaultOpen?: boolean;
@@ -14,7 +14,7 @@ export interface CollapsibleProps {
   onHeaderClick?: () => void;
 }
 
-const Collapsible: React.FC<CollapsibleProps> = ({
+const CollapsiebleCard: React.FC<CollapsiebleCardProps> = ({
   title,
   children,
   defaultOpen = false,
@@ -44,7 +44,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   }, [isOpen, children]);
 
   return (
-    <div className={className}>
+    <Card className={className}>
       <div
         role="button"
         onClick={onHeaderClick}
@@ -94,8 +94,8 @@ const Collapsible: React.FC<CollapsibleProps> = ({
           {children}
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
-export default Collapsible;
+export default CollapsiebleCard;
