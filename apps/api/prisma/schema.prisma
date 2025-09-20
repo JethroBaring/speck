@@ -286,12 +286,6 @@ model TestSuiteRun {
   passedTests  Int           @default(0) @map("passed_tests")
   failedTests  Int           @default(0) @map("failed_tests")
   skippedTests Int           @default(0) @map("skipped_tests")
-  errorMessage String?       @map("error_message")
-  environment  String? // e.g., "development", "staging", "production"
-  browser      String? // e.g., "chrome", "firefox", "safari"
-  version      String? // browser version
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
 
   // Relations
   testSuite    TestSuites    @relation("TestSuiteRuns", fields: [testSuiteId], references: [id], onDelete: Cascade)
@@ -308,9 +302,6 @@ model TestCaseRun {
   startedAt      DateTime          @default(now()) @map("started_at")
   completedAt    DateTime?         @map("completed_at")
   duration       Int? // Duration in milliseconds
-  errorMessage   String?           @map("error_message")
-  stackTrace     String?           @map("stack_trace") @db.Text
-  logs           String?           @db.Text // Console logs or test output
 
   // Relations
   testCase     TestCase         @relation("TestCaseRuns", fields: [testCaseId], references: [id], onDelete: Cascade)
@@ -479,5 +470,5 @@ enum RoleAccess {
 
 generator zod {
   provider = "zod-prisma-types"
-  output   = "../../packages/types/generated/zod"
+  output   = "../../../packages/types/generated/zod"
 }

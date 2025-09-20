@@ -9,14 +9,14 @@ import {
 	EditorSelectorIcon,
 	EditorVariableIcon,
 } from "../../icons";
-import ComponentCard from "./ComponentCard";
 import { Code, HelpCircle, Pencil, Check } from "lucide-react";
-import { useTestCase, useUpdateTestCase } from "@/hooks/useTestCases";
+import { useTestCase, useUpdateTestCase } from "@/hooks/api/useTestCases";
+import ComponentCard from "./ComponentCard";
 
-const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onChange?: (text: string) => void; isSaving?: boolean, lastSavedAt?: number | null, testCaseId?: string }> = ({ className, value, onChange, isSaving, lastSavedAt, testCaseId }) => {
+const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onChange?: (text: string) => void; isSaving?: boolean, lastSavedAt?: number | null, testCaseId?: string; }> = ({ className, value, onChange, isSaving, lastSavedAt, testCaseId }) => {
 
 	const { data: testCase } = useTestCase(testCaseId || "");
-	const { mutate: updateTestCase } = useUpdateTestCase()
+	const { mutate: updateTestCase } = useUpdateTestCase();
 
 	const editorRef = useRef<HTMLDivElement>(null);
 	const titleRef = useRef<HTMLDivElement>(null);
@@ -135,7 +135,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
-	const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number }>(
+	const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; }>(
 		{ top: 0, left: 0 },
 	);
 
@@ -145,14 +145,14 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 		const currentRaw = editorRef.current.innerText || "";
 		const current = currentRaw.replace(/\u200B/g, "");
 		if (current === incoming) return;
-		
+
 		// Always place caret at end when switching test cases (testCaseId changes)
 		const shouldPlaceCaretAtEnd = current.length === 0 || current !== incoming;
-		
+
 		rebuildContentWithSyntaxHighlighting(incoming);
 		addCaretAnchorIfNeeded(incoming);
 		setShowPlaceholder(incoming.length === 0);
-		
+
 		// Place caret at end when switching test cases or when content is completely different
 		if (shouldPlaceCaretAtEnd) {
 			restoreCaretPosition(incoming.length);
@@ -272,7 +272,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 		}
 	};
 
-	const getEditorRelativeCaretRect = (): { top: number; left: number } => {
+	const getEditorRelativeCaretRect = (): { top: number; left: number; } => {
 		if (!editorRef.current) return { top: 0, left: 0 };
 		const selection = window.getSelection();
 		if (!selection || selection.rangeCount === 0) return { top: 0, left: 0 };
@@ -289,7 +289,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 	const getCurrentToken = (
 		text: string,
 		caret: number,
-	): { start: number; end: number; value: string } => {
+	): { start: number; end: number; value: string; } => {
 		// Identify simple word token made of letters only for commands
 		let start = caret;
 		while (start > 0 && /[A-Za-z]/.test(text[start - 1])) start -= 1;
@@ -361,36 +361,36 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 		const caret = getCaretPosition();
 		const { start } = getCurrentToken(currentText, caret);
 
-					let inserted = chosen.value;
-			let newCaret: number;
-			if (chosen.kind === "function") {
-				// If next non-space char is already '(', insert only name; else insert name + "()" and place caret inside
-				let k = caret;
-				while (k < currentText.length && /\s/.test(currentText[k])) k += 1;
-				if (currentText[k] === "(") {
-					inserted = chosen.value;
-					newCaret = start + inserted.length;
-				} else {
-					inserted = `${chosen.value}()`;
-					newCaret = start + chosen.value.length + 1; // inside parentheses
-				}
-			} else {
+		let inserted = chosen.value;
+		let newCaret: number;
+		if (chosen.kind === "function") {
+			// If next non-space char is already '(', insert only name; else insert name + "()" and place caret inside
+			let k = caret;
+			while (k < currentText.length && /\s/.test(currentText[k])) k += 1;
+			if (currentText[k] === "(") {
+				inserted = chosen.value;
 				newCaret = start + inserted.length;
-				const nextChar = currentText[caret] ?? "";
-				if (!(nextChar && (/\s/.test(nextChar) || /[)\]\},.;:]/.test(nextChar)))) {
-					inserted += " ";
-					newCaret += 1;
-				}
+			} else {
+				inserted = `${chosen.value}()`;
+				newCaret = start + chosen.value.length + 1; // inside parentheses
 			}
+		} else {
+			newCaret = start + inserted.length;
+			const nextChar = currentText[caret] ?? "";
+			if (!(nextChar && (/\s/.test(nextChar) || /[)\]\},.;:]/.test(nextChar)))) {
+				inserted += " ";
+				newCaret += 1;
+			}
+		}
 
-			const newText =
-				currentText.slice(0, start) + inserted + currentText.slice(caret);
-			rebuildContentWithSyntaxHighlighting(newText);
-			addCaretAnchorIfNeeded(newText);
-			restoreCaretPosition(newCaret);
-			setIsDropdownOpen(false);
-			setSuggestions([]);
-			onChange?.(newText);
+		const newText =
+			currentText.slice(0, start) + inserted + currentText.slice(caret);
+		rebuildContentWithSyntaxHighlighting(newText);
+		addCaretAnchorIfNeeded(newText);
+		restoreCaretPosition(newCaret);
+		setIsDropdownOpen(false);
+		setSuggestions([]);
+		onChange?.(newText);
 	};
 
 	const handleInput = (e: React.ChangeEvent<HTMLDivElement>) => {
@@ -398,10 +398,10 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 		setCaretPosition(position);
 		const raw = e.currentTarget.innerText || "";
 		const text = raw.replace(/\u200B/g, "");
-		
+
 		// Show/hide placeholder based on content
 		setShowPlaceholder(text.length === 0);
-		
+
 		rebuildContentWithSyntaxHighlighting(text);
 		addCaretAnchorIfNeeded(text);
 		restoreCaretPosition(position);
@@ -456,7 +456,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 			}
 		}
 
-				// Auto-pair quotes and place caret between them
+		// Auto-pair quotes and place caret between them
 		if (e.key === '"' || e.key === "'") {
 			e.preventDefault();
 			const quote = e.key;
@@ -508,30 +508,30 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 			return;
 		}
 
-				if (e.key === "Backspace") {
-						e.preventDefault();
-						if (!collapsed) {
-							const newText = currentText.slice(0, start) + currentText.slice(end);
-							rebuildContentWithSyntaxHighlighting(newText);
-							addCaretAnchorIfNeeded(newText);
-							restoreCaretPosition(start);
-							updateAutocomplete();
-							onChange?.(newText);
-							return;
-						}
-						const caretPos = getCaretPosition();
-						if (caretPos === 0) return; // nothing to delete
-						const newText =
-							currentText.slice(0, caretPos - 1) + currentText.slice(caretPos);
-						
-						setShowPlaceholder(newText.length === 0);
-						rebuildContentWithSyntaxHighlighting(newText);
-						addCaretAnchorIfNeeded(newText);
-						restoreCaretPosition(caretPos - 1);
-						updateAutocomplete();
-						onChange?.(newText);
-						return;
-					}
+		if (e.key === "Backspace") {
+			e.preventDefault();
+			if (!collapsed) {
+				const newText = currentText.slice(0, start) + currentText.slice(end);
+				rebuildContentWithSyntaxHighlighting(newText);
+				addCaretAnchorIfNeeded(newText);
+				restoreCaretPosition(start);
+				updateAutocomplete();
+				onChange?.(newText);
+				return;
+			}
+			const caretPos = getCaretPosition();
+			if (caretPos === 0) return; // nothing to delete
+			const newText =
+				currentText.slice(0, caretPos - 1) + currentText.slice(caretPos);
+
+			setShowPlaceholder(newText.length === 0);
+			rebuildContentWithSyntaxHighlighting(newText);
+			addCaretAnchorIfNeeded(newText);
+			restoreCaretPosition(caretPos - 1);
+			updateAutocomplete();
+			onChange?.(newText);
+			return;
+		}
 
 		if (e.key === "Delete") {
 			e.preventDefault();
@@ -818,70 +818,70 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 	};
 
 	return (
-			<ComponentCard
+		<ComponentCard
 			// key={testCaseId}
 			className="h-full"
 			header={<div className="flex items-center justify-between min-h-[2rem]">
 				<div className="flex items-center gap-2 text">
-								<Code className="text-brand-500 h-4 w-4" />
-								<div className="relative group min-h-[1.5rem] flex items-center">
-									{isEditingTitle ? (
-										<div className="flex items-center gap-1 w-full">
-											<input
-												type="text"
-												value={titleDraft}
-												onChange={(e) => setTitleDraft(e.target.value)}
-												onBlur={cancelEdit}
-												onKeyDown={(e) => {
-													if (e.key === "Escape") {
-														e.preventDefault();
-														cancelEdit();
-													}
-												}}
-												className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 shadow-none flex-shrink min-w-0 px-1"
-												style={{ 
-													outline: 'none', 
-													boxShadow: 'none', 
-													border: 'none',
-													width: `${Math.max(titleDraft.length * 0.8 + 2, 6)}ch`,
-													textAlign: 'left'
-												}}
-												autoFocus
-											/>
-											<button 
-												onMouseDown={(e) => e.preventDefault()}
-												onClick={saveTitle}
-												className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded flex-shrink-0"
-											>
-												<Check className="h-4 w-4 text-green-500" />
-											</button>
-										</div>
-									) : (
-										<button className="flex items-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-1 py-0.5 min-h-[1.5rem]" onClick={() => setIsEditingTitle(true)}>
-											{titleDraft}
-											<Pencil className="h-4 w-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-										</button>
-									)}
-								</div>
-														<div className="text-xs text-gray-500 dark:text-gray-400 ml-2">
-							{isSaving ? "Saving…" : lastSavedAt ? "Saved" : ""}
-						</div>
+					<Code className="text-brand-500 h-4 w-4" />
+					<div className="relative group min-h-[1.5rem] flex items-center">
+						{isEditingTitle ? (
+							<div className="flex items-center gap-1 w-full">
+								<input
+									type="text"
+									value={titleDraft}
+									onChange={(e) => setTitleDraft(e.target.value)}
+									onBlur={cancelEdit}
+									onKeyDown={(e) => {
+										if (e.key === "Escape") {
+											e.preventDefault();
+											cancelEdit();
+										}
+									}}
+									className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 shadow-none flex-shrink min-w-0 px-1"
+									style={{
+										outline: 'none',
+										boxShadow: 'none',
+										border: 'none',
+										width: `${Math.max(titleDraft.length * 0.8 + 2, 6)}ch`,
+										textAlign: 'left'
+									}}
+									autoFocus
+								/>
+								<button
+									onMouseDown={(e) => e.preventDefault()}
+									onClick={saveTitle}
+									className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded flex-shrink-0"
+								>
+									<Check className="h-4 w-4 text-green-500" />
+								</button>
 							</div>
-							<button className="text">
-								<HelpCircle className="h-4 w-4" />
+						) : (
+							<button className="flex items-center gap-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-1 py-0.5 min-h-[1.5rem]" onClick={() => setIsEditingTitle(true)}>
+								{titleDraft}
+								<Pencil className="h-4 w-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
 							</button>
+						)}
+					</div>
+					<div className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+						{isSaving ? "Saving…" : lastSavedAt ? "Saved" : ""}
+					</div>
+				</div>
+				<button className="text">
+					<HelpCircle className="h-4 w-4" />
+				</button>
 			</div>}
-			>
-				<div className={`relative h-full ${className}`}>
+		>
+			<div className={`relative h-full ${className}`}>
 				{/* Placeholder - positioned to match editor content */}
 				{showPlaceholder && (
-					<div 
+					<div
 						className="absolute top-0 left-0 pointer-events-none text-gray-400 dark:text-gray-500"
 					>
 						Type here
 					</div>
 				)}
-				
+
 				<div
 					ref={editorRef}
 					contentEditable={true}
@@ -935,7 +935,7 @@ const TestCaseEditorWithHelp: React.FC<{ className?: string; value?: string; onC
 					))}
 				</Dropdown>
 			</div>
-			</ComponentCard>
+		</ComponentCard>
 	);
 };
 

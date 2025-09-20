@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const executionWorker = require('./workers/execution.worker');
+const databaseWorker = require('./workers/database.worker');
 
 const app = express();
 const PORT = process.env.PORT || 7860;
@@ -44,11 +45,13 @@ console.log('🚀 Starting BullMQ Workers...');
 process.on('SIGINT', async () => {
   console.log('\n🛑 Shutting down workers...');
   await executionWorker.close();
+  await databaseWorker.close();
   process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
   console.log('\n🛑 Shutting down workers...');
   await executionWorker.close();
+  await databaseWorker.close();
   process.exit(0);
 });

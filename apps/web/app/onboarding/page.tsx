@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import { useCreateOrganization, useUserBelongsToOrganization } from "@/hooks/useOrganizations";
+import { useCreateOrganization, useUserBelongsToOrganization } from "@/hooks/api/useOrganizations";
 import { useRouter } from "next/navigation";
 import { useToastStore } from "@/stores/useToastStore";
 

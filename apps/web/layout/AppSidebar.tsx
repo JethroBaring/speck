@@ -10,10 +10,10 @@ import { CirclePlus, Search, Folder, Settings } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import Label from "@/components/form/Label";
 import Input from "@/components/form/input/InputField";
-import { useCreateProject, useProjects } from "@/hooks/useProjects";
+import { useCreateProject, useProjects } from "@/hooks/api/useProjects";
 import { useToastStore } from "@/stores/useToastStore";
 import { useProjectModalStore } from "@/stores/useProjectModalStore";
-import { useOrganization } from "@/hooks/useOrganizations";
+import { useOrganization } from "@/hooks/api/useOrganizations";
 
 type Project = {
 	name: string;
@@ -214,34 +214,6 @@ const AppSidebar: React.FC = () => {
     {}
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  // const isActive = (path: string) => path === pathname;
-
-  // useEffect(() => {
-  //   // Check if the current path matches any submenu item
-  //   let submenuMatched = false;
-  //   ["main", "others"].forEach((menuType) => {
-  //     const items = menuType === "main" ? navItems : othersItems;
-  //     items.forEach((nav, index) => {
-  //       if (nav.subItems) {
-  //         nav.subItems.forEach((subItem) => {
-  //           if (isActive(subItem.path)) {
-  //             setOpenSubmenu({
-  //               type: menuType as "main" | "others",
-  //               index,
-  //             });
-  //             submenuMatched = true;
-  //           }
-  //         });
-  //       }
-  //     });
-  //   });
-
-  //   // If no submenu item matches, close the open submenu
-  //   if (!submenuMatched) {
-  //     setOpenSubmenu(null);
-  //   }
-  // }, [pathname,isActive]);
 
   useEffect(() => {
     // Set the height of the submenu items when the submenu is opened

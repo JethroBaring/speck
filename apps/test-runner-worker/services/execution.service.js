@@ -1,7 +1,7 @@
 const { chromium } = require("playwright");
 const path = require("path");
 const fs = require("fs");
-const apiService = require("./api.service");
+const websocketService = require("./websocket.service");
 const minioService = require("./minio.service");
 
 const TestStepStatus = {
@@ -20,7 +20,7 @@ class ExecutionService {
   }
 
   async executeTestCase(jobData) {
-    const { code, setupState, testCaseRunId } = jobData;
+    const { code, setupState, testCaseRunId, testSuiteRunId } = jobData;
     const startTime = Date.now();
     let browser;
     let page;
@@ -35,7 +35,7 @@ class ExecutionService {
         await this.applySetupState(page, setupState);
       }
 
-      await this.executeTestCommands(page, code, testCaseRunId, results);
+      await this.executeTestCommands(page, code, testCaseRunId, testSuiteRunId, results);
       const duration = Date.now() - startTime;
 
       console.log("✅ Test completed successfully");
@@ -78,7 +78,7 @@ class ExecutionService {
     });
   }
 
-  async executeTestCommands(page, code, testCaseRunId, results) {
+  async executeTestCommands(page, code, testCaseRunId, testSuiteRunId, results) {
     const lines = code.split("\n").filter((line) => line.trim());
     console.log(`📝 Processing ${lines.length} commands`);
 
@@ -89,9 +89,10 @@ class ExecutionService {
       console.log(`⚡ Step ${i + 1}: ${command}`);
 
       try {
+        await websocketService.notifyTestStepStarted(testCaseRunId, testSuiteRunId, i + 1);
         await this.executeCommand(page, command, args);
         const screenshotUrl = await this.captureScreenshot(page, i + 1, testCaseRunId);
-        
+        await websocketService.notifyTestStepCompleted(testCaseRunId, testSuiteRunId, i + 1);
         results.push({
           step: i + 1,
           command: line,
@@ -100,6 +101,7 @@ class ExecutionService {
         });
       } catch (error) {
         console.error(`❌ Step ${i + 1} failed:`, error.message);
+        await websocketService.notifyTestStepCompleted(testCaseRunId, testSuiteRunId, i + 1, { error: error.message });
         results.push({
           step: i + 1,
           command: line,

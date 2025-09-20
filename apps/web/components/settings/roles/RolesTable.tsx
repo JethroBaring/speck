@@ -11,14 +11,14 @@ import Label from "@/components/form/Label";
 import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal";
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "@/hooks/common/useModal";
 import type { Role } from "@repo/types/zod";
 import { Pencil, Shield, ShieldMinus, ShieldPlus, Trash } from "lucide-react";
 import Card from "@/components/common/Card";
 import { getAvailablePermissions } from "@/lib/permissions/getAvailablePermissions";
 import { useRoleModalStore } from "@/stores/useRoleModalStore";
 import { RoleCreateInput } from "@repo/types";
-import { useCreateRole, useRoles } from "@/hooks/useRoles";
+import { useCreateRole, useRoles } from "@/hooks/api/useRoles";
 import { useToastStore } from "@/stores/useToastStore";
 
 export default function RolesTable({ organizationId }: { organizationId: string; }) {

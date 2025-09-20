@@ -1,16 +1,16 @@
 require('dotenv').config();
 const { Worker } = require('bullmq');
 const IORedis = require('ioredis');
-const apiService = require('../services/api.service');
+const websocketService = require('../services/websocket.service');
 const executionService = require('../services/execution.service');
 
 const connection = new IORedis({ maxRetriesPerRequest: null });
 
 const worker = new Worker('test-execution-queue', async (job) => {
-  const { testCaseRunId } = job.data;
+  const { testCaseRunId, testSuiteRunId } = job.data;
 
   try {
-    await apiService.notifyTestCaseStarted(testCaseRunId);
+    await websocketService.notifyTestCaseStarted(testCaseRunId, testSuiteRunId);
 
     console.log(`Executing test case: ${testCaseRunId}`);
     console.log(`Job data:`, job.data);
@@ -19,11 +19,11 @@ const worker = new Worker('test-execution-queue', async (job) => {
 
     console.log(`Test case result:`, result);
 
-    await apiService.updateTestCaseResult(testCaseRunId, result);
+    await websocketService.updateTestCaseResult(testCaseRunId, testSuiteRunId, result);
 
     return result;
   } catch (error) {
-    await apiService.updateTestCaseResult(testCaseRunId, {
+    await websocketService.updateTestCaseResult(testCaseRunId, testSuiteRunId, {
       success: false,
       error: error.message,
       duration: Date.now() - job.timestamp,

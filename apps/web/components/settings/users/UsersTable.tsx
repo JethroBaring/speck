@@ -11,7 +11,7 @@ import Badge from "@/components/ui/badge/Badge";
 import Image from "next/image";
 import { Pencil, Trash } from "lucide-react";
 import Button from "@/components/ui/button/Button";
-import { useOrganizationMembers } from "@/hooks/useOrganizations";
+import { useOrganizationMembers } from "@/hooks/api/useOrganizations";
 import moment from "moment";
 
 interface Order {

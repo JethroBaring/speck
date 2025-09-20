@@ -1,14 +1,6 @@
 // src/test-runner/enhanced-test-queue.controller.ts
-import { Public } from "@mguay/nestjs-better-auth";
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query
-} from '@nestjs/common';
+import { Public } from '@mguay/nestjs-better-auth';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { TestCaseRunStatus } from 'generated/prisma';
 import { TestQueueService } from './test-queue.service';
 
@@ -169,20 +161,20 @@ export class TestQueueController {
   // Worker endpoints for job polling
   @Get('queue/jobs/waiting')
   @Public()
-  async getWaitingJobs(
-    @Query('start') start = 0,
-    @Query('end') end = 10
-  ) {
-    return await this.testQueueService.getWaitingJobs(Number(start), Number(end));
+  async getWaitingJobs(@Query('start') start = 0, @Query('end') end = 10) {
+    return await this.testQueueService.getWaitingJobs(
+      Number(start),
+      Number(end),
+    );
   }
 
   @Get('queue/jobs/active')
   @Public()
-  async getActiveJobs(
-    @Query('start') start = 0,
-    @Query('end') end = 10
-  ) {
-    return await this.testQueueService.getActiveJobs(Number(start), Number(end));
+  async getActiveJobs(@Query('start') start = 0, @Query('end') end = 10) {
+    return await this.testQueueService.getActiveJobs(
+      Number(start),
+      Number(end),
+    );
   }
 
   // Admin/monitoring endpoints

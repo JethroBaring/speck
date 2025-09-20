@@ -31,6 +31,15 @@ import { PrismaService } from '../prisma/prisma.service';
           removeOnComplete: 50,
           removeOnFail: 20,
         },
+      },
+      {
+        name: 'database-updates-queue',
+        defaultJobOptions: {
+          removeOnComplete: 10,
+          removeOnFail: 50,
+          attempts: 3,
+          backoff: { type: 'exponential', delay: 2000 },
+        },
       }
     ),
   ],

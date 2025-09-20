@@ -3,7 +3,7 @@
 import { Folder, PlusCircle } from "lucide-react";
 import Button from "@/components/ui/button/Button";
 import { useProjectModalStore } from "@/stores/useProjectModalStore";
-import { useProjects } from "@/hooks/useProjects";
+import { useProjects } from "@/hooks/api/useProjects";
 
 export default function Projects() {  
   const { openModal } = useProjectModalStore();

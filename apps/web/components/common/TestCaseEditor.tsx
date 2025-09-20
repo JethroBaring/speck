@@ -10,7 +10,7 @@ import {
 	EditorVariableIcon,
 } from "../../icons";
 
-const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
+const TestCaseEditor: React.FC<{ className?: string; }> = ({ className }) => {
 	const editorRef = useRef<HTMLDivElement>(null);
 	const [caretPosition, setCaretPosition] = useState<number>(0);
 
@@ -78,7 +78,7 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
-	const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number }>(
+	const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; }>(
 		{ top: 0, left: 0 },
 	);
 
@@ -195,7 +195,7 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 		}
 	};
 
-	const getEditorRelativeCaretRect = (): { top: number; left: number } => {
+	const getEditorRelativeCaretRect = (): { top: number; left: number; } => {
 		if (!editorRef.current) return { top: 0, left: 0 };
 		const selection = window.getSelection();
 		if (!selection || selection.rangeCount === 0) return { top: 0, left: 0 };
@@ -212,7 +212,7 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 	const getCurrentToken = (
 		text: string,
 		caret: number,
-	): { start: number; end: number; value: string } => {
+	): { start: number; end: number; value: string; } => {
 		// Identify simple word token made of letters only for commands
 		let start = caret;
 		while (start > 0 && /[A-Za-z]/.test(text[start - 1])) start -= 1;
@@ -284,35 +284,35 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 		const caret = getCaretPosition();
 		const { start } = getCurrentToken(currentText, caret);
 
-					let inserted = chosen.value;
-			let newCaret: number;
-			if (chosen.kind === "function") {
-				// If next non-space char is already '(', insert only name; else insert name + "()" and place caret inside
-				let k = caret;
-				while (k < currentText.length && /\s/.test(currentText[k])) k += 1;
-				if (currentText[k] === "(") {
-					inserted = chosen.value;
-					newCaret = start + inserted.length;
-				} else {
-					inserted = `${chosen.value}()`;
-					newCaret = start + chosen.value.length + 1; // inside parentheses
-				}
-			} else {
+		let inserted = chosen.value;
+		let newCaret: number;
+		if (chosen.kind === "function") {
+			// If next non-space char is already '(', insert only name; else insert name + "()" and place caret inside
+			let k = caret;
+			while (k < currentText.length && /\s/.test(currentText[k])) k += 1;
+			if (currentText[k] === "(") {
+				inserted = chosen.value;
 				newCaret = start + inserted.length;
-				const nextChar = currentText[caret] ?? "";
-				if (!(nextChar && (/\s/.test(nextChar) || /[)\]\},.;:]/.test(nextChar)))) {
-					inserted += " ";
-					newCaret += 1;
-				}
+			} else {
+				inserted = `${chosen.value}()`;
+				newCaret = start + chosen.value.length + 1; // inside parentheses
 			}
+		} else {
+			newCaret = start + inserted.length;
+			const nextChar = currentText[caret] ?? "";
+			if (!(nextChar && (/\s/.test(nextChar) || /[)\]\},.;:]/.test(nextChar)))) {
+				inserted += " ";
+				newCaret += 1;
+			}
+		}
 
-			const newText =
-				currentText.slice(0, start) + inserted + currentText.slice(caret);
-			rebuildContentWithSyntaxHighlighting(newText);
-			addCaretAnchorIfNeeded(newText);
-			restoreCaretPosition(newCaret);
-			setIsDropdownOpen(false);
-			setSuggestions([]);
+		const newText =
+			currentText.slice(0, start) + inserted + currentText.slice(caret);
+		rebuildContentWithSyntaxHighlighting(newText);
+		addCaretAnchorIfNeeded(newText);
+		restoreCaretPosition(newCaret);
+		setIsDropdownOpen(false);
+		setSuggestions([]);
 	};
 
 	const handleInput = (e: React.ChangeEvent<HTMLDivElement>) => {
@@ -373,7 +373,7 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 			}
 		}
 
-				// Auto-pair quotes and place caret between them
+		// Auto-pair quotes and place caret between them
 		if (e.key === '"' || e.key === "'") {
 			e.preventDefault();
 			const quote = e.key;
@@ -422,26 +422,26 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 			return;
 		}
 
-				if (e.key === "Backspace") {
-						e.preventDefault();
-						if (!collapsed) {
-							const newText = currentText.slice(0, start) + currentText.slice(end);
-							rebuildContentWithSyntaxHighlighting(newText);
-							addCaretAnchorIfNeeded(newText);
-							restoreCaretPosition(start);
-							updateAutocomplete();
-							return;
-						}
-						const caretPos = getCaretPosition();
-						if (caretPos === 0) return; // nothing to delete
-						const newText =
-							currentText.slice(0, caretPos - 1) + currentText.slice(caretPos);
-						rebuildContentWithSyntaxHighlighting(newText);
-						addCaretAnchorIfNeeded(newText);
-						restoreCaretPosition(caretPos - 1);
-						updateAutocomplete();
-						return;
-					}
+		if (e.key === "Backspace") {
+			e.preventDefault();
+			if (!collapsed) {
+				const newText = currentText.slice(0, start) + currentText.slice(end);
+				rebuildContentWithSyntaxHighlighting(newText);
+				addCaretAnchorIfNeeded(newText);
+				restoreCaretPosition(start);
+				updateAutocomplete();
+				return;
+			}
+			const caretPos = getCaretPosition();
+			if (caretPos === 0) return; // nothing to delete
+			const newText =
+				currentText.slice(0, caretPos - 1) + currentText.slice(caretPos);
+			rebuildContentWithSyntaxHighlighting(newText);
+			addCaretAnchorIfNeeded(newText);
+			restoreCaretPosition(caretPos - 1);
+			updateAutocomplete();
+			return;
+		}
 
 		if (e.key === "Delete") {
 			e.preventDefault();
@@ -726,60 +726,60 @@ const TestCaseEditor: React.FC<{ className?: string }> = ({ className }) => {
 	};
 
 	return (
-			<div className={`relative h-full ${className}`}>
-				<div
-					ref={editorRef}
-					contentEditable={true}
-					spellCheck={false}
-					className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] overflow-hidden p-4 focus:outline-none focus:ring-0 focus:border-gray-200 dark:focus:border-gray-800 text resize-none h-full"
-					style={{
-						wordWrap: "break-word",
-						whiteSpace: "pre-wrap",
-						overflowWrap: "break-word",
-						maxWidth: "100%",
-						width: "100%",
-						height: "100%",
-					}}
-					onInput={handleInput}
-					onKeyDown={handleKeydown}
-					onClick={handleClick}
-				/>
+		<div className={`relative h-full ${className}`}>
+			<div
+				ref={editorRef}
+				contentEditable={true}
+				spellCheck={false}
+				className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] overflow-hidden p-4 focus:outline-none focus:ring-0 focus:border-gray-200 dark:focus:border-gray-800 text resize-none h-full"
+				style={{
+					wordWrap: "break-word",
+					whiteSpace: "pre-wrap",
+					overflowWrap: "break-word",
+					maxWidth: "100%",
+					width: "100%",
+					height: "100%",
+				}}
+				onInput={handleInput}
+				onKeyDown={handleKeydown}
+				onClick={handleClick}
+			/>
 
-				<Dropdown
-					isOpen={isDropdownOpen}
-					onClose={() => setIsDropdownOpen(false)}
-					className="min-w-[350px]"
-					style={{ top: dropdownPos.top, left: dropdownPos.left }}
-				>
-					{suggestions.map((s, idx) => (
-						<CustomDropdownItem
-							key={`${s.value}-${idx}`}
-							baseClassName={
-								idx === highlightedIndex
-									? "block w-full text-left px-2 py-1 text-sm cursor-pointer"
-									: "block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-							}
-							className={idx === highlightedIndex ? "menu-item-active" : "menu-item-inactive"}
-							onItemClick={() => acceptSuggestion(idx)}
-						>
-							<div className="flex w-full items-center justify-between px-2 py-2">
-								<div className="flex items-center gap-1">
-									<div className="w-4 h-4">
-										{s.kind === "command" && <EditorCommandIcon />}
-										{s.kind === "function" && <EditorFunctionIcon />}
-										{s.kind === "keyword" && <EditorKeywordIcon />}
-										{s.kind === "variable" && <EditorVariableIcon />}
-										{s.kind === "selector" && <EditorSelectorIcon />}
-									</div>
-
-									<span>{s.value}</span>
+			<Dropdown
+				isOpen={isDropdownOpen}
+				onClose={() => setIsDropdownOpen(false)}
+				className="min-w-[350px]"
+				style={{ top: dropdownPos.top, left: dropdownPos.left }}
+			>
+				{suggestions.map((s, idx) => (
+					<CustomDropdownItem
+						key={`${s.value}-${idx}`}
+						baseClassName={
+							idx === highlightedIndex
+								? "block w-full text-left px-2 py-1 text-sm cursor-pointer"
+								: "block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+						}
+						className={idx === highlightedIndex ? "menu-item-active" : "menu-item-inactive"}
+						onItemClick={() => acceptSuggestion(idx)}
+					>
+						<div className="flex w-full items-center justify-between px-2 py-2">
+							<div className="flex items-center gap-1">
+								<div className="w-4 h-4">
+									{s.kind === "command" && <EditorCommandIcon />}
+									{s.kind === "function" && <EditorFunctionIcon />}
+									{s.kind === "keyword" && <EditorKeywordIcon />}
+									{s.kind === "variable" && <EditorVariableIcon />}
+									{s.kind === "selector" && <EditorSelectorIcon />}
 								</div>
-								<span className="text-gray-500">{s.description}</span>
+
+								<span>{s.value}</span>
 							</div>
-						</CustomDropdownItem>
-					))}
-				</Dropdown>
-			</div>
+							<span className="text-gray-500">{s.description}</span>
+						</div>
+					</CustomDropdownItem>
+				))}
+			</Dropdown>
+		</div>
 	);
 };
 

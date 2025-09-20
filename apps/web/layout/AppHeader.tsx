@@ -1,5 +1,5 @@
 "use client";
-import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
+import { ThemeToggleButton } from "../components/Common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/UserDropdown";
 
@@ -7,8 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
 import { useParams, usePathname } from "next/navigation";
-import { useProjects } from "@/hooks/useProjects";
-import { useTestSuites } from "@/hooks/useTestSuites";
+import { useProjects } from "@/hooks/api/useProjects";
+import { useTestSuites } from "@/hooks/api/useTestSuites";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -117,14 +117,14 @@ const AppHeader: React.FC = () => {
               {isOnTestSuitePage && currentProject && currentTestSuite && (
                 <>
                   <span className="text-gray-400 dark:text-gray-500">/</span>
-                  <Link 
-                    href={`/projects/${currentProject.id}`} 
+                  <Link
+                    href={`/projects/${currentProject.id}`}
                     className="hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
                     {currentProject.name}
                   </Link>
                   <span className="text-gray-400 dark:text-gray-500">/</span>
-                  <span className="text-blue-600 dark:text-blue-400 font-medium">
+                  <span className="text-brand-500 font-medium">
                     {currentTestSuite.name}
                   </span>
                 </>
@@ -142,12 +142,12 @@ const AppHeader: React.FC = () => {
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
 
-          <NotificationDropdown /> 
+          <NotificationDropdown />
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown /> 
-    
+          <UserDropdown />
+
         </div>
       </div>
     </header>

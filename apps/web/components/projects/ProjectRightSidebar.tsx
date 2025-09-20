@@ -8,7 +8,7 @@ import Card from "../common/Card";
 import Button from "../ui/button/Button";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
-import { useDeleteProject } from "@/hooks/useProjects";
+import { useDeleteProject } from "@/hooks/api/useProjects";
 import { useParams, useRouter } from "next/navigation";
 
 const ProjectRightSidebar: React.FC = () => {

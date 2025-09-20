@@ -277,13 +277,7 @@ exports.Prisma.TestSuiteRunScalarFieldEnum = {
   totalTests: 'totalTests',
   passedTests: 'passedTests',
   failedTests: 'failedTests',
-  skippedTests: 'skippedTests',
-  errorMessage: 'errorMessage',
-  environment: 'environment',
-  browser: 'browser',
-  version: 'version',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  skippedTests: 'skippedTests'
 };
 
 exports.Prisma.TestCaseRunScalarFieldEnum = {
@@ -293,10 +287,7 @@ exports.Prisma.TestCaseRunScalarFieldEnum = {
   status: 'status',
   startedAt: 'startedAt',
   completedAt: 'completedAt',
-  duration: 'duration',
-  errorMessage: 'errorMessage',
-  stackTrace: 'stackTrace',
-  logs: 'logs'
+  duration: 'duration'
 };
 
 exports.Prisma.TestStepResultScalarFieldEnum = {

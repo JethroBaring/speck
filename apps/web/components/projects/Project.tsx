@@ -1,6 +1,6 @@
 'use client'
 
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "@/hooks/common/useModal";
 import { Folder, Play, CheckCircle, Clock, BarChart3, Plus, PlusCircle, Search, Grid, List, MoreVertical, Settings, CheckCircle2, XCircle, RotateCcw, FileText, Edit, Edit2 } from "lucide-react";
 import Button from "@/components/ui/button/Button";
 import TestSuiteRightSidebar from "@/components/test-suites/TestSuiteRightSidebar";
@@ -10,13 +10,13 @@ import Checkbox from "@/components/form/input/Checkbox";
 import { useState, useEffect } from "react";
 import Input from "@/components/form/input/InputField";
 import Select from "@/components/form/Select";
-import { useTestSuites } from "@/hooks/useTestSuites";
+import { useTestSuites } from "@/hooks/api/useTestSuites";
 import { Modal } from "@/components/ui/modal";
 import Label from "@/components/form/Label";
 import Link from "next/link";
-import { useCreateTestSuite } from "@/hooks/useTestSuites";
+import { useCreateTestSuite } from "@/hooks/api/useTestSuites";
 import { useToastStore } from "@/stores/useToastStore";
-import { useProject } from "@/hooks/useProjects";
+import { useProject } from "@/hooks/api/useProjects";
 import { TestSuites } from "@repo/types/zod";
 import { useParams } from "next/navigation";
 import ProjectRightSidebar from "./ProjectRightSidebar";

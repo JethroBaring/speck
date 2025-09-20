@@ -5,7 +5,7 @@ import Button from "@/components/ui/button/Button";
 import { PlusCircle, Search, Users, Users2 } from "lucide-react";
 import Input from "@/components/form/input/InputField";
 import React, { useState } from "react";
-import { useOrganization } from "@/hooks/useOrganizations";
+import { useOrganization } from "@/hooks/api/useOrganizations";
 import { useRoleModalStore } from "@/stores/useRoleModalStore";
 
 export default function UsersPage() {

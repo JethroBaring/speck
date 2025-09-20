@@ -33,6 +33,11 @@ export interface TestProgressData {
     duration?: number;
     errorMessage?: string;
   };
+  testStep?: {
+    stepNumber: number;
+    status: string;
+    error?: string;
+  };
   timestamp: string;
 }
 
@@ -44,15 +49,18 @@ export interface TestProgressData {
   },
   namespace: '/test-runner',
 })
-export class TestWebSocketGateway 
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  
+export class TestWebSocketGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server: Server;
 
   private readonly logger = new Logger(TestWebSocketGateway.name);
 
-  constructor(private testQueueService: TestQueueService, private redisService: RedisService) {}
+  constructor(
+    private testQueueService: TestQueueService,
+    private redisService: RedisService,
+  ) {}
 
   afterInit(server: Server) {
     this.logger.log('WebSocket Gateway initialized');
@@ -71,21 +79,37 @@ export class TestWebSocketGateway
   @SubscribeMessage('join-test-suite-run')
   async handleJoinTestSuiteRun(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { testSuiteRunId: string }
+    @MessageBody() data: { testSuiteRunId: string },
   ) {
     const room = `test-suite-${data.testSuiteRunId}`;
     await client.join(room);
-    
+
     this.logger.log(`Client ${client.id} joined room ${room}`);
-    
+
     // Send current status to the newly joined client
-    const status = await this.testQueueService.getTestSuiteRunStatus(data.testSuiteRunId);
+    const status = await this.testQueueService.getTestSuiteRunStatus(
+      data.testSuiteRunId,
+    );
     if (status) {
       client.emit('test-suite-status', {
         type: 'current-status',
         data: status,
         timestamp: new Date().toISOString(),
       });
+
+      // If the suite is already running, emit a started event so the client doesn't miss it
+      if (status.status === 'RUNNING') {
+        client.emit('test-suite-started', {
+          type: 'test-suite-started',
+          data: {
+            testSuiteRunId: status.testSuiteRunId,
+            status: status.status,
+            progress: status.progress,
+            timestamp: new Date().toISOString(),
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
     }
 
     client.emit('joined-room', {
@@ -98,7 +122,7 @@ export class TestWebSocketGateway
   @SubscribeMessage('leave-test-suite-run')
   async handleLeaveTestSuiteRun(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { testSuiteRunId: string }
+    @MessageBody() data: { testSuiteRunId: string },
   ) {
     const room = `test-suite-${data.testSuiteRunId}`;
     await client.leave(room);
@@ -108,27 +132,30 @@ export class TestWebSocketGateway
   @SubscribeMessage('cancel-test-suite')
   async handleCancelTestSuite(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { testSuiteRunId: string }
+    @MessageBody() data: { testSuiteRunId: string },
   ) {
     try {
-      await this.testQueueService.cancelTestSuiteRunRealtime(data.testSuiteRunId);
-      
+      await this.testQueueService.cancelTestSuiteRunRealtime(
+        data.testSuiteRunId,
+      );
+
       // Broadcast to all clients in the room
-      this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-suite-cancelled', {
-        type: 'suite-cancelled',
-        data: {
-          testSuiteRunId: data.testSuiteRunId,
-          cancelledBy: client.id,
-        },
-        timestamp: new Date().toISOString(),
-      });
+      this.server
+        .to(`test-suite-${data.testSuiteRunId}`)
+        .emit('test-suite-cancelled', {
+          type: 'suite-cancelled',
+          data: {
+            testSuiteRunId: data.testSuiteRunId,
+            cancelledBy: client.id,
+          },
+          timestamp: new Date().toISOString(),
+        });
 
       client.emit('cancel-success', {
         type: 'cancel-success',
         data: { testSuiteRunId: data.testSuiteRunId },
         timestamp: new Date().toISOString(),
       });
-
     } catch (error) {
       client.emit('cancel-error', {
         type: 'cancel-error',
@@ -144,21 +171,22 @@ export class TestWebSocketGateway
   @SubscribeMessage('cancel-test-case')
   async handleCancelTestCase(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { testCaseRunId: string; testSuiteRunId: string }
+    @MessageBody() data: { testCaseRunId: string; testSuiteRunId: string },
   ) {
     try {
       await this.testQueueService.cancelTestCaseRealtime(data.testCaseRunId);
-      
-      this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-case-cancelled', {
-        type: 'test-case-cancelled',
-        data: {
-          testCaseRunId: data.testCaseRunId,
-          testSuiteRunId: data.testSuiteRunId,
-          cancelledBy: client.id,
-        },
-        timestamp: new Date().toISOString(),
-      });
 
+      this.server
+        .to(`test-suite-${data.testSuiteRunId}`)
+        .emit('test-case-cancelled', {
+          type: 'test-case-cancelled',
+          data: {
+            testCaseRunId: data.testCaseRunId,
+            testSuiteRunId: data.testSuiteRunId,
+            cancelledBy: client.id,
+          },
+          timestamp: new Date().toISOString(),
+        });
     } catch (error) {
       client.emit('cancel-error', {
         type: 'cancel-error',
@@ -174,22 +202,23 @@ export class TestWebSocketGateway
   @SubscribeMessage('retry-test-case')
   async handleRetryTestCase(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { testCaseRunId: string; testSuiteRunId: string }
+    @MessageBody() data: { testCaseRunId: string; testSuiteRunId: string },
   ) {
     try {
       const job = await this.testQueueService.retryTestCase(data.testCaseRunId);
-      
-      this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-case-retried', {
-        type: 'test-case-retried',
-        data: {
-          testCaseRunId: data.testCaseRunId,
-          testSuiteRunId: data.testSuiteRunId,
-          jobId: job.id,
-          retriedBy: client.id,
-        },
-        timestamp: new Date().toISOString(),
-      });
 
+      this.server
+        .to(`test-suite-${data.testSuiteRunId}`)
+        .emit('test-case-retried', {
+          type: 'test-case-retried',
+          data: {
+            testCaseRunId: data.testCaseRunId,
+            testSuiteRunId: data.testSuiteRunId,
+            jobId: job.id,
+            retriedBy: client.id,
+          },
+          timestamp: new Date().toISOString(),
+        });
     } catch (error) {
       client.emit('retry-error', {
         type: 'retry-error',
@@ -204,19 +233,23 @@ export class TestWebSocketGateway
 
   // Methods called by the queue service to emit events
   emitTestSuiteStarted(data: TestProgressData) {
-    this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-suite-started', {
-      type: 'suite-started',
-      data,
-      timestamp: new Date().toISOString(),
-    });
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('test-suite-started', {
+        type: 'test-suite-started',
+        data,
+        timestamp: new Date().toISOString(),
+      });
   }
 
   emitSetupCompleted(data: TestProgressData) {
-    this.server.to(`test-suite-${data.testSuiteRunId}`).emit('setup-completed', {
-      type: 'setup-completed',
-      data,
-      timestamp: new Date().toISOString(),
-    });
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('setup-completed', {
+        type: 'setup-completed',
+        data,
+        timestamp: new Date().toISOString(),
+      });
   }
 
   emitSetupFailed(data: TestProgressData) {
@@ -228,35 +261,63 @@ export class TestWebSocketGateway
   }
 
   emitTestCaseStarted(data: TestProgressData) {
-    this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-case-started', {
-      type: 'test-case-started',
-      data,
-      timestamp: new Date().toISOString(),
-    });
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('test-case-started', {
+        type: 'test-case-started',
+        data,
+        timestamp: new Date().toISOString(),
+      });
   }
 
   emitTestCaseCompleted(data: TestProgressData) {
-    this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-case-completed', {
-      type: 'test-case-completed',
-      data,
-      timestamp: new Date().toISOString(),
-    });
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('test-case-completed', {
+        type: 'test-case-completed',
+        data,
+        timestamp: new Date().toISOString(),
+      });
+  }
+
+  emitTestStepStarted(data: TestProgressData) {
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('test-step-started', {
+        type: 'test-step-started',
+        data,
+        timestamp: new Date().toISOString(),
+      });
+  }
+
+  emitTestStepCompleted(data: TestProgressData) {
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('test-step-completed', {
+        type: 'test-step-completed',
+        data,
+        timestamp: new Date().toISOString(),
+      });
   }
 
   emitTestSuiteCompleted(data: TestProgressData) {
-    this.server.to(`test-suite-${data.testSuiteRunId}`).emit('test-suite-completed', {
-      type: 'test-suite-completed',
-      data,
-      timestamp: new Date().toISOString(),
-    });
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('test-suite-completed', {
+        type: 'test-suite-completed',
+        data,
+        timestamp: new Date().toISOString(),
+      });
   }
 
   emitProgressUpdate(data: TestProgressData) {
-    this.server.to(`test-suite-${data.testSuiteRunId}`).emit('progress-update', {
-      type: 'progress-update',
-      data,
-      timestamp: new Date().toISOString(),
-    });
+    this.server
+      .to(`test-suite-${data.testSuiteRunId}`)
+      .emit('progress-update', {
+        type: 'progress-update',
+        data,
+        timestamp: new Date().toISOString(),
+      });
   }
 
   emitError(testSuiteRunId: string, error: any) {

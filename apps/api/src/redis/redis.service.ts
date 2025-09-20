@@ -4,9 +4,17 @@ import Redis from 'ioredis';
 import { TestWebSocketGateway } from '../test-runner/websocket/test-websocket.gateway';
 
 export interface RedisTestEvent {
-  type: 'suite-started' | 'setup-completed' | 'setup-failed' | 
-        'test-case-started' | 'test-case-completed' | 'test-suite-completed' |
-        'suite-cancelled' | 'test-case-cancelled';
+  type:
+    | 'test-suite-started'
+    | 'setup-completed'
+    | 'setup-failed'
+    | 'test-case-started'
+    | 'test-case-completed'
+    | 'test-suite-completed'
+    | 'test-suite-cancelled'
+    | 'test-case-cancelled'
+    | 'test-step-started'
+    | 'test-step-completed';
   testSuiteRunId: string;
   testCaseRunId?: string;
   data: any;
@@ -37,8 +45,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     await this.subscriber.subscribe(
       'test-suite-events',
       'test-case-events',
+      'test-step-events',
       'setup-events',
-      'cancellation-events'
+      'cancellation-events',
     );
 
     this.subscriber.on('message', this.handleRedisMessage.bind(this));
@@ -67,6 +76,10 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     await this.publisher.publish('setup-events', JSON.stringify(event));
   }
 
+  async publishTestStepEvent(event: RedisTestEvent) {
+    await this.publisher.publish('test-step-events', JSON.stringify(event));
+  }
+
   async publishCancellationEvent(event: {
     type: 'cancel-suite' | 'cancel-test-case';
     testSuiteRunId: string;
@@ -78,7 +91,10 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
   private async handleRedisMessage(channel: string, message: string) {
     if (!this.webSocketGateway) {
-      console.warn('RedisService received message but WebSocketGateway is not wired. Channel:', channel);
+      console.warn(
+        'RedisService received message but WebSocketGateway is not wired. Channel:',
+        channel,
+      );
       return;
     }
 
@@ -91,6 +107,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
           break;
         case 'test-case-events':
           this.handleTestCaseEvent(event);
+          break;
+        case 'test-step-events':
+          this.handleTestStepEvent(event);
           break;
         case 'setup-events':
           this.handleSetupEvent(event);
@@ -113,14 +132,14 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     };
 
     switch (event.type) {
-      case 'suite-started':
+      case 'test-suite-started':
+        console.log('HANNAH testsuitestarted', progressData.testSuiteRunId);
         this.webSocketGateway.emitTestSuiteStarted(progressData);
         break;
       case 'test-suite-completed':
-        console.log("testSuiteRunId", progressData.testSuiteRunId);
         this.webSocketGateway.emitTestSuiteCompleted(progressData);
         break;
-      case 'suite-cancelled':
+      case 'test-suite-cancelled':
         // Handle suite cancellation
         break;
     }
@@ -142,6 +161,29 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         break;
       case 'test-case-completed':
         this.webSocketGateway.emitTestCaseCompleted(progressData);
+        break;
+    }
+  }
+
+  private handleTestStepEvent(event: RedisTestEvent) {
+    const progressData = {
+      testSuiteRunId: event.testSuiteRunId,
+      testCaseRunId: event.testCaseRunId,
+      status: event.data.status,
+      testStep: {
+        stepNumber: event.data.stepNumber,
+        status: event.data.status,
+        error: event.data.error,
+      },
+      timestamp: event.timestamp,
+    };
+
+    switch (event.type) {
+      case 'test-step-started':
+        this.webSocketGateway.emitTestStepStarted(progressData);
+        break;
+      case 'test-step-completed':
+        this.webSocketGateway.emitTestStepCompleted(progressData);
         break;
     }
   }
@@ -178,7 +220,10 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     await this.publisher.del(cacheKey);
   }
 
-  async setSetupStatus(cacheKey: string, status: 'pending' | 'completed' | 'failed') {
+  async setSetupStatus(
+    cacheKey: string,
+    status: 'pending' | 'completed' | 'failed',
+  ) {
     await this.publisher.setex(`${cacheKey}:status`, 300, status); // 5 min TTL
   }
 
@@ -198,9 +243,18 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     return await this.publisher.get(`${cacheKey}:error`);
   }
 
-  async acquireLock(lockKey: string, ttlSeconds: number = 300): Promise<boolean> {
+  async acquireLock(
+    lockKey: string,
+    ttlSeconds: number = 300,
+  ): Promise<boolean> {
     // Use SET with NX and EX options for atomic lock acquisition
-    const result = await this.publisher.set(lockKey, 'locked', 'EX', ttlSeconds, 'NX');
+    const result = await this.publisher.set(
+      lockKey,
+      'locked',
+      'EX',
+      ttlSeconds,
+      'NX',
+    );
     return result === 'OK';
   }
 
